@@ -125,10 +125,6 @@ public class MainActivity extends AppCompatActivity {
             navUsername.setText("Hello, Guest !");
             TextView navEmail = (TextView) headerView.findViewById(R.id.editTextViewEmail);
             navEmail.setText("guest@nitc.ac.in");
-
-            if(!auth.getCurrentUser().isEmailVerified())
-                menu.getItem(1).setVisible(false);
-
         }
     }
 
@@ -181,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         if(user==null)
+            menu.getItem(1).setVisible(false);
+        if(user!=null && !user.isEmailVerified())
             menu.getItem(1).setVisible(false);
 
 
