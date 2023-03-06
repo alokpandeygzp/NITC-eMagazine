@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.nitcemag.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+
+    <fragment
+        android:id="@+id/nav_reviewedArticles"
+        android:name="com.example.nitcemag.ui.reviewedArticles.ReviewedArticles"
+        android:label="Reviewed Articles"
+        tools:layout="@layout/fragment_reviewed_articles" />
+
+    <fragment
+        android:id="@+id/nav_signin"
+        android:name="com.example.nitcemag.ui.signin.Signin"
+        android:label="Sign In"
+        tools:layout="@layout/fragment_signin" />
+
+    <fragment
+        android:id="@+id/nav_signup"
+        android:name="com.example.nitcemag.ui.signup.Signup"
+        android:label="Sign Up"
+        tools:layout="@layout/fragment_signup" />
+
+
+    <fragment
+        android:id="@+id/nav_postArticles"
+        android:name="com.example.nitcemag.ui.postArticles.PostArticles"
+        android:label="@string/menu_postArticles"
+        tools:layout="@layout/fragment_post_articles" />
+
+    <fragment
+        android:id="@+id/nav_myArticles"
+        android:name="com.example.nitcemag.ui.myArticles.MyArticles"
+        android:label="@string/menu_myArticles"
+        tools:layout="@layout/fragment_myarticles" />
+
+
+</navigation>
