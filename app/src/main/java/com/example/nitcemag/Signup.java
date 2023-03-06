@@ -3,6 +3,7 @@ package com.example.nitcemag;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,6 +29,7 @@ public class Signup extends AppCompatActivity {
     EditText name;
     EditText password;
     Button signUpBtn;
+    TextView signInBtn;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference reference = database.getReference();
@@ -41,7 +44,7 @@ public class Signup extends AppCompatActivity {
         email = findViewById(R.id.editTextSignUpEmail);
         password = findViewById(R.id.editTextSignUpPassword);
         signUpBtn = findViewById(R.id.SignUpBtn);
-
+        signInBtn = findViewById(R.id.signInText);
 
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +85,13 @@ public class Signup extends AppCompatActivity {
                 }
             }
         });
+        signInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Signup.this, Signin.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private Boolean checkNitcEmail(String userEmailId) {
@@ -101,19 +111,6 @@ public class Signup extends AppCompatActivity {
                     Toast.makeText(Signup.this, "Your account is created successfully", Toast.LENGTH_LONG).show();
                     UserDetails user = new UserDetails(name.getText().toString(), email.getText().toString());
                     reference.child("User").child(auth.getCurrentUser().getUid()).setValue(user);
-//                            getParentFragmentManager().popBackStack();
-
-//                    NavigationView navigationView = findViewById(R.id.nav_view);
-//                    Menu menu = navigationView.getMenu();
-//                    //menu.findItem(R.id.nav_signup).setVisible(false);
-//                    //menu.findItem(R.id.nav_signin).setVisible(false);
-//                    menu.findItem(R.id.nav_signup).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//                        @Override
-//                        public boolean onMenuItemClick(@NonNull MenuItem item) {
-//                            System.out.println("HelLo Buffalo");
-//                            return false;
-//                        }
-//                    });
                 }
                 else
                 {
