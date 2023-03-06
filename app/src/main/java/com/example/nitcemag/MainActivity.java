@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference();
 
-        if(user!=null)
+        if(user!=null && auth.getCurrentUser().isEmailVerified())
         {
             menu.findItem(R.id.nav_signup).setVisible(false);
             menu.findItem(R.id.nav_signin).setVisible(false);
@@ -104,10 +104,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     String name = snapshot.child("name").getValue().toString();
                     String email= snapshot.child("email").getValue().toString();
-
-
-                    System.out.println(name+"****************************");
-                    System.out.println(email+"****************************");
 
 
                     View headerView = navigationView.getHeaderView(0);
@@ -129,6 +125,10 @@ public class MainActivity extends AppCompatActivity {
             navUsername.setText("Hello, Guest !");
             TextView navEmail = (TextView) headerView.findViewById(R.id.editTextViewEmail);
             navEmail.setText("guest@nitc.ac.in");
+
+            if(!auth.getCurrentUser().isEmailVerified())
+                menu.getItem(1).setVisible(false);
+
         }
     }
 
