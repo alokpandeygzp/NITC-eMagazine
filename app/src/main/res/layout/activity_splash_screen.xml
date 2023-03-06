@@ -33,8 +33,10 @@
 
     <TextView
         android:id="@+id/slogan"
-        android:layout_width="371dp"
-        android:layout_height="80dp"
+        android:layout_width="315dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:text="NITC e-Magazine provides various information about NIT Calicut such as recent events, upcoming events, academic achievements, new infrastructure, new rules and regulations, etc."
         android:textAlignment="center"
         android:textSize="15sp"
