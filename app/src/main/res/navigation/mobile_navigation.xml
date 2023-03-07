@@ -18,17 +18,17 @@
         android:label="Reviewed Articles"
         tools:layout="@layout/fragment_reviewed_articles" />
 
-    <fragment
-        android:id="@+id/nav_signin"
-        android:name="com.example.nitcemag.ui.signin.Signin"
-        android:label="Sign In"
-        tools:layout="@layout/fragment_signin" />
+<!--    <fragment-->
+<!--        android:id="@+id/nav_signin"-->
+<!--        android:name="com.example.nitcemag.ui.signin.Signin"-->
+<!--        android:label="Sign In"-->
+<!--        tools:layout="@layout/fragment_signin" />-->
 
-    <fragment
-        android:id="@+id/nav_signup"
-        android:name="com.example.nitcemag.ui.signup.Signup"
-        android:label="Sign Up"
-        tools:layout="@layout/fragment_signup" />
+<!--    <fragment-->
+<!--        android:id="@+id/nav_signup"-->
+<!--        android:name="com.example.nitcemag.ui.signup.Signup"-->
+<!--        android:label="Sign Up"-->
+<!--        tools:layout="@layout/fragment_signup" />-->
 
 
     <fragment
