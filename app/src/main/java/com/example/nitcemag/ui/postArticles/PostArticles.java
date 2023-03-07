@@ -22,5 +22,4 @@ public class PostArticles extends Fragment {
     private PostArticlesViewModel mViewModel;
 
 
-
 }
