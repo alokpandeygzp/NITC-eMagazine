@@ -55,19 +55,49 @@ public class SportsFragment extends Fragment {
         firebaseAuth =FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Articles");
-         HashMap<String, Object> mHashmap = new HashMap<>();
+        HashMap<String, Object> mHashmap = new HashMap<>();
         mHashmap.put("1/title", "Ragam 2023");
-        mHashmap.put("1/category", "Sports");
+        mHashmap.put("1/category", "Events");
         mHashmap.put("1/image", "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2FRagam.nitc%2F&psig=AOvVaw3EHf4xr9fiQFWL2FeLX_u6&ust=1678218934050000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCKDXvOqKyP0CFQAAAAAdAAAAABAE");
         mHashmap.put("1/Date", "07-03-2023");
         mHashmap.put("1/author", "Dikshant Bisht");
         mHashmap.put("1/description", "Ragam 2023 will be held on march 10, 11, 12 on  Nit Calicut");
+
         mHashmap.put("2/title", "Holi 2023");
-        mHashmap.put("2/category", "Sports");
+        mHashmap.put("2/category", "Events");
         mHashmap.put("2/image", "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2FRagam.nitc%2F&psig=AOvVaw3EHf4xr9fiQFWL2FeLX_u6&ust=1678218934050000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCKDXvOqKyP0CFQAAAAAdAAAAABAE");
         mHashmap.put("2/Date", "07-03-2023");
         mHashmap.put("2/author", "Dikshant Bisht");
         mHashmap.put("2/description", "Ragam 2023 will be held on march 10, 11, 12 on  Nit Calicut");
+
+        mHashmap.put("3/title", "Sac Vs Director");
+        mHashmap.put("3/category", "Notice");
+        mHashmap.put("3/image", "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2FRagam.nitc%2F&psig=AOvVaw3EHf4xr9fiQFWL2FeLX_u6&ust=1678218934050000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCKDXvOqKyP0CFQAAAAAdAAAAABAE");
+        mHashmap.put("3/Date", "07-03-2023");
+        mHashmap.put("3/author", "Dikshant Bisht");
+        mHashmap.put("3/description", "Ragam 2023 will be held on march 10, 11, 12 on  Nit Calicut");
+
+        mHashmap.put("4/title", "Inter Nit");
+        mHashmap.put("4/category", "Sports");
+        mHashmap.put("4/image", "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2FRagam.nitc%2F&psig=AOvVaw3EHf4xr9fiQFWL2FeLX_u6&ust=1678218934050000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCKDXvOqKyP0CFQAAAAAdAAAAABAE");
+        mHashmap.put("4/Date", "07-03-2023");
+        mHashmap.put("4/author", "Dikshant Bisht");
+        mHashmap.put("4/description", "Ragam 2023 will be held on march 10, 11, 12 on  Nit Calicut");
+
+        mHashmap.put("5/title", "MCA 2021");
+        mHashmap.put("5/category", "Academics");
+        mHashmap.put("5/image", "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2FRagam.nitc%2F&psig=AOvVaw3EHf4xr9fiQFWL2FeLX_u6&ust=1678218934050000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCKDXvOqKyP0CFQAAAAAdAAAAABAE");
+        mHashmap.put("5/Date", "07-03-2023");
+        mHashmap.put("5/author", "Dikshant Bisht");
+        mHashmap.put("5/description", "Ragam 2023 will be held on march 10, 11, 12 on  Nit Calicut");
+
+        mHashmap.put("6/title", "Football");
+        mHashmap.put("6/category", "Sports");
+        mHashmap.put("6/image", "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2FRagam.nitc%2F&psig=AOvVaw3EHf4xr9fiQFWL2FeLX_u6&ust=1678218934050000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCKDXvOqKyP0CFQAAAAAdAAAAABAE");
+        mHashmap.put("6/Date", "07-03-2023");
+        mHashmap.put("6/author", "Dikshant Bisht");
+        mHashmap.put("6/description", "Ragam 2023 will be held on march 10, 11, 12 on  Nit Calicut");
+
         databaseReference.updateChildren(mHashmap);
 
         //init recycler view
@@ -90,6 +120,7 @@ public class SportsFragment extends Fragment {
         FirebaseUser fUser= FirebaseAuth.getInstance().getCurrentUser();
         //get path of database named "users" containing users info
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Articles");
+
         //get all
         ref.addValueEventListener(new ValueEventListener() {
             @Override

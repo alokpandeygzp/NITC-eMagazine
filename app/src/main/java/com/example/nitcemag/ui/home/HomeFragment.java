@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -68,8 +69,18 @@ public class HomeFragment extends Fragment {
     }
     });
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener()
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageScrollStateChanged(int state) {
+               // Toast.makeText(view.getContext(), ""+state, Toast.LENGTH_SHORT).show();
+            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
+            public void onPageSelected(int position) {
+                TabLayout.Tab tab = tabLayout.getTabAt(position);
+                tab.select();
+            }
+        });
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener()
     {
         @Override
         public void onTabSelected (TabLayout.Tab tab){

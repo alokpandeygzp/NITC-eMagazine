@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nitcemag.ArticlesActivity;
 import com.example.nitcemag.MainActivity;
 import com.example.nitcemag.R;
 import com.example.nitcemag.ui.home.Models.ModelSports;
@@ -75,8 +76,8 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, MainActivity.class);
-                intent.putExtra("category",category);
+                Intent intent = new Intent(context, ArticlesActivity.class);
+                intent.putExtra("title",title);
                 context.startActivity(intent);
             }
         });
