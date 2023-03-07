@@ -1,7 +1,10 @@
 package com.example.nitcemag;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.ui.AppBarConfiguration;
 
@@ -33,6 +36,9 @@ public class Signin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_signin);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));
 
         username = findViewById(R.id.editTextEmail);
         password = findViewById(R.id.editTextPassword);

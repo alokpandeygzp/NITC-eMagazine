@@ -1,7 +1,9 @@
 package com.example.nitcemag;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,6 +47,11 @@ public class Signup extends AppCompatActivity {
         password = findViewById(R.id.editTextSignUpPassword);
         signUpBtn = findViewById(R.id.SignUpBtn);
         signInBtn = findViewById(R.id.signInText);
+
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));
+
 
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
