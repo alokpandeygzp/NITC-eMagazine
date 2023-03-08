@@ -19,7 +19,7 @@ import com.example.nitcemag.ArticlesActivity;
 import com.example.nitcemag.MainActivity;
 import com.example.nitcemag.R;
 import com.example.nitcemag.ui.home.Models.ModelSports;
-import com.squareup.picasso.Picasso;
+//import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
 import java.net.URL;

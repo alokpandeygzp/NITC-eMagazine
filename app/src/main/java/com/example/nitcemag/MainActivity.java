@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -55,6 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
         Menu menu = navigationView.getMenu();
 
+
+        menu.findItem(R.id.nav_signup).setVisible(true);
+        menu.findItem(R.id.nav_signin).setVisible(true);
+
+        menu.findItem(R.id.nav_reviewerDashboard).setVisible(false);
+        menu.findItem(R.id.nav_editorDashboard).setVisible(false);
+
+
         setUtility();
         menu.findItem(R.id.nav_signup).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -75,6 +85,29 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
+        menu.findItem(R.id.nav_editorDashboard).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+                Intent i=new Intent(MainActivity.this,EditorDashboard.class);
+                startActivity(i);
+
+                return false;
+            }
+        });
+
+        menu.findItem(R.id.nav_reviewerDashboard).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+                Intent i=new Intent(MainActivity.this,ReviewerDashboard.class);
+                startActivity(i);
+
+                return false;
+            }
+        });
+
+
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
@@ -97,7 +130,33 @@ public class MainActivity extends AppCompatActivity {
         {
             menu.findItem(R.id.nav_signup).setVisible(false);
             menu.findItem(R.id.nav_signin).setVisible(false);
+
             menu.getItem(1).setVisible(true);
+            menu.getItem(0).setVisible(true);
+
+
+
+            reference.child("User").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    String role = snapshot.child("role").getValue().toString();
+
+                    if(role.equals("Editor")) {
+                        menu.findItem(R.id.nav_editorDashboard).setVisible(true);
+                    }
+                    else if(role.equals("Reviewer")){
+                        menu.findItem(R.id.nav_reviewerDashboard).setVisible(true);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    error.getDetails();
+                }
+            });
+
+
 
             reference.child("User").child(user.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -125,49 +184,61 @@ public class MainActivity extends AppCompatActivity {
             navUsername.setText("Hello, Guest !");
             TextView navEmail = (TextView) headerView.findViewById(R.id.editTextViewEmail);
             navEmail.setText("guest@nitc.ac.in");
+
+
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.myProfile:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
-
-            case R.id.logout:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
-                FirebaseAuth.getInstance().signOut();
-                item.setVisible(false);
-
-                NavigationView navigationView = findViewById(R.id.nav_view);
-                Menu menu = navigationView.getMenu();
-                menu.findItem(R.id.nav_signup).setVisible(true);
-                menu.findItem(R.id.nav_signin).setVisible(true);
 
 
+        if(item.getItemId()==R.id.logout)
+        {
+            // User chose the "Favorite" action, mark the current item
+            // as a favorite...
+            FirebaseAuth.getInstance().signOut();
 
-                View headerView = navigationView.getHeaderView(0);
-                TextView navUsername = (TextView) headerView.findViewById(R.id.editTextViewName);
-                navUsername.setText("Hello, Guest !");
-                TextView navEmail = (TextView) headerView.findViewById(R.id.editTextViewEmail);
-                navEmail.setText("guest@nitc.ac.in");
+            NavigationView navigationView = findViewById(R.id.nav_view);
+            Menu menu = navigationView.getMenu();
+
+            //To refresh the Action menu
+            invalidateOptionsMenu();
+
+            menu.findItem(R.id.nav_signup).setVisible(true);
+            menu.findItem(R.id.nav_signin).setVisible(true);
+
+            menu.findItem(R.id.nav_reviewerDashboard).setVisible(false);
+            menu.findItem(R.id.nav_editorDashboard).setVisible(false);
 
 
+            View headerView = navigationView.getHeaderView(0);
+            TextView navUsername = (TextView) headerView.findViewById(R.id.editTextViewName);
+            navUsername.setText("Hello, Guest !");
+            TextView navEmail = (TextView) headerView.findViewById(R.id.editTextViewEmail);
+            navEmail.setText("guest@nitc.ac.in");
 
-                return true;
+            return true;
+        }
+        else if(item.getItemId()==R.id.myProfile)
+        {
+            Intent i=new Intent(MainActivity.this,MyProfile.class);
+            startActivity(i);
 
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
+            return true;
+        }
+        else {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            return super.onOptionsItemSelected(item);
         }
     }
 
 
 
 
+
+    //Logout button to be visible or not
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -176,10 +247,11 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
-        if(user==null)
+        if(user==null || (user!=null && !user.isEmailVerified()))
             menu.getItem(1).setVisible(false);
-        if(user!=null && !user.isEmailVerified())
-            menu.getItem(1).setVisible(false);
+
+        if(user==null || (user!=null && !user.isEmailVerified()))
+            menu.getItem(0).setVisible(false);
 
 
         return true;
