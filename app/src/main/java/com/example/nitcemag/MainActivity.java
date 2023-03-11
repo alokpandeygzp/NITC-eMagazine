@@ -7,6 +7,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -27,6 +28,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -163,13 +165,24 @@ public class MainActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     String name = snapshot.child("name").getValue().toString();
                     String email= snapshot.child("email").getValue().toString();
+                    String img=""+snapshot.child("photo").getValue();
 
 
                     View headerView = navigationView.getHeaderView(0);
                     TextView textViewName = (TextView) headerView.findViewById(R.id.editTextViewName);
+                    ImageView image=(ImageView)headerView.findViewById(R.id.imageView);
                     textViewName.setText(name);
                     TextView textViewEmail = (TextView) headerView.findViewById(R.id.editTextViewEmail);
                     textViewEmail.setText(email);
+                    if(!img.equals("null")) {
+                        try {
+                            //if image is recieved
+                            Picasso.get().load(img).into(image);
+                        } catch (Exception e) {
+                            //exception getting image
+                            Picasso.get().load(R.drawable.ic_default_img).into(image);
+                        }
+                    }
                 }
 
                 @Override
