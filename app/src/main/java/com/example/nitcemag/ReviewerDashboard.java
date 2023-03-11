@@ -26,9 +26,9 @@ public class ReviewerDashboard extends AppCompatActivity {
         reviewArticlesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(ReviewerDashboard.this, ReviewArticles.class);
-//                startActivity(intent);
-//                finish();
+                Intent intent = new Intent(ReviewerDashboard.this, ReviewerArticlesList.class);
+                startActivity(intent);
+                finish();
             }
         });
 

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.cardview.widget.CardView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,7 @@ public class EditorDashboard extends AppCompatActivity {
 
     AlertDialog dialog;
     CardView addReviewer;
+    CardView publishArticlesBtn;
     EditText emailDialog;
     Button addRevBtn;
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -40,6 +42,7 @@ public class EditorDashboard extends AppCompatActivity {
 
 
         addReviewer=findViewById(R.id.add_reviewer);
+        publishArticlesBtn=findViewById(R.id.publish_articles);
 
         addReviewer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +99,22 @@ public class EditorDashboard extends AppCompatActivity {
 
             }
         });
+
+
+
+
+        //Publish Articles Section goes here......
+
+
+        publishArticlesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditorDashboard.this, EditorArticlesList.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
     }
 }
