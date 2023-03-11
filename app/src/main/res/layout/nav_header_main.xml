@@ -14,12 +14,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="120dp"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/nav_header_desc"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@mipmap/ic_launcher_round"
-        />
+        app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
         android:id="@+id/editTextViewName"
@@ -33,6 +32,6 @@
         android:id="@+id/editTextViewEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="alokpandey181@gmail.com" />
+        android:text="@string/nav_header_subtitle" />
 
 </LinearLayout>
