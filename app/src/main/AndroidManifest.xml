@@ -26,12 +26,12 @@
             android:name=".ReviewerDashboard"
             android:exported="false"
             android:label="Reviewer Dashboard"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".EditorDashboard"
             android:exported="false"
             android:label="Editor Dashboard"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MyProfile"
             android:exported="false"

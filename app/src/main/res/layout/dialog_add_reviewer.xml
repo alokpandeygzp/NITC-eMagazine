@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/loginText"
+        android:layout_width="336dp"
+        android:layout_height="43dp"
+
+        android:text="Add Reviewer"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/editTextDialogEmail"
+        app:layout_constraintEnd_toEndOf="@+id/editTextDialogEmail"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="@+id/editTextDialogEmail"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.266" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonDialogSubmit"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/rounded_button"
+        android:text="Submit"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDialogEmail" />
+
+    <EditText
+        android:id="@+id/editTextDialogEmail"
+        android:layout_width="264dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="96dp"
+        android:autofillHints=""
+        android:background="@drawable/rounded_edit_text"
+        android:ems="10"
+        android:hint="Email ID"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:padding="10dp"
+        android:textColorHint="#0277BD"
+        app:layout_constraintEnd_toEndOf="@+id/buttonDialogSubmit"
+        app:layout_constraintStart_toStartOf="@+id/buttonDialogSubmit"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

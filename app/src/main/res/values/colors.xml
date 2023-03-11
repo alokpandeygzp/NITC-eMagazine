@@ -9,4 +9,5 @@
     <color name="teal_200">#80CBC4</color>
     <color name="purple">#8692f7</color>
     <color name="round_button_color">#D3D3D3</color>
+    <color name="white">#FFFFFFFF</color>
 </resources>
