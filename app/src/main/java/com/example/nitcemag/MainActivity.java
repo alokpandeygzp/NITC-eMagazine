@@ -198,6 +198,8 @@ public class MainActivity extends AppCompatActivity {
             TextView navEmail = (TextView) headerView.findViewById(R.id.editTextViewEmail);
             navEmail.setText("guest@nitc.ac.in");
 
+            ImageView image=(ImageView)headerView.findViewById(R.id.imageView);
+            image.setImageResource(R.drawable.imgavatar);
 
         }
     }
@@ -230,6 +232,9 @@ public class MainActivity extends AppCompatActivity {
             navUsername.setText("Hello, Guest !");
             TextView navEmail = (TextView) headerView.findViewById(R.id.editTextViewEmail);
             navEmail.setText("guest@nitc.ac.in");
+
+            ImageView image=(ImageView)headerView.findViewById(R.id.imageView);
+            image.setImageResource(R.drawable.imgavatar);
 
             return true;
         }

@@ -8,28 +8,35 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Signin extends AppCompatActivity {
 
     EditText username,password;
     Button signin;
     TextView signUp, forgotPassword;
+    FirebaseUser user;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +80,7 @@ public class Signin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                showRecoverPasswordDialog();
             }
         });
 
@@ -108,6 +116,79 @@ public class Signin extends AppCompatActivity {
                         });
                     }
                 }
+                else
+                {
+                    Toast.makeText(Signin.this, "Incorrect Password Entered.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void showRecoverPasswordDialog()
+    {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("Recover Password");
+        //set layout linear
+        LinearLayout linearLayout=new LinearLayout(this);
+        //views to set in dialog
+        EditText emailet=new EditText(this);
+        emailet.setHint("Email");
+        emailet.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+
+        emailet.setMinEms(16);
+
+        linearLayout.addView(emailet);
+        linearLayout.setPadding(10,10,10,10);
+
+        builder.setView(linearLayout);
+
+        //buttons
+        builder.setPositiveButton("Recover", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String em= emailet.getText().toString().trim();
+//                if(em.equals(user.getEmail()))
+//                {
+                    beginRecovery(em);
+//                }
+//                else
+//                {
+//                    Toast.makeText(Signin.this, "Wrong Email", Toast.LENGTH_SHORT).show();
+//                }
+            }
+        });
+
+        //buttons
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        //show dialog
+        builder.create().show();
+    }
+    private void beginRecovery(String em)
+    {
+        auth.sendPasswordResetEmail(em).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful())
+                {
+                    Toast.makeText(Signin.this, "Email Sent", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(Signin.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                //get and show proper error
+                Toast.makeText(Signin.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
