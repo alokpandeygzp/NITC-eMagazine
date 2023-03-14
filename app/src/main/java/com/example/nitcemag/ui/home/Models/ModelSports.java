@@ -1,19 +1,38 @@
 package com.example.nitcemag.ui.home.Models;
 
 public class ModelSports {
-    String title, image, description, category, author, date;
+    String title, image, description, category, author, date, key;
+    int editor;
 
     public ModelSports() {
 
     }
 
-    public ModelSports(String title, String image, String description, String category, String author, String date) {
+    public ModelSports(String title, String image, String description, String category, String author, String date, String key, int editor) {
         this.title = title;
         this.image = image;
         this.description = description;
         this.category = category;
         this.author = author;
         this.date = date;
+        this.key=key;
+        this.editor=editor;
+    }
+
+    public int getEditor() {
+        return editor;
+    }
+
+    public void setEditor(int editor) {
+        this.editor = editor;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getTitle() {

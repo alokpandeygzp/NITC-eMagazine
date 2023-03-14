@@ -19,6 +19,7 @@ import com.example.nitcemag.ArticlesActivity;
 import com.example.nitcemag.MainActivity;
 import com.example.nitcemag.R;
 import com.example.nitcemag.ui.home.Models.ModelSports;
+import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
@@ -52,25 +53,18 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
         String category =sportsList.get(position).getCategory();
         String image=sportsList.get(position).getImage();
         String title=sportsList.get(position).getTitle();
-
+        String key=sportsList.get(position).getKey();
         //set data
         holder.mNameTv.setText(title);
-        try {
-            ImageView i = (holder.mavatarIv);
-            Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(image.toString()).getContent());
-            i.setImageBitmap(bitmap);
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        try
+        {
+            Picasso.get().load(image).placeholder(R.drawable.newspaper).into(holder.mavatarIv);
         }
-//        try
-//        {
-//            Toast.makeText(context, ""+image, Toast.LENGTH_SHORT).show();
-//            Picasso.get().load(image).placeholder(R.drawable.newspaper).into(holder.mavatarIv);
-//        }
-//        catch (Exception e)
-//        {
-//
-//        }
+        catch (Exception e)
+        {
+
+        }
 
         //handle item click
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +72,7 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
             public void onClick(View view) {
                 Intent intent = new Intent(context, ArticlesActivity.class);
                 intent.putExtra("title",title);
+                intent.putExtra("key",key);
                 context.startActivity(intent);
             }
         });

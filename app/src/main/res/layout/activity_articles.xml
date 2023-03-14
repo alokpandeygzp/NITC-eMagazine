@@ -7,6 +7,7 @@
     tools:context=".ArticlesActivity" >
     <ImageView
         android:id="@+id/image"
+        android:layout_marginTop="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"/>

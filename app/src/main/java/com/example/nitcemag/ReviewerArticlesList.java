@@ -9,6 +9,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nitcemag.ui.postArticles.UserArticles;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +23,7 @@ public class ReviewerArticlesList extends AppCompatActivity {
     RecyclerView recyclerView;
     DatabaseReference database;
     ReviewerArticlesListAdapter reviewerArticlesListAdapter;
-    ArrayList<Articles> list;
+    ArrayList<UserArticles> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,18 +50,17 @@ public class ReviewerArticlesList extends AppCompatActivity {
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
                 for(DataSnapshot dataSnapshot:snapshot.getChildren())
                 {
-                    System.out.println(dataSnapshot);
-                    Articles articles= dataSnapshot.getValue(Articles.class);
-
-
+                   // System.out.println(dataSnapshot);
+                    UserArticles articles= dataSnapshot.getValue(UserArticles.class);
                     if(articles!=null && articles.reviewer==0)
                         list.add(articles);
-
-                    reviewerArticlesListAdapter =new ReviewerArticlesListAdapter(ReviewerArticlesList.this,list);
-                    recyclerView.setAdapter(reviewerArticlesListAdapter);
                 }
+                reviewerArticlesListAdapter =new ReviewerArticlesListAdapter(ReviewerArticlesList.this,list);
+                recyclerView.setAdapter(reviewerArticlesListAdapter);
+
             }
 
             @Override

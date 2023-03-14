@@ -6,19 +6,23 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.nitcemag.ui.postArticles.UserArticles;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class ReviewerArticlesListAdapter extends RecyclerView.Adapter<ReviewerArticlesListAdapter.MyViewHolder> {
 
     Context context;
-    ArrayList<Articles> list;
+    ArrayList<UserArticles> list;
 
-    public ReviewerArticlesListAdapter(Context context, ArrayList<Articles> list) {
+    public ReviewerArticlesListAdapter(Context context, ArrayList<UserArticles> list) {
         this.context = context;
         this.list = list;
     }
@@ -32,14 +36,22 @@ public class ReviewerArticlesListAdapter extends RecyclerView.Adapter<ReviewerAr
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Articles articles=list.get(position);
+        UserArticles articles=list.get(position);
         holder.title.setText(articles.getTitle());
+        String image=list.get(position).getImage();
+        try
+        {
+            Picasso.get().load(image).placeholder(R.drawable.newspaper).into(holder.avatarIv);
+        }
+        catch (Exception e)
+        {
 
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ReviewerAction.class);
-                intent.putExtra("title",articles.getTitle());
+                intent.putExtra("key",articles.getKey());
                 context.startActivity(intent);
                 ((Activity)context).finish();
             }
@@ -54,9 +66,11 @@ public class ReviewerArticlesListAdapter extends RecyclerView.Adapter<ReviewerAr
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView title;
+        ImageView avatarIv;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title=itemView.findViewById(R.id.nameTv);
+            avatarIv=itemView.findViewById(R.id.avatarIv);
 
         }
     }

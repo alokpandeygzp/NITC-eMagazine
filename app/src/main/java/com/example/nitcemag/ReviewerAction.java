@@ -12,6 +12,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import com.example.nitcemag.ui.postArticles.UserArticles;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +38,7 @@ public class ReviewerAction extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        title = intent.getStringExtra("title");
+        String key = intent.getStringExtra("key");
 
         acceptBtn=findViewById(R.id.buttonAcceptReview);
         rejectBtn=findViewById(R.id.buttonRejectReview);
@@ -52,10 +53,10 @@ public class ReviewerAction extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    Articles articles = ds.getValue(Articles.class);
+                    UserArticles articles = ds.getValue(UserArticles.class);
 
-                    if (articles.getTitle().equals(title)) {
-                        tt.setText(title);
+                    if (articles.getKey().equals(key)) {
+                        tt.setText(articles.getTitle());
                         desc.setText(articles.getDescription());
                         auth.setText(articles.getAuthor());
 

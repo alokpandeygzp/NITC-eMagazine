@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -30,14 +32,17 @@ public class ArticlesActivity extends AppCompatActivity {
     String title;
     DatabaseReference databaseReference;
     TextView tt, desc, auth;
+    ImageView img;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_articles);
 
         Intent intent= getIntent();
+         String key=intent.getStringExtra("key");
          title = intent.getStringExtra("title");
          tt= (TextView) findViewById(R.id.title);
+         img=findViewById(R.id.image);
          desc=findViewById(R.id.description);
          auth=findViewById(R.id.author);
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Articles");
@@ -50,12 +55,20 @@ public class ArticlesActivity extends AppCompatActivity {
                 {
                     ModelSports modelSports =ds.getValue(ModelSports.class);
                     //
-                    if(modelSports.getTitle().equals(title))
+                   if(ds.getKey().equals(key))
                     {
-//                        Toast.makeText(ArticlesActivity.this, ""+title, Toast.LENGTH_SHORT).show();
                         tt.setText(title);
                         desc.setText(modelSports.getDescription());
                         auth.setText(modelSports.getAuthor());
+                        String image=modelSports.getImage();
+                        try
+                        {
+                            Picasso.get().load(image).placeholder(R.drawable.newspaper).into(img);
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
                     }
 
 

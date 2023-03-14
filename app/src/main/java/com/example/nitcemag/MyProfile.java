@@ -60,8 +60,6 @@ public class MyProfile extends AppCompatActivity {
     private  static  final int IMAGE_PICK_CAMERA_CODE=400;
     private  static  final int IMAGE_PICK_GALLERY_CODE=300;
     private static  final int PICK_IMAGE_REQUEST = 300;
-
-    private Uri mImageUri;
     //Arrays of permission to be requested
     String cameraPermission[];
     String storagePermission[];
