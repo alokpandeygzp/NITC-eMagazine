@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             navEmail.setText("guest@nitc.ac.in");
 
             ImageView image=(ImageView)headerView.findViewById(R.id.imageView);
-            image.setImageResource(R.drawable.imgavatar);
+            Picasso.get().load(R.drawable.imgavatar).into(image);
 
         }
     }
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
             navEmail.setText("guest@nitc.ac.in");
 
             ImageView image=(ImageView)headerView.findViewById(R.id.imageView);
-            image.setImageResource(R.drawable.imgavatar);
+            Picasso.get().load(R.drawable.imgavatar).into(image);
 
             return true;
         }
