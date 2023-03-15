@@ -84,7 +84,7 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
     }
 
     //view holder class
-    class MyHolder extends RecyclerView.ViewHolder{
+    public class MyHolder extends RecyclerView.ViewHolder{
 
         ImageView mavatarIv;
         TextView mNameTv;
