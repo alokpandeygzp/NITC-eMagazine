@@ -60,24 +60,6 @@ public class ArticlesActivity extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(ArticlesActivity.this));
          firebaseAuth=FirebaseAuth.getInstance();
 
-        ref= FirebaseDatabase.getInstance().getReference("User");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds:snapshot.getChildren())
-                {
-                    if(ds.getKey().equals(firebaseAuth.getCurrentUser().getUid().toString()))
-                    {
-                        name=ds.child("name").getValue().toString();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         ref= FirebaseDatabase.getInstance().getReference("Articles");
 
@@ -118,53 +100,68 @@ public class ArticlesActivity extends AppCompatActivity {
             send.setVisibility(View.GONE);
             rv.setVisibility(View.GONE);
         }
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String cmnt=com.getText().toString().trim();
-                cmnt.replaceAll("\n"," ");
-                com.setText("");
-                com.clearFocus();
-                if(cmnt.equals(""))
-                {
-                    Toast.makeText(ArticlesActivity.this, "Empty", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    ref = FirebaseDatabase.getInstance().getReference();
-                    String k = ref.child("Comments").push().getKey();
-                    ModelComment mc = new ModelComment(firebaseAuth.getCurrentUser().getEmail().toString(), key, cmnt,name,k);
-                    ref.child("Comments").child(k).setValue(mc);
-                }
-            }
-        });
-
-        ref= FirebaseDatabase.getInstance().getReference("Comments");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                for(DataSnapshot ds:snapshot.getChildren())
-                {
-                    ModelComment mc =ds.getValue(ModelComment.class);
-                    if(mc.getArticle().equals(key))
+        else {
+            ref= FirebaseDatabase.getInstance().getReference("User");
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot ds:snapshot.getChildren())
                     {
-                        list.add(mc);
+                        if(ds.getKey().equals(firebaseAuth.getCurrentUser().getUid().toString()))
+                        {
+                            name=ds.child("name").getValue().toString();
+                        }
                     }
                 }
-                //adapter
-                ArtcilesAdapter aa = new ArtcilesAdapter(ArticlesActivity.this,list);
-                //set adapter to recycler view
-                rv.setAdapter(aa);
 
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+            send.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String cmnt = com.getText().toString().trim();
+                    cmnt.replaceAll("\n", " ");
+                    com.setText("");
+                    com.clearFocus();
+                    if (cmnt.equals("")) {
+                        Toast.makeText(ArticlesActivity.this, "Empty", Toast.LENGTH_SHORT).show();
+                    } else {
+                        ref = FirebaseDatabase.getInstance().getReference();
+                        String k = ref.child("Comments").push().getKey();
+                        ModelComment mc = new ModelComment(firebaseAuth.getCurrentUser().getEmail().toString(), key, cmnt, name, k);
+                        ref.child("Comments").child(k).setValue(mc);
+                    }
+                }
+            });
 
-            }
-        });
+            ref = FirebaseDatabase.getInstance().getReference("Comments");
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    list.clear();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        ModelComment mc = ds.getValue(ModelComment.class);
+                        if (mc.getArticle().equals(key)) {
+                            list.add(mc);
+                        }
+                    }
+                    //adapter
+                    ArtcilesAdapter aa = new ArtcilesAdapter(ArticlesActivity.this, list);
+                    //set adapter to recycler view
+                    rv.setAdapter(aa);
 
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
     }
 
 }
