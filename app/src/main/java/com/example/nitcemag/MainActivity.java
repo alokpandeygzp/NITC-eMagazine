@@ -33,6 +33,8 @@ import com.squareup.picasso.Picasso;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    NavigationView navigationView;
+    Menu menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
+        navigationView = findViewById(R.id.nav_view);
+        menu = navigationView.getMenu();
+
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_reviewedArticles, R.id.nav_myArticles,
+                R.id.nav_home, R.id.nav_myArticles,
                 R.id.nav_postArticles,R.id.nav_signin, R.id.nav_signup)
                 .setOpenableLayout(drawer)
                 .build();
@@ -65,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         menu.findItem(R.id.nav_reviewerDashboard).setVisible(false);
         menu.findItem(R.id.nav_editorDashboard).setVisible(false);
+        menu.findItem(R.id.nav_myArticles).setVisible(false);
 
 
         setUtility();
@@ -120,74 +128,32 @@ public class MainActivity extends AppCompatActivity {
 
     public void setUtility()
     {
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        Menu menu = navigationView.getMenu();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference();
+        DatabaseReference ref;
 
         if(user!=null && auth.getCurrentUser().isEmailVerified())
         {
             menu.findItem(R.id.nav_signup).setVisible(false);
             menu.findItem(R.id.nav_signin).setVisible(false);
+            menu.findItem(R.id.nav_myArticles).setVisible(true);
 
             menu.getItem(1).setVisible(true);
             menu.getItem(0).setVisible(true);
 
-
-
-            reference.child("User").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            reference.child("UserType").child(user.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                    String role = snapshot.child("role").getValue().toString();
-
-                    if(role.equals("Editor")) {
-                        menu.findItem(R.id.nav_editorDashboard).setVisible(true);
-                    }
-                    else if(role.equals("Reviewer")){
-                        menu.findItem(R.id.nav_reviewerDashboard).setVisible(true);
-                    }
+                    String role=snapshot.getValue().toString();
+                    callingDatabase(role);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    error.getDetails();
-                }
-            });
 
-
-
-            reference.child("User").child(user.getUid()).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String name = snapshot.child("name").getValue().toString();
-                    String email= snapshot.child("email").getValue().toString();
-                    String img=""+snapshot.child("photo").getValue();
-
-
-                    View headerView = navigationView.getHeaderView(0);
-                    TextView textViewName = (TextView) headerView.findViewById(R.id.editTextViewName);
-                    ImageView image=(ImageView)headerView.findViewById(R.id.imageView);
-                    textViewName.setText(name);
-                    TextView textViewEmail = (TextView) headerView.findViewById(R.id.editTextViewEmail);
-                    textViewEmail.setText(email);
-                    if(!img.equals("null")) {
-                        try {
-                            //if image is recieved
-                            Picasso.get().load(img).into(image);
-                        } catch (Exception e) {
-                            //exception getting image
-                            Picasso.get().load(R.drawable.ic_default_img).into(image);
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    error.getDetails();
                 }
             });
         }
@@ -222,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
 
             menu.findItem(R.id.nav_signup).setVisible(true);
             menu.findItem(R.id.nav_signin).setVisible(true);
+            menu.findItem(R.id.nav_myArticles).setVisible(true);
 
             menu.findItem(R.id.nav_reviewerDashboard).setVisible(false);
             menu.findItem(R.id.nav_editorDashboard).setVisible(false);
@@ -253,6 +220,71 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
+
+    public void callingDatabase(String roles)
+    {
+        System.out.println(roles);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+        ref.child(roles).child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(roles.equals("Editor")) {
+                    menu.findItem(R.id.nav_editorDashboard).setVisible(true);
+                }
+                else if(roles.equals("Reviewer")){
+                    menu.findItem(R.id.nav_reviewerDashboard).setVisible(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                error.getDetails();
+            }
+        });
+
+
+
+        ref.child(roles).child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String name = snapshot.child("name").getValue().toString();
+                String email= snapshot.child("email").getValue().toString();
+                String img=""+snapshot.child("photo").getValue();
+
+
+                View headerView = navigationView.getHeaderView(0);
+                TextView textViewName = (TextView) headerView.findViewById(R.id.editTextViewName);
+                ImageView image=(ImageView)headerView.findViewById(R.id.imageView);
+                textViewName.setText(name);
+                TextView textViewEmail = (TextView) headerView.findViewById(R.id.editTextViewEmail);
+                textViewEmail.setText(email);
+                if(!img.equals("")) {
+                    try {
+                        //if image is recieved
+                        Picasso.get().load(img).into(image);
+                    } catch (Exception e) {
+                        //exception getting image
+                        Picasso.get().load(R.drawable.ic_default_img).into(image);
+                    }
+                }
+                else {
+                    Picasso.get().load(R.drawable.imgavatar).into(image);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                error.getDetails();
+            }
+        });
+    }
 
 
 

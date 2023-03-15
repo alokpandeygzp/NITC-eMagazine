@@ -9,9 +9,9 @@
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_reviewedArticles"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Reviewed Articles" />
+            android:id="@+id/nav_myArticles"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/my_articles" />
     </group>
 
     <item android:title="@string/authentication">
@@ -33,10 +33,6 @@
                 android:id="@+id/nav_postArticles"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/post_articles" />
-            <item
-                android:id="@+id/nav_myArticles"
-                android:icon="@drawable/ic_menu_slideshow"
-                android:title="@string/my_articles" />
         </menu>
     </item>
 

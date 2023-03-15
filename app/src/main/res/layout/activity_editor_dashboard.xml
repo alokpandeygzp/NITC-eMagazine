@@ -101,11 +101,12 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="143dp"
-        android:layout_height="wrap_content"
+        android:layout_width="225dp"
+        android:layout_height="66dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:text="Welcome Editor"
+        android:fontFamily="sans-serif-black"
+        android:text="Welcome Editor.."
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="@+id/top_view"
         app:layout_constraintEnd_toEndOf="parent"
