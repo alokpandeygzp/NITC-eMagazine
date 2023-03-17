@@ -65,7 +65,8 @@ public class MyArticles extends Fragment {
                     UserArticles userArticles1 = snapshot1.getValue(UserArticles.class);
                     if (userArticles1.getEmail().equals(curr_user)) {
                         // String article_name=userArticles1.getArticle_title().toString();
-                        myArticleList.add(userArticles1);
+                        if(userArticles1.getEditor()==1)
+                            myArticleList.add(userArticles1);
                     }
                     adapterMyArticles = new AdapterMyArticles(getActivity(), myArticleList);
                     recyclerView.setAdapter(adapterMyArticles);
