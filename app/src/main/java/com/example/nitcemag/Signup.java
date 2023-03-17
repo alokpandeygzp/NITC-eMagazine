@@ -117,7 +117,8 @@ public class Signup extends AppCompatActivity {
                 {
                     Toast.makeText(Signup.this, "Your account is created successfully", Toast.LENGTH_LONG).show();
                     UserDetails user = new UserDetails(name.getText().toString(), email.getText().toString());
-                    reference.child("UserType").child(auth.getCurrentUser().getUid()).setValue("Student");
+                    reference.child("UserType").child(auth.getCurrentUser().getUid()).child("role").setValue("Student");
+                    reference.child("UserType").child(auth.getCurrentUser().getUid()).child("email").setValue(email.getText().toString());
                     reference.child("Student").child(auth.getCurrentUser().getUid()).setValue(user);
                 }
                 else

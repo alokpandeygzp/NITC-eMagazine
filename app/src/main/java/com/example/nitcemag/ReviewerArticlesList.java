@@ -54,7 +54,7 @@ public class ReviewerArticlesList extends AppCompatActivity {
                 for(DataSnapshot dataSnapshot:snapshot.getChildren())
                 {
                    // System.out.println(dataSnapshot);
-                    UserArticles articles= dataSnapshot.getValue(UserArticles.class);
+                    UserArticles articles = dataSnapshot.getValue(UserArticles.class);
                     if(articles!=null && articles.reviewer==0)
                         list.add(articles);
                 }

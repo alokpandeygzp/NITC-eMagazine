@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_margin="10dp"
     tools:context=".ui.postArticles.PostArticles">
 
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textTitle"
-        android:layout_width="400dp"
+        android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="Title"
@@ -24,7 +25,7 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textName"
-        android:layout_width="400dp"
+        android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="Name"
@@ -34,7 +35,7 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textEmail"
-        android:layout_width="400dp"
+        android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="Email"
@@ -44,7 +45,7 @@
 
     <Spinner
         android:id="@+id/category"
-        android:layout_width="400dp"
+        android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -56,28 +57,14 @@
 
         />
 
-
-    <TextView
-        android:id="@+id/descp"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Description"
-        android:textSize="22dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.404"
-        app:layout_constraintTop_toBottomOf="@+id/category"
-        android:layout_gravity="center"/>
-
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/text_descp"
-        android:layout_width="400dp"
+        android:layout_width="325dp"
         android:layout_height="95dp"
         android:layout_gravity="center"
         android:gravity="top"
+        android:hint="Description"
+        android:textSize="22dp"
         android:inputType="textMultiLine"
         android:layout_marginTop="10dp"
         android:lines="@integer/material_motion_duration_long_1"
@@ -93,7 +80,7 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="395dp"
+        android:layout_width="325dp"
         android:layout_height="97dp"
         android:layout_marginTop="5dp"
         android:src="@drawable/custom_edittext"

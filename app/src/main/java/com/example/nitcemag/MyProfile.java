@@ -20,7 +20,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -69,7 +71,12 @@ public class MyProfile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_myprofile);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));
+
 
         user=auth.getCurrentUser();
         name=findViewById(R.id.username);
@@ -80,36 +87,52 @@ public class MyProfile extends AppCompatActivity {
 
 
 
-        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("User");
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference();
         storageReference = FirebaseStorage.getInstance().getReference();
         cameraPermission=new String[]{android.Manifest.permission.CAMERA,android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission=new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        ref.addValueEventListener(new ValueEventListener() {
+
+
+        ref.child("UserType").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds:snapshot.getChildren())
-                {
-                    if(ds.getKey().equals(uid))
-                    {
-                        String image=""+ds.child("photo").getValue();
-                        name.setText(""+ds.child("name").getValue());
-                        if(!image.equals("null")) {
-                            try {
-                                //if image is recieved
-                                Picasso.get().load(image).into(img);
-                            } catch (Exception e) {
-                                //exception getting image
-                                Picasso.get().load(R.drawable.ic_default_img).into(img);
+                String roles=snapshot.child("role").getValue().toString();
+
+                ref.child(roles).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot ds:snapshot.getChildren())
+                        {
+                            if(ds.getKey().equals(uid))
+                            {
+                                String image=""+ds.child("photo").getValue();
+                                name.setText(""+ds.child("name").getValue());
+                                if(!image.equals("null")) {
+                                    try {
+                                        //if image is recieved
+                                        Picasso.get().load(image).into(img);
+                                    } catch (Exception e) {
+                                        //exception getting image
+                                        Picasso.get().load(R.drawable.ic_default_img).into(img);
+                                    }
+                                }
                             }
                         }
                     }
-                }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {    }
+                });
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {    }
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
+
+
 
         email.setText(auth.getCurrentUser().getEmail());
 
@@ -258,7 +281,6 @@ public class MyProfile extends AppCompatActivity {
 
     private void showNamePhoneUpdateDialog(String key)
     {
-        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("User");
         //custom dialog
         AlertDialog.Builder builder=new AlertDialog.Builder(MyProfile.this);
         builder.setTitle("Update "+key);
@@ -274,45 +296,59 @@ public class MyProfile extends AppCompatActivity {
 
         builder.setView(linearLayout);
 
-        //add buttons in dialog to update
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //input text from edit text
-                String value= editText.getText().toString().trim();
-                if(!TextUtils.isEmpty(value))
-                {
-                    HashMap<String,Object> result= new HashMap<>();
-                    result.put(key, value);
 
-                    ref.child(auth.getCurrentUser().getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            //updated
-                            Toast.makeText(MyProfile.this, "Updated", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            //failed
-                            Toast.makeText(MyProfile.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                else
-                {
-                    Toast.makeText(MyProfile.this, "Please Enter "+key, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        //add button in dialog to cancel
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference();
+        ref.child("UserType").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String roles=snapshot.child("role").getValue().toString();
+
+                //add buttons in dialog to update
+                builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //input text from edit text
+                        String value= editText.getText().toString().trim();
+                        if(!TextUtils.isEmpty(value))
+                        {
+                            HashMap<String,Object> result= new HashMap<>();
+                            result.put(key, value);
+
+                            ref.child(roles).child(auth.getCurrentUser().getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    //updated
+                                    Toast.makeText(MyProfile.this, "Updated", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    //failed
+                                    Toast.makeText(MyProfile.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        else
+                        {
+                            Toast.makeText(MyProfile.this, "Please Enter "+key, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                //add button in dialog to cancel
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.create().show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
-        builder.create().show();
     }
 
     private void showImagePicDialog() {
@@ -416,46 +452,66 @@ public class MyProfile extends AppCompatActivity {
         //path and name of image to be stored in firebase storage
         String filePathAndName=storagePath+"_"+user.getUid();
         StorageReference storageReference2= storageReference.child(filePathAndName);
-        databaseReference =FirebaseDatabase.getInstance().getReference("User");
+        databaseReference =FirebaseDatabase.getInstance().getReference();
 
-        storageReference2.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+        databaseReference.child("UserType").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> uriTask=taskSnapshot.getStorage().getDownloadUrl();
-                while(!uriTask.isSuccessful());
-                Uri downloadUri = uriTask.getResult();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String roles=snapshot.child("role").getValue().toString();
 
-                if(uriTask.isSuccessful())
-                {
-                    //image uploaded
-                    //add or update url in user's database
-                    HashMap<String, Object> results=new HashMap<>();
 
-                    results.put("photo",downloadUri.toString());
-                    databaseReference.child(user.getUid()).updateChildren(results).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast.makeText(MyProfile.this, "Image Updated", Toast.LENGTH_SHORT).show();
+                storageReference2.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> uriTask=taskSnapshot.getStorage().getDownloadUrl();
+                        while(!uriTask.isSuccessful());
+                        Uri downloadUri = uriTask.getResult();
+
+                        if(uriTask.isSuccessful())
+                        {
+                            //image uploaded
+                            //add or update url in user's database
+                            HashMap<String, Object> results=new HashMap<>();
+
+                            results.put("photo",downloadUri.toString());
+                            databaseReference.child(roles).child(user.getUid()).updateChildren(results).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(MyProfile.this, "Image Updated", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(MyProfile.this, "Error Updating Image", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(MyProfile.this, "Error Updating Image", Toast.LENGTH_SHORT).show();
+                        else
+                        {
+                            //image error
+                            Toast.makeText(MyProfile.this, "Error", Toast.LENGTH_SHORT).show();
                         }
-                    });
-                }
-                else
-                {
-                    //image error
-                    Toast.makeText(MyProfile.this, "Error", Toast.LENGTH_SHORT).show();
-                }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MyProfile.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+
+
+
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MyProfile.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
+
     }
 
     private void pickFromGallery()

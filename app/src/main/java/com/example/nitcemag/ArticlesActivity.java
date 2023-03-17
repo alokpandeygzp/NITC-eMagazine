@@ -1,20 +1,20 @@
 package com.example.nitcemag;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nitcemag.ui.home.Adapters.AdapterSports;
 import com.example.nitcemag.ui.home.Models.ModelSports;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,10 +32,8 @@ import java.util.List;
 public class ArticlesActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
-    AdapterSports adapterSports;
-    FirebaseDatabase firebaseDatabase;
     List<ModelComment> list= new ArrayList<>();
-    DatabaseReference ref;
+    DatabaseReference reference=FirebaseDatabase.getInstance().getReference();
     String title,name;
     TextView tt, desc, auth;
     ImageView img,send;
@@ -45,8 +43,14 @@ public class ArticlesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_articles);
-         Intent intent= getIntent();
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));
+
+
+        Intent intent= getIntent();
          String key=intent.getStringExtra("key");
          title = intent.getStringExtra("title");
          tt= (TextView) findViewById(R.id.title);
@@ -61,10 +65,8 @@ public class ArticlesActivity extends AppCompatActivity {
          firebaseAuth=FirebaseAuth.getInstance();
 
 
-        ref= FirebaseDatabase.getInstance().getReference("Articles");
-
         //get all
-        ref.addValueEventListener(new ValueEventListener() {
+        reference.child("Articles").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                for(DataSnapshot ds:snapshot.getChildren())
@@ -101,17 +103,30 @@ public class ArticlesActivity extends AppCompatActivity {
             rv.setVisibility(View.GONE);
         }
         else {
-            ref= FirebaseDatabase.getInstance().getReference("User");
-            ref.addValueEventListener(new ValueEventListener() {
+            // Name needed for commenting on the article after Signin only
+
+            reference.child("UserType").child(user.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for(DataSnapshot ds:snapshot.getChildren())
-                    {
-                        if(ds.getKey().equals(firebaseAuth.getCurrentUser().getUid().toString()))
-                        {
-                            name=ds.child("name").getValue().toString();
+                    String roles=snapshot.child("role").getValue().toString();
+
+                    reference.child(roles).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot ds:snapshot.getChildren())
+                            {
+                                if(ds.getKey().equals(firebaseAuth.getCurrentUser().getUid().toString()))
+                                {
+                                    name=ds.child("name").getValue().toString();
+                                }
+                            }
                         }
-                    }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
 
                 @Override
@@ -119,6 +134,9 @@ public class ArticlesActivity extends AppCompatActivity {
 
                 }
             });
+
+
+            System.out.println("************************************"+name);
             send.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -129,16 +147,15 @@ public class ArticlesActivity extends AppCompatActivity {
                     if (cmnt.equals("")) {
                         Toast.makeText(ArticlesActivity.this, "Empty", Toast.LENGTH_SHORT).show();
                     } else {
-                        ref = FirebaseDatabase.getInstance().getReference();
-                        String k = ref.child("Comments").push().getKey();
+                        reference = FirebaseDatabase.getInstance().getReference();
+                        String k = reference.child("Comments").push().getKey();
                         ModelComment mc = new ModelComment(firebaseAuth.getCurrentUser().getEmail().toString(), key, cmnt, name, k);
-                        ref.child("Comments").child(k).setValue(mc);
+                        reference.child("Comments").child(k).setValue(mc);
                     }
                 }
             });
 
-            ref = FirebaseDatabase.getInstance().getReference("Comments");
-            ref.addValueEventListener(new ValueEventListener() {
+            reference.child("Comments").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     list.clear();
@@ -149,7 +166,7 @@ public class ArticlesActivity extends AppCompatActivity {
                         }
                     }
                     //adapter
-                    ArtcilesAdapter aa = new ArtcilesAdapter(ArticlesActivity.this, list);
+                    ArticlesAdapter aa = new ArticlesAdapter(ArticlesActivity.this, list);
                     //set adapter to recycler view
                     rv.setAdapter(aa);
 

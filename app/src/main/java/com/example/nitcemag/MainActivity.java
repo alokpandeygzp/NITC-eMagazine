@@ -26,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
+import android.widget.Toast;
+
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.squareup.picasso.Picasso;
@@ -35,25 +37,20 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     NavigationView navigationView;
     Menu menu;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference reference = database.getReference();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
         navigationView = findViewById(R.id.nav_view);
         menu = navigationView.getMenu();
 
-
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -64,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOpenableLayout(drawer)
                 .build();
 
+
         Menu menu = navigationView.getMenu();
 
 
@@ -73,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
         menu.findItem(R.id.nav_reviewerDashboard).setVisible(false);
         menu.findItem(R.id.nav_editorDashboard).setVisible(false);
         menu.findItem(R.id.nav_myArticles).setVisible(false);
+        menu.findItem(R.id.nav_postArticles).setVisible(false);
 
+        
 
         setUtility();
         menu.findItem(R.id.nav_signup).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(@NonNull MenuItem item) {
                 Intent i=new Intent(MainActivity.this,Signup.class);
                 startActivity(i);
-
+                drawer.closeDrawers();
                 return false;
             }
         });
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(@NonNull MenuItem item) {
                 Intent i=new Intent(MainActivity.this,Signin.class);
                 startActivity(i);
-
+                drawer.closeDrawers();
                 return false;
             }
         });
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(@NonNull MenuItem item) {
                 Intent i=new Intent(MainActivity.this,EditorDashboard.class);
                 startActivity(i);
-
+                drawer.closeDrawers();
                 return false;
             }
         });
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(@NonNull MenuItem item) {
                 Intent i=new Intent(MainActivity.this,ReviewerDashboard.class);
                 startActivity(i);
-
+                drawer.closeDrawers();
                 return false;
             }
         });
@@ -128,18 +128,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void setUtility()
     {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference();
-        DatabaseReference ref;
+        
 
         if(user!=null && auth.getCurrentUser().isEmailVerified())
         {
             menu.findItem(R.id.nav_signup).setVisible(false);
             menu.findItem(R.id.nav_signin).setVisible(false);
             menu.findItem(R.id.nav_myArticles).setVisible(true);
+            menu.findItem(R.id.nav_postArticles).setVisible(true);
 
             menu.getItem(1).setVisible(true);
             menu.getItem(0).setVisible(true);
@@ -147,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             reference.child("UserType").child(user.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String role=snapshot.getValue().toString();
+                    String role=snapshot.child("role").getValue().toString();
                     callingDatabase(role);
                 }
 
@@ -188,7 +184,9 @@ public class MainActivity extends AppCompatActivity {
 
             menu.findItem(R.id.nav_signup).setVisible(true);
             menu.findItem(R.id.nav_signin).setVisible(true);
-            menu.findItem(R.id.nav_myArticles).setVisible(true);
+
+            menu.findItem(R.id.nav_myArticles).setVisible(false);
+            menu.findItem(R.id.nav_postArticles).setVisible(false);
 
             menu.findItem(R.id.nav_reviewerDashboard).setVisible(false);
             menu.findItem(R.id.nav_editorDashboard).setVisible(false);

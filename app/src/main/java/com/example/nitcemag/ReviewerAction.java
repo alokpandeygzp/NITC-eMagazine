@@ -22,9 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 public class ReviewerAction extends AppCompatActivity {
 
     TextView tt, desc, auth;
-    FirebaseDatabase firebaseDatabase;
-    String title;
-    DatabaseReference databaseReference;
     Button acceptBtn, rejectBtn;
 
     @Override

@@ -21,9 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 public class EditorAction extends AppCompatActivity {
 
     TextView tt, desc, auth;
-    FirebaseDatabase firebaseDatabase;
     String title;
-    DatabaseReference databaseReference;
     Button acceptBtn, rejectBtn;
 
     @Override

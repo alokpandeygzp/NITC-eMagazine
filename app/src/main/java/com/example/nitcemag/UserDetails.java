@@ -8,6 +8,6 @@ public class UserDetails {
     public UserDetails(String name, String email) {
         this.name = name;
         this.email = email;
-        this.photo="";
+        this.photo = "";
     }
 }

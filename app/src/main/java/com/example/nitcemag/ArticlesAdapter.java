@@ -15,23 +15,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
 import java.util.List;
 
-public class ArtcilesAdapter  extends RecyclerView.Adapter<ArtcilesAdapter.MyHolder> {
+public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyHolder> {
     Context context;
     List<ModelComment> list;
     String key;
 
     //constructor
-    public ArtcilesAdapter(Context context, List<ModelComment> list) {
+    public ArticlesAdapter(Context context, List<ModelComment> list) {
         this.context = context;
         this.list = list;
     }
@@ -39,14 +36,14 @@ public class ArtcilesAdapter  extends RecyclerView.Adapter<ArtcilesAdapter.MyHol
 
     @NonNull
     @Override
-    public ArtcilesAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ArticlesAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.comments, parent, false);
 
         return new MyHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ArtcilesAdapter.MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ArticlesAdapter.MyHolder holder, int position) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         String des = list.get(position).getText();

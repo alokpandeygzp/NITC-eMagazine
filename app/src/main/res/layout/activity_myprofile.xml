@@ -10,52 +10,52 @@
     android:gravity="center_horizontal">
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="255dp"
-        android:layout_marginTop="40dp"
         android:id="@+id/image"
-        android:src="@drawable/ic_default_img"
-        />
+        android:layout_width="200dp"
+        android:layout_height="219dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/ic_default_img" />
+
     <TextView
         android:id="@+id/username"
-        android:layout_width="match_parent"
+        android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:textSize="30sp"
+        android:gravity="center"
         android:hint="Name"
         android:inputType="text"
-        android:gravity="center"
+        android:minHeight="48dp"
+        android:textSize="30sp"
         tools:ignore="MissingClass" />
 
     <TextView
         android:id="@+id/email"
-        android:layout_width="match_parent"
+        android:layout_width="325dp"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
         android:layout_marginTop="15dp"
-        android:hint="Email"
         android:gravity="center"
+        android:hint="Email"
         android:inputType="textEmailAddress"
-        />
-
+        android:minHeight="48dp"
+        android:textSize="20sp" />
 
 
     <TextView
         android:id="@+id/btn_change_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Change Password"
+        android:layout_width="125dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
-        android:textSize="15sp"
-        android:layout_marginTop="125dp"
-        />
+        android:text="Change Password"
+        android:textSize="15sp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginStart="150dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="40dp"
         android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_edit_white" />
+
 </LinearLayout>
