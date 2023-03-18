@@ -54,8 +54,12 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyHold
         holder.comment.setText(des);
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (email.equals(user.getEmail())) {
+            public void onClick(View view)
+            {
+                int pos=holder.getAdapterPosition();
+                String em = list.get(pos).getEmail();
+                if (em .equals(user.getEmail())) {
+                    key=list.get(pos).getKey();
                     commentDialog();
                 }
             }

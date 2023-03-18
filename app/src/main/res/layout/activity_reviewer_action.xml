@@ -7,58 +7,94 @@
     tools:context=".ReviewerAction" >
     <ImageView
         android:id="@+id/image"
+        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/l1"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/image">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/image"
-        android:id="@+id/title"
-        android:layout_centerHorizontal="true"
+        android:text="Title:"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:layout_marginTop="25dp"
+        />
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:textSize="22sp"
         android:text="Title"/>
-    <TextView
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/l2"
+        android:layout_below="@id/l1"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description:"
+            android:textSize="23sp"
+            android:textStyle="bold"/>
+    <com.google.android.material.textfield.TextInputEditText
         android:layout_centerHorizontal="true"
         android:textSize="20sp"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginRight="35dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
         android:id="@+id/description"
         android:text="Description"/>
-    <TextView
-        android:layout_centerHorizontal="true"
-        android:textSize="25sp"
-        android:layout_marginTop="25dp"
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/description"
+        android:id="@+id/l3"
+        android:layout_below="@+id/l2"
+        android:layout_centerHorizontal="true">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Author:"
+        android:textSize="23sp"
+        android:textStyle="bold"/>
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_centerHorizontal="true"
+        android:textSize="21sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/author"
         android:text="Author"/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/l3"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true">
     <Button
         android:id="@+id/buttonAcceptReview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/author"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="87dp"
-        android:layout_marginTop="85dp"
-        android:text="Accept" />
+       android:text="Accept" />
 
     <Button
         android:id="@+id/buttonRejectReview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/author"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="85dp"
-        android:layout_marginEnd="87dp"
         android:text="Reject" />
-
+    </LinearLayout>
 </RelativeLayout>

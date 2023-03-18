@@ -12,9 +12,10 @@
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textTitle"
         android:layout_width="325dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
         android:hint="Title"
+        android:textSize="20sp"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,22 +27,14 @@
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textName"
         android:layout_width="325dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:hint="Name"
+        android:textSize="20sp"
         android:inputType="text"
         android:layout_gravity="center"
         />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textEmail"
-        android:layout_width="325dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="Email"
-        android:inputType="text"
-        android:layout_gravity="center"
-        />
 
     <Spinner
         android:id="@+id/category"
@@ -60,7 +53,7 @@
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/text_descp"
         android:layout_width="325dp"
-        android:layout_height="95dp"
+        android:layout_height="135dp"
         android:layout_gravity="center"
         android:gravity="top"
         android:hint="Description"
@@ -77,18 +70,9 @@
         app:layout_constraintVertical_bias="0.527"
         tools:layout_editor_absoluteX="27dp" />
 
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="325dp"
-        android:layout_height="97dp"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/custom_edittext"
-        android:layout_gravity="center"/>
-
     <Button
         android:id="@+id/img_btn"
-        android:layout_width="250dp"
+        android:layout_width="200dp"
         android:layout_height="66dp"
         android:backgroundTint="@color/black"
         android:text="Upload Image"
@@ -102,7 +86,7 @@
 
     <Button
         android:id="@+id/submit_btn"
-        android:layout_width="250dp"
+        android:layout_width="200dp"
         android:layout_height="66dp"
         android:backgroundTint="@color/black"
         android:text="Submit"

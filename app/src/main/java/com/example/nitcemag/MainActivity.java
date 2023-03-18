@@ -272,9 +272,7 @@ public class MainActivity extends AppCompatActivity {
                         Picasso.get().load(R.drawable.ic_default_img).into(image);
                     }
                 }
-                else {
-                    Picasso.get().load(R.drawable.imgavatar).into(image);
-                }
+
             }
 
             @Override

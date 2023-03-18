@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,15 +14,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.example.nitcemag.ui.postArticles.UserArticles;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class ReviewerAction extends AppCompatActivity {
 
-    TextView tt, desc, auth;
+    TextInputEditText tt, desc, auth;
+    ImageView img;
     Button acceptBtn, rejectBtn;
 
     @Override
@@ -44,7 +48,7 @@ public class ReviewerAction extends AppCompatActivity {
         tt = findViewById(R.id.title);
         desc = findViewById(R.id.description);
         auth = findViewById(R.id.author);
-
+        img=findViewById(R.id.image);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Articles");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -56,10 +60,19 @@ public class ReviewerAction extends AppCompatActivity {
                         tt.setText(articles.getTitle());
                         desc.setText(articles.getDescription());
                         auth.setText(articles.getAuthor());
-
+                        try
+                        {
+                            Picasso.get().load(articles.getImage()).placeholder(R.drawable.newspaper).into(img);
+                        }
+                        catch (Exception e)
+                        {           }
                         acceptBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View v) {
+                            public void onClick(View v)
+                            {
+                                ref.child(ds.getKey()).child("title").setValue(tt.getText().toString().trim());
+                                ref.child(ds.getKey()).child("description").setValue(desc.getText().toString().trim());
+                                ref.child(ds.getKey()).child("author").setValue(auth.getText().toString().trim());
                                 ref.child(ds.getKey()).child("reviewer").setValue(1);
                                 Toast.makeText(ReviewerAction.this, "Article Accepted for Publish", Toast.LENGTH_SHORT).show();
 
