@@ -22,7 +22,7 @@
             android:orientation="vertical"
             android:layout_marginBottom="60dp">
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="400dp"
                 android:layout_height="100dp"
                 android:id="@+id/avatarIv"
                 android:layout_centerVertical="true" />

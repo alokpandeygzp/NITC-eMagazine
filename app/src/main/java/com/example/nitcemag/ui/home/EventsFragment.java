@@ -84,7 +84,7 @@ public class EventsFragment extends Fragment {
                 {
                     ModelSports modelSports =ds.getValue(ModelSports.class);
                     //
-                    if(modelSports.getCategory().equals("Events"))
+                    if(modelSports.getCategory().equals("Events")  && modelSports.getEditor()==1)
                     {
                         sportsList.add(modelSports);
                     }

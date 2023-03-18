@@ -18,8 +18,8 @@
         android:id="@+id/image"
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_centerHorizontal="true"/>
 
     <TextView
@@ -59,11 +59,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/author"
+        android:id="@+id/ll"
+
+        android:layout_marginTop="30dp">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/like"
+            android:id="@+id/like"
+            android:layout_below="@+id/author"
+            />
+        <TextView
+        android:layout_marginLeft="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lcount"
+        android:textSize="23sp"
+        android:text="Likes"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
 
         android:layout_gravity="center"
         android:id="@+id/layout">
+
     <com.google.android.material.textfield.TextInputEditText
         android:layout_centerHorizontal="true"
         android:layout_width="300dp"
