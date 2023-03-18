@@ -37,6 +37,8 @@ import com.example.nitcemag.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -109,7 +111,8 @@ public class PostArticles extends Fragment {
 
         });
 
-
+        emails.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail().toString());
+        emails.setEnabled(false);
 
         Button imagebtn=view.findViewById(R.id.img_btn);
         ImageView img=view.findViewById(R.id.imageView);

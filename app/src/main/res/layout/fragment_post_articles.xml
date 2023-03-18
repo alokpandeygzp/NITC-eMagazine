@@ -4,52 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
     android:orientation="vertical"
     android:layout_margin="10dp"
+    android:padding="10dp"
     tools:context=".ui.postArticles.PostArticles">
 
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textTitle"
-        android:layout_width="325dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
         android:hint="Title"
         android:inputType="text"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_gravity="center"/>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textName"
-        android:layout_width="325dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
         android:hint="Name"
         android:inputType="text"
-        android:layout_gravity="center"
-        />
+        android:minHeight="48dp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textEmail"
-        android:layout_width="325dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
         android:hint="Email"
         android:inputType="text"
-        android:layout_gravity="center"
-        />
+        android:minHeight="48dp" />
 
     <Spinner
         android:id="@+id/category"
-        android:layout_width="325dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
+        android:contentDescription="Category"
+        android:layout_marginTop="15dp"
         android:background="@android:drawable/btn_dropdown"
         tools:layout_editor_absoluteX="27dp"
         tools:layout_editor_absoluteY="169dp"
@@ -59,14 +62,14 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/text_descp"
-        android:layout_width="325dp"
+        android:layout_width="match_parent"
         android:layout_height="95dp"
         android:layout_gravity="center"
         android:gravity="top"
         android:hint="Description"
-        android:textSize="22dp"
+        android:textSize="22sp"
         android:inputType="textMultiLine"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:lines="@integer/material_motion_duration_long_1"
         android:overScrollMode="always"
         android:scrollbarStyle="insideInset"
@@ -77,15 +80,6 @@
         app:layout_constraintVertical_bias="0.527"
         tools:layout_editor_absoluteX="27dp" />
 
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="325dp"
-        android:layout_height="97dp"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/custom_edittext"
-        android:layout_gravity="center"/>
-
     <Button
         android:id="@+id/img_btn"
         android:layout_width="250dp"
@@ -93,7 +87,7 @@
         android:backgroundTint="@color/black"
         android:text="Upload Image"
         android:textStyle="bold"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,6 +99,7 @@
         android:layout_width="250dp"
         android:layout_height="66dp"
         android:backgroundTint="@color/black"
+        android:layout_marginTop="15dp"
         android:text="Submit"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -112,10 +107,5 @@
         tools:layout_editor_absoluteY="459dp"
         tools:ignore="MissingConstraints"
         android:layout_gravity="center"/>
-
-
-
-
-
 
 </LinearLayout>

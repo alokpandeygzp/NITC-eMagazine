@@ -25,16 +25,18 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".EditorAction"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Editor's Dashboard"
+            android:parentActivityName=".EditorArticlesList"/>
         <activity
             android:name=".ReviewerDashboard"
             android:exported="false"
-            android:label="Reviewer Dashboard"
+            android:label="Reviewer's Dashboard"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".EditorDashboard"
             android:exported="false"
-            android:label="Editor Dashboard"
+            android:label="Editor's Dashboard"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MyProfile"
@@ -59,18 +61,22 @@
         <activity
             android:name=".ArticlesActivity"
             android:exported="false"
+            android:label="Article Description"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ReviewerAction"
             android:exported="false"
-            android:parentActivityName=".ReviewerArticlesList" />
+            android:label="Reviewer's Dashboard"
+            android:parentActivityName=".ReviewerDashboard" />
         <activity
             android:name=".EditorArticlesList"
             android:exported="false"
+            android:label="Editor's Dashboard"
             android:parentActivityName=".EditorDashboard" />
         <activity
             android:name=".ReviewerArticlesList"
             android:exported="false"
+            android:label="Reviewer's Dashboard"
             android:parentActivityName=".ReviewerDashboard" />
         <activity
             android:name=".ui.splashScreen"

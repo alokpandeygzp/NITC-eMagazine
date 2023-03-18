@@ -11,42 +11,45 @@
     android:background="@drawable/loginbkg"
     tools:context=".Signin">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        app:cardCornerRadius="30dp"
-        app:cardElevation="20dp"
-        android:background="@drawable/custom_edittext">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:orientation="vertical"
+            android:layout_margin="20dp"
             android:padding="24dp">
 
             <TextView
                 android:id="@+id/loginText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sign In"
+                android:text="Sign in"
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="32sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Stay Updated to your professional world"
+                android:textAlignment="center" />
+
             <EditText
                 android:id="@+id/editTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/custom_edittext"
                 android:drawableLeft="@drawable/ic_baseline_person_24"
                 android:drawablePadding="8dp"
                 android:hint="Email ID"
                 android:padding="8dp"
                 android:textColor="@color/black"
+                android:inputType="textImeMultiLine"
                 android:textColorHighlight="@color/cardview_dark_background" />
 
             <EditText
@@ -74,7 +77,7 @@
                 android:textSize="18sp"
                 app:cornerRadius="20dp" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+
 
     <TextView
         android:id="@+id/signupText"
