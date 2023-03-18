@@ -108,7 +108,7 @@ public class MyProfile extends AppCompatActivity {
                             {
                                 String image=""+ds.child("photo").getValue();
                                 name.setText(""+ds.child("name").getValue());
-                                if(!image.equals("null")) {
+                                if(!image.equals("")) {
                                     try {
                                         //if image is recieved
                                         Picasso.get().load(image).into(img);

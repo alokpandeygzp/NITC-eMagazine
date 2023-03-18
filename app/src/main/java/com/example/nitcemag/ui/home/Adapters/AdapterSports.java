@@ -56,7 +56,7 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
         String key=sportsList.get(position).getKey();
         //set data
         holder.mNameTv.setText(title);
-
+        holder.author.setText(sportsList.get(position).getAuthor());
         try
         {
             Picasso.get().load(image).placeholder(R.drawable.newspaper).into(holder.mavatarIv);
@@ -87,7 +87,7 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
     public class MyHolder extends RecyclerView.ViewHolder{
 
         ImageView mavatarIv;
-        TextView mNameTv;
+        TextView mNameTv,author;
 
         public MyHolder(@NonNull View itemView) {
 
@@ -96,6 +96,7 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
             //init views
             mavatarIv=itemView.findViewById(R.id.avatarIv);
             mNameTv=itemView.findViewById(R.id.nameTv);
+            author=itemView.findViewById(R.id.author);
         }
     }
 }

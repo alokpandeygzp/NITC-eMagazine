@@ -303,6 +303,7 @@ public class PostArticles extends Fragment {
                 {
                     //image uploaded
                     //add or update url in user's database
+                    Toast.makeText(getContext(), "Image Uploaded", Toast.LENGTH_SHORT).show();
                     image=downloadUri.toString();
                 }
                 else
