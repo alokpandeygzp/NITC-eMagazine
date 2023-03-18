@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.example.nitcemag.ui.postArticles.UserArticles;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +22,7 @@ public class EditorArticlesList extends AppCompatActivity {
     RecyclerView recyclerView;
     DatabaseReference database;
     EditorArticlesListAdapter editorArticlesListAdapter;
-    ArrayList<Articles> list;
+    ArrayList<UserArticles> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,6 @@ public class EditorArticlesList extends AppCompatActivity {
         recyclerView=findViewById(R.id.articlesList);
         database= FirebaseDatabase.getInstance().getReference("Articles");
 
-//        System.out.println(database+"******************************************");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         list=new ArrayList<>();
@@ -51,7 +51,7 @@ public class EditorArticlesList extends AppCompatActivity {
                 for(DataSnapshot dataSnapshot:snapshot.getChildren())
                 {
                     System.out.println(dataSnapshot);
-                    Articles articles= dataSnapshot.getValue(Articles.class);
+                    UserArticles articles= dataSnapshot.getValue(UserArticles.class);
 
 
                     if(articles!=null && articles.editor==0 && articles.reviewer==1)

@@ -1,6 +1,8 @@
 package com.example.nitcemag.ui.home;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -17,12 +19,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.nitcemag.MyProfile;
 import com.example.nitcemag.R;
 import com.example.nitcemag.ui.home.Adapters.AdapterSports;
 import com.example.nitcemag.ui.home.Models.ModelSports;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,31 +45,28 @@ import java.util.List;
 
 public class SportsFragment extends Fragment {
 
+
     FirebaseAuth firebaseAuth;
     RecyclerView recyclerView;
     AdapterSports adapterSports;
     List<ModelSports> sportsList;
     FirebaseDatabase firebaseDatabase;
-
     DatabaseReference databaseReference;
-
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_sports, container, false);
-
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
         firebaseAuth =FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Articles");
-
-        //init recycler view
+        databaseReference = firebaseDatabase.getReference("PostedArticles");
+       //init recycler view
         recyclerView=view.findViewById(R.id.users_recyclerView);
         //set it's properties
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         //init user list
         sportsList=new ArrayList<>();
 
@@ -106,5 +111,89 @@ public class SportsFragment extends Fragment {
     }
 
 
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search, menu);
+
+        //search View
+        MenuItem item = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+
+        //search listener
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                //called when ever user press search button
+                //if search query is not empty then search
+                if (!TextUtils.isEmpty(s.trim())) {
+                    //Search text contains text, search it
+                    searchUsers(s);
+                } else {
+                    //search text empty, get all users
+                    getAllArticles();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                //called whenever user press any single letter
+                //if search query is not empty then search
+                if (!TextUtils.isEmpty(s.trim())) {
+                    //Search text contains text, search it
+                    searchUsers(s);
+                } else {
+                    //search text empty, get all users
+                    getAllArticles();
+                }
+                return false;
+            }
+        });
+
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    public void onCreate(Bundle savedInstanceState)
+    {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+    private void searchUsers(String query)
+    {
+        //get path of database named "users" containing users info
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Articles");
+        //get all
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sportsList.clear();
+                for(DataSnapshot ds:snapshot.getChildren())
+                {
+                    ModelSports modelUser =ds.getValue(ModelSports.class);
+                    //get all searched users except currently signed in user
+                    if(modelUser.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                            modelUser.getAuthor().toLowerCase().contains(query.toLowerCase()))
+                    {
+                        sportsList.add(modelUser);
+                    }
+
+
+                    //adapter
+                    adapterSports= new AdapterSports(getActivity(),sportsList);
+                    //refresh adapter
+                    adapterSports.notifyDataSetChanged();
+                    //set adapter to recycler view
+                    recyclerView.setAdapter(adapterSports);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 }

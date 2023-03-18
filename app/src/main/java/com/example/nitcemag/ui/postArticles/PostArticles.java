@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -31,6 +32,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.nitcemag.MyProfile;
 import com.example.nitcemag.R;
@@ -67,7 +70,6 @@ public class PostArticles extends Fragment {
     private  static  final int IMAGE_PICK_GALLERY_CODE=300;
     String cameraPermission[];
     String storagePermission[];
-
     @SuppressLint("MissingInflatedId")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -157,6 +159,7 @@ public class PostArticles extends Fragment {
         name.setText("");
         article_descp.setText("");
         titles.requestFocus();
+
     }
 
     private boolean checkStoragePermission()
@@ -268,7 +271,6 @@ public class PostArticles extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(getContext(), "In activity result", Toast.LENGTH_SHORT).show();
         if(resultCode == RESULT_OK)
         {
             if(requestCode == IMAGE_PICK_GALLERY_CODE)
@@ -278,7 +280,6 @@ public class PostArticles extends Fragment {
             }
             if(requestCode == IMAGE_PICK_CAMERA_CODE)
             {
-
                 uploadProfileCoverPhoto(image_uri);
             }
         }
@@ -334,7 +335,6 @@ public class PostArticles extends Fragment {
         values.put(MediaStore.Images.Media.DESCRIPTION, "Temp DEscription");
         //put image uri
         image_uri=getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
-        Toast.makeText(getContext(), "In pick from camera", Toast.LENGTH_SHORT).show();
         //intent to start camera
         Intent cameraIntent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
