@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.nitcemag.ArticlesActivity;
 import com.example.nitcemag.R;
 import com.example.nitcemag.ui.postArticles.UserArticles;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -42,7 +43,16 @@ public class AdapterMyArticles extends RecyclerView.Adapter<MyHolder> {
         holder.textView.setText(userArticles.get(position).getTitle());
         // holder.imageView.setI;
         String key=userArticles.get(position).getKey();
+        String image=userArticles.get(position).getImage();
+        holder.author.setText(userArticles.get(position).getAuthor());
+        try
+        {
+            Picasso.get().load(image).placeholder(R.drawable.newspaper).into(holder.imageView);
+        }
+        catch (Exception e)
+        {
 
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,12 +74,14 @@ public class AdapterMyArticles extends RecyclerView.Adapter<MyHolder> {
 }
  class MyHolder  extends RecyclerView.ViewHolder{
     ImageView imageView;
-    TextView textView;
+    TextView textView,author;
+
 
     public MyHolder(@NonNull View itemView) {
         super(itemView);
         this.imageView = itemView.findViewById(R.id.avatarIv);
         this.textView = itemView.findViewById(R.id.nameTv);
+        this.author=itemView.findViewById(R.id.author);
         // itemView.setOnClickListener(this);
     }
 

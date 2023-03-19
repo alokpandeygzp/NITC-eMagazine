@@ -30,7 +30,7 @@ public class ReviewerArticlesListAdapter extends RecyclerView.Adapter<ReviewerAr
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(context).inflate(R.layout.articles,parent,false);
+        View v= LayoutInflater.from(context).inflate(R.layout.row_articles,parent,false);
         return new MyViewHolder(v);
     }
 
@@ -38,6 +38,7 @@ public class ReviewerArticlesListAdapter extends RecyclerView.Adapter<ReviewerAr
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         UserArticles articles=list.get(position);
         holder.title.setText(articles.getTitle());
+        holder.author.setText(articles.getAuthor());
         String image=list.get(position).getImage();
         try
         {
@@ -65,12 +66,13 @@ public class ReviewerArticlesListAdapter extends RecyclerView.Adapter<ReviewerAr
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView title;
+        TextView title,author;
         ImageView avatarIv;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title=itemView.findViewById(R.id.nameTv);
             avatarIv=itemView.findViewById(R.id.avatarIv);
+            author=itemView.findViewById(R.id.author);
 
         }
     }

@@ -132,7 +132,6 @@ public class ArticlesActivity extends AppCompatActivity {
                             {
 
                             }
-                            break;
                         }
                     }
                     lcount.setText(Integer.toString(count)+"Like");

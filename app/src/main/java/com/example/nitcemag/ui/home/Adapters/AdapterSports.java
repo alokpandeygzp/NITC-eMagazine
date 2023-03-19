@@ -1,6 +1,9 @@
 package com.example.nitcemag.ui.home.Adapters;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +22,14 @@ import com.example.nitcemag.ArticlesActivity;
 import com.example.nitcemag.MainActivity;
 import com.example.nitcemag.R;
 import com.example.nitcemag.ui.home.Models.ModelSports;
+import com.example.nitcemag.ui.postArticles.UserArticles;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Picasso;
 
@@ -28,8 +39,9 @@ import java.util.List;
 
 public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> {
     Context context;
+    DatabaseReference reference=FirebaseDatabase.getInstance().getReference();
     List<ModelSports> sportsList;
-
+    String key;
     //constructor
     public AdapterSports(Context context,List<ModelSports> sportsList)
     {
@@ -53,7 +65,7 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
         String category =sportsList.get(position).getCategory();
         String image=sportsList.get(position).getImage();
         String title=sportsList.get(position).getTitle();
-        String key=sportsList.get(position).getKey();
+        key=sportsList.get(position).getKey();
         //set data
         holder.mNameTv.setText(title);
         holder.author.setText(sportsList.get(position).getAuthor());
@@ -76,8 +88,88 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
                 context.startActivity(intent);
             }
         });
-    }
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        if(user!=null)
+        {
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view)
+                {
+                    int pos=holder.getAdapterPosition();
+                    key=sportsList.get(pos).getKey();
+                    reference.child("Editor").addValueEventListener(new ValueEventListener() {
 
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            for(DataSnapshot ds:snapshot.getChildren())
+                            {
+                                if(ds.getKey().equals(user.getUid()))
+                                {
+                                    DeleteDialog(pos);
+                                    break;
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                    return true;
+                }
+            });
+
+        }
+    }
+    private void DeleteDialog(int pos) {
+
+        String options[] = {"Delete"};
+        //alert
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Delete");
+        //set builder
+        builder.setMessage("Do you want to Delete this article?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                    reference.child("PostedArticles").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot ds: snapshot.getChildren())
+                            {
+                                UserArticles ua=ds.getValue(UserArticles.class);
+                                if(ua.getAuthor().equals(sportsList.get(pos).getAuthor()) && ua.getTitle().equals(sportsList.get(pos).getTitle())
+                                        && ua.getDescription().equals(sportsList.get(pos).getDescription()))
+                                {
+                                    ds.getRef().removeValue();
+                                    break;
+                                }
+                            }
+                            DatabaseReference mPostReference = FirebaseDatabase.getInstance().getReference("Articles").child(key);
+                            mPostReference.removeValue();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        //create and show dialog
+        builder.create().show();
+    }
     @Override
     public int getItemCount() {
         return sportsList.size();
