@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import com.example.nitcemag.ui.postArticles.UserArticles;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,8 @@ public class RejectList extends AppCompatActivity {
     DatabaseReference database;
     RejectListAdapter rejectListAdapter;
     ArrayList<UserArticles> list;
+    FirebaseAuth auth= FirebaseAuth.getInstance();
+    FirebaseUser user=auth.getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +58,7 @@ public class RejectList extends AppCompatActivity {
                     UserArticles articles= dataSnapshot.getValue(UserArticles.class);
 
 
-                    if(articles!=null && articles.reviewer==-1)
+                    if(articles!=null && articles.reviewer==-1 && articles.getEmail().equals(user.getEmail()))
                         list.add(articles);
 
                     rejectListAdapter =new RejectListAdapter(RejectList.this,list);

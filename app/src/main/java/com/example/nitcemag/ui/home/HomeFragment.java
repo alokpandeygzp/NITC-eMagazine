@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tabLayout);
         viewPager = view.findViewById(R.id.viewPager);
         tabLayout.addTab(tabLayout.newTab().setText("Sports"));
-        tabLayout.addTab(tabLayout.newTab().setText("Academic"));
+        tabLayout.addTab(tabLayout.newTab().setText("Study"));
         tabLayout.addTab(tabLayout.newTab().setText("Events"));
         tabLayout.addTab(tabLayout.newTab().setText("Notice"));
         viewPager.setAdapter(new FragmentPagerAdapter(getParentFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {

@@ -7,50 +7,122 @@
     android:padding="20dp">
 
     <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="   Article Category:- "
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+    <TextView
+        android:id="@+id/textViewCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:autofillHints=""
+        android:hint="Category"
+        android:minHeight="48dp"
+        android:padding="10dp"
+        android:textAlignment="viewStart"
+        android:textColorHint="#0277BD"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
         android:id="@+id/loginText"
         android:layout_width="336dp"
         android:layout_height="43dp"
-
         android:text="Reason for Rejecting"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="25sp"
+        android:layout_marginTop="10dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textViewReason"
-        app:layout_constraintEnd_toEndOf="@+id/textViewReason"
-        app:layout_constraintHorizontal_bias="0.513"
-        app:layout_constraintStart_toStartOf="@+id/textViewReason"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.266" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonDialogSubmit"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/rounded_button"
-        android:text="Close"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewReason" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="   Article Title:- "
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginText" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="Title"
+        android:minHeight="48dp"
+        android:padding="10dp"
+        android:textAlignment="viewStart"
+        android:textColorHint="#0277BD"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textViewDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="   Reason for rejection:- "
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCategory" />
 
     <TextView
         android:id="@+id/textViewReason"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="Description"
-        android:background="@drawable/rounded_edit_text"
         android:minHeight="48dp"
         android:padding="10dp"
+        android:layout_marginTop="10dp"
         android:textAlignment="viewStart"
         android:textColorHint="#0277BD"
-        app:layout_constraintEnd_toEndOf="@+id/buttonDialogSubmit"
-        app:layout_constraintStart_toStartOf="@+id/buttonDialogSubmit"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDesc" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonDialogSubmit"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedgradientbutton"
+        android:text="Close"
+        android:textColor="@color/white"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewReason" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

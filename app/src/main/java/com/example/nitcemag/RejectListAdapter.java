@@ -30,7 +30,7 @@ public class RejectListAdapter extends RecyclerView.Adapter<RejectListAdapter.My
     Context context;
     ArrayList<UserArticles> list;
     AlertDialog dialog;
-    TextView dialogDesc;
+    TextView dialogDesc,dialogTitle,dialogCategory;
     Button close;
     String dialogDescStr;
 
@@ -69,6 +69,8 @@ public class RejectListAdapter extends RecyclerView.Adapter<RejectListAdapter.My
                 View loginView = LayoutInflater.from(context).inflate(R.layout.dialog_rejectreason,null);
 
                 dialogDesc = loginView.findViewById(R.id.textViewReason);
+                dialogTitle = loginView.findViewById(R.id.textViewTitle);
+                dialogCategory = loginView.findViewById(R.id.textViewCategory);
                 close = loginView.findViewById(R.id.buttonDialogSubmit);
 
                 dialogAddRev.setView(loginView);
@@ -83,7 +85,11 @@ public class RejectListAdapter extends RecyclerView.Adapter<RejectListAdapter.My
                         {
                             if(ds.getKey().equals(articles.getKey())){
                                 String reason = ds.child("rejectreason").getValue().toString();
+                                String title = ds.child("title").getValue().toString();
+                                String category = ds.child("category").getValue().toString();
                                 dialogDesc.setText(reason);
+                                dialogTitle.setText(title);
+                                dialogCategory.setText(category);
                             }
                         }
                     }

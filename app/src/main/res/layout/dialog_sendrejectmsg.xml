@@ -28,7 +28,7 @@
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:background="@drawable/rounded_button"
+        android:background="@drawable/roundedgradientbutton"
         android:text="Send"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
