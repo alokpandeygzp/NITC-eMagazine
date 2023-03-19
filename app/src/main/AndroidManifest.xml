@@ -29,11 +29,6 @@
             android:label="Editor's Dashboard"
             android:parentActivityName=".EditorArticlesList"/>
         <activity
-            android:name=".ReviewerDashboard"
-            android:exported="false"
-            android:label="Reviewer's Dashboard"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name=".EditorDashboard"
             android:exported="false"
             android:label="Editor's Dashboard"
@@ -67,7 +62,12 @@
             android:name=".ReviewerAction"
             android:exported="false"
             android:label="Reviewer's Dashboard"
-            android:parentActivityName=".ReviewerDashboard" />
+            android:parentActivityName=".ReviewerArticlesList" />
+        <activity
+            android:name=".RejectList"
+            android:exported="false"
+            android:label="Rejected Articles"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".EditorArticlesList"
             android:exported="false"
@@ -76,8 +76,8 @@
         <activity
             android:name=".ReviewerArticlesList"
             android:exported="false"
-            android:label="Reviewer's Dashboard"
-            android:parentActivityName=".ReviewerDashboard" />
+            android:label="Review Articles"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ui.splashScreen"
             android:exported="true"

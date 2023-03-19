@@ -4,12 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
@@ -24,9 +25,14 @@ import com.squareup.picasso.Picasso;
 
 public class ReviewerAction extends AppCompatActivity {
 
-    TextInputEditText tt, desc, auth;
+    TextInputEditText tt;
+    TextInputEditText desc;
+    TextInputEditText auth;
     ImageView img;
-    Button acceptBtn, rejectBtn;
+    Button acceptBtn, rejectBtn, sendBtn;
+    AlertDialog dialog;
+    EditText descDialog;
+    String dialogDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,23 +84,39 @@ public class ReviewerAction extends AppCompatActivity {
 
                                 Intent i = new Intent(ReviewerAction.this, ReviewerArticlesList.class);
                                 finish();
-//                                overridePendingTransition(0, 0);
                                 startActivity(i);
-//                                overridePendingTransition(0, 0);
                             }
                         });
                         rejectBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ref.child(ds.getKey()).child("reviewer").setValue(-1);
-                                Toast.makeText(ReviewerAction.this, "Article Rejected for Publish", Toast.LENGTH_SHORT).show();
+                                AlertDialog.Builder dialogAddRev = new AlertDialog.Builder(ReviewerAction.this);
+                                View loginView = getLayoutInflater().inflate(R.layout.dialog_sendrejectmsg,null);
+
+                                descDialog = loginView.findViewById(R.id.textViewReason);
+                                sendBtn = loginView.findViewById(R.id.buttonDialogSubmit);
+
+                                //                demo.setVisibility(View.INVISIBLE);
 
 
-                                Intent i = new Intent(ReviewerAction.this, ReviewerArticlesList.class);
-                                finish();
-//                                overridePendingTransition(0, 0);
-                                startActivity(i);
-//                                overridePendingTransition(0, 0);
+                                dialogAddRev.setView(loginView);
+                                dialog = dialogAddRev.create();
+                                dialog.show();
+
+
+                                sendBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        ref.child(ds.getKey()).child("reviewer").setValue(-1);
+                                        Toast.makeText(ReviewerAction.this, "Article Rejected", Toast.LENGTH_SHORT).show();
+
+                                        dialogDesc = descDialog.getText().toString();
+                                        ref.child(ds.getKey()).child("rejectreason").setValue(dialogDesc);
+                                        Intent i = new Intent(ReviewerAction.this, ReviewerArticlesList.class);
+                                        startActivity(i);
+                                        finish();
+                                    }
+                                });
                             }
                         });
 

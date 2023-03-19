@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.cardview.widget.CardView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -57,7 +56,7 @@ public class EditorDashboard extends AppCompatActivity {
                 AlertDialog.Builder dialogAddRev = new AlertDialog.Builder(EditorDashboard.this);
                 View loginView = getLayoutInflater().inflate(R.layout.dialog_add_reviewer,null);
 
-                emailDialog = loginView.findViewById(R.id.editTextDialogEmail);
+                emailDialog = loginView.findViewById(R.id.textViewReason);
                 addRevBtn = loginView.findViewById(R.id.buttonDialogSubmit);
 
 //                demo.setVisibility(View.INVISIBLE);
