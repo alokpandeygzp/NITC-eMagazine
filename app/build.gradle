@@ -6,7 +6,17 @@ plugins {
 android {
     namespace 'com.example.nitcemag'
     compileSdk 33
+    packagingOptions {
+        pickFirst 'com/itextpdf/io/font/cmap/MSungStd-Light.properties'
+        pickFirst 'com/itextpdf/io/font/cmap_info.txt'
+        pickFirst 'com/itextpdf/io/font/cmap/STSong-Light.properties'
+        pickFirst 'ccom/itextpdf/io/font/cmap/HYSMyeongJoStd-Medium.properties'
+        pickFirst 'com/itextpdf/io/font/cmap/HYSMyeongJoStd-Medium.properties'
+        pickFirst 'com/itextpdf/io/font/cmap/MSung-Light.properties'
+        pickFirst 'com/itextpdf/io/font/cmap/STSongStd-Light.properties'
+        pickFirst 'com/itextpdf/io/font/cmap/**'
 
+    }
     defaultConfig {
         applicationId "com.example.nitcemag"
         minSdk 24
@@ -50,5 +60,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation "com.android.support:multidex:1.0.3"
 
+    //implementation 'com.itextpdf:itextpdf:5.5.13.3'
+    implementation 'com.itextpdf:itext7-core:7.0.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
 }

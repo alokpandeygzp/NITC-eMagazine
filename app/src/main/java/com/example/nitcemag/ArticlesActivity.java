@@ -4,14 +4,38 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.FileProvider;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Picture;
+import android.graphics.Typeface;
+import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,17 +49,36 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArticlesActivity extends AppCompatActivity {
-
     FirebaseAuth firebaseAuth;
     List<ModelComment> list= new ArrayList<>();
     DatabaseReference reference=FirebaseDatabase.getInstance().getReference();
-    String title,name;
+    String name;
+    LinearLayout ll;
+    Bitmap bitmap;
+    ModelSports ms;
     TextView tt, desc, auth,lcount;
     ImageView img,send,like;
     TextInputEditText com;
@@ -47,14 +90,12 @@ public class ArticlesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_articles);
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));
 
 
-        Intent intent= getIntent();
+         Intent intent= getIntent();
          String key=intent.getStringExtra("key");
-         title = intent.getStringExtra("title");
          tt= (TextView) findViewById(R.id.title);
          img=findViewById(R.id.image);
          desc=findViewById(R.id.description);
@@ -64,6 +105,7 @@ public class ArticlesActivity extends AppCompatActivity {
          rv=findViewById(R.id.comments_recyclerView);
          like=findViewById(R.id.like);
          lcount=findViewById(R.id.lcount);
+         ll=findViewById(R.id.lLayout);
          rv.setHasFixedSize(true);
          rv.setLayoutManager(new LinearLayoutManager(ArticlesActivity.this));
          firebaseAuth=FirebaseAuth.getInstance();
@@ -79,7 +121,8 @@ public class ArticlesActivity extends AppCompatActivity {
                     //
                    if(ds.getKey().equals(key))
                     {
-                        tt.setText(title);
+                        ms=modelSports;
+                        tt.setText(modelSports.getTitle());
                         desc.setText(modelSports.getDescription());
                         auth.setText(modelSports.getAuthor());
                         String image=modelSports.getImage();
@@ -98,8 +141,6 @@ public class ArticlesActivity extends AppCompatActivity {
 
             }
         });
-
-
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
@@ -271,6 +312,82 @@ public class ArticlesActivity extends AppCompatActivity {
             });
 
         }
+    }
+    int convertwidth, convertheight;
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.download, menu);
+        MenuItem item= menu.findItem(R.id.download);
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                bitmap=loadBitmap(ll,ll.getWidth(),ll.getHeight());
+                createPdf();
+                PdfDocument pdfDocument = new PdfDocument();
+                Paint paint= new Paint();
+                PdfDocument.PageInfo pageInfo= new PdfDocument.PageInfo.Builder(convertwidth,convertheight,1).create();
+                PdfDocument.Page page= pdfDocument.startPage(pageInfo);
+                Canvas canvas= page.getCanvas();
+                paint.setColor(Color.rgb(0,0,0));
+                bitmap=Bitmap.createScaledBitmap(bitmap,convertwidth,convertheight, true);
+                canvas.drawBitmap(bitmap,0,0,null);
+                pdfDocument.finishPage(page);
+                File file = new File(Environment.getExternalStorageDirectory()+"/Download",ms.getTitle()+".pdf");
+                try {
+                    Toast.makeText(ArticlesActivity.this, "Saving", Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        pdfDocument.writeTo(Files.newOutputStream(file.toPath()));
+                    }
+                }
+                catch (IOException e)
+                {
+                    Toast.makeText(ArticlesActivity.this, "Error"+e, Toast.LENGTH_LONG).show();
+                    System.out.println(e);
+                }
+                pdfDocument.close();
+                openPdf();
+                return true;
+            }
+        });
+        return true;
+    }
+
+    private  void openPdf()
+    {
+        File file = new File(Environment.getExternalStorageDirectory()+"/Download",ms.getTitle()+".pdf");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (file.exists()) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                //Uri uri = Uri.fromFile(file);
+                Uri uri = FileProvider.getUriForFile(ArticlesActivity.this, BuildConfig.APPLICATION_ID + ".provider",file);
+                intent.setDataAndType(uri, "application/pdf");
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    System.out.println("Error "+e);
+                    Toast.makeText(this, "No application for pdf view", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+    private void createPdf()
+    {
+        WindowManager windowManager=(WindowManager)getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics displayMetrics= new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        float width = displayMetrics.widthPixels;
+        float height= displayMetrics.heightPixels;
+        convertwidth= (int) width;
+        convertheight=(int) height;
+    }
+    private Bitmap loadBitmap(View view, int width, int height)
+    {
+        Bitmap b=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+        Canvas canvas= new Canvas(b);
+        view.draw(canvas);
+        return b;
     }
 
 }

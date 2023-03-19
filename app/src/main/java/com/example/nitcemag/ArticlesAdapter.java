@@ -26,7 +26,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyHold
     Context context;
     List<ModelComment> list;
     String key;
-
     //constructor
     public ArticlesAdapter(Context context, List<ModelComment> list) {
         this.context = context;
@@ -52,7 +51,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyHold
         key = list.get(position).getKey();
         holder.name.setText(name);
         holder.comment.setText(des);
-        holder.comment.setOnClickListener(new View.OnClickListener() {
+        holder.ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
@@ -142,9 +141,10 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyHold
     public class MyHolder extends RecyclerView.ViewHolder {
         TextView comment;
         TextView name;
-
+        LinearLayout ll;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
+            ll=itemView.findViewById(R.id.commentlayout);
             name = itemView.findViewById(R.id.name);
             comment = itemView.findViewById(R.id.recycle_comment);
         }

@@ -164,8 +164,8 @@ public class EventsFragment extends Fragment {
                 {
                     ModelSports modelUser =ds.getValue(ModelSports.class);
                     //get all searched users except currently signed in user
-                    if(modelUser.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                            modelUser.getAuthor().toLowerCase().contains(query.toLowerCase()))
+                    if((modelUser.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                            modelUser.getAuthor().toLowerCase().contains(query.toLowerCase())) && modelUser.getEditor()==1 && modelUser.getCategory().equals("Events"))
                     {
                         sportsList.add(modelUser);
                     }

@@ -83,7 +83,7 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ArticlesActivity.class);
-                intent.putExtra("title",title);
+                key=sportsList.get(holder.getAdapterPosition()).getKey();
                 intent.putExtra("key",key);
                 context.startActivity(intent);
             }
@@ -127,8 +127,7 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
     }
     private void DeleteDialog(int pos) {
 
-        String options[] = {"Delete"};
-        //alert
+       //alert
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Delete");
         //set builder
