@@ -75,11 +75,11 @@ public class EditorAction extends AppCompatActivity {
                                 ref.child(ds.getKey()).child("description").setValue(desc.getText().toString().trim());
                                 ref.child(ds.getKey()).child("author").setValue(auth.getText().toString().trim());
                                 ref.child(ds.getKey()).child("editor").setValue(1);
+
                                 UserArticles abc = ds.getValue(UserArticles.class);
+                                abc.setEditor(1);
                                 DatabaseReference db=FirebaseDatabase.getInstance().getReference("PostedArticles");
-                                String key=db.child("PostedArticles").push().getKey();
-                                abc.setKey(key);
-                                db.child(key).setValue(abc);
+                                db.child(abc.getKey()).setValue(abc);
                                 Toast.makeText(EditorAction.this, "Article Accepted for Publish", Toast.LENGTH_SHORT).show();
 
                                 Intent i = new Intent(EditorAction.this, EditorArticlesList.class);

@@ -6,9 +6,7 @@
     android:layout_height="wrap_content"
     tools:context=".ArticlesActivity"
     >
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
@@ -65,11 +63,11 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lLayout"
         android:id="@+id/ll"
-
+        android:layout_marginLeft="25dp"
         android:layout_marginTop="30dp">
         <ImageView
             android:layout_width="40dp"
@@ -92,23 +90,25 @@
         android:layout_below="@+id/ll"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-
-        android:layout_gravity="center"
+        android:layout_marginLeft="25dp"
         android:id="@+id/layout">
 
     <com.google.android.material.textfield.TextInputEditText
         android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_edit_text"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:id="@+id/comment"
         android:hint="Comment"
+        android:padding="10dp"
+
         android:visibility="visible"/>
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="30dp"
-        android:id="@+id/imgbutton"
-        app:srcCompat="@drawable/comment"
-        />
+
+        <ImageView
+            android:id="@+id/imgbutton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/comment" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

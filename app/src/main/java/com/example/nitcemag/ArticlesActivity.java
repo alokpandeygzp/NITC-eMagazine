@@ -195,7 +195,8 @@ public class ArticlesActivity extends AppCompatActivity {
                                             lcount.setText(Integer.toString(count)+" likes");
                                         else if(count==1)
                                             lcount.setText(Integer.toString(count)+" like");
-
+                                        else
+                                            lcount.setText("");
                                     }
                                 }
                                 @Override
