@@ -96,7 +96,7 @@ public class ArticlesActivity extends AppCompatActivity {
 
          Intent intent= getIntent();
          String key=intent.getStringExtra("key");
-         tt= (TextView) findViewById(R.id.title);
+         tt= findViewById(R.id.title);
          img=findViewById(R.id.image);
          desc=findViewById(R.id.description);
          auth=findViewById(R.id.author);
@@ -156,26 +156,58 @@ public class ArticlesActivity extends AppCompatActivity {
             reference.child("Likes").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    int count=0;
                     for(DataSnapshot ds:snapshot.getChildren())
                     {
-                        if(ds.child("article").getValue().toString().equals(key))
+                        if(ds.getKey().equals(key))
                         {
-                            count=count+1;
-                        }
-                        if(ds.child("email").getValue().toString().equals(firebaseAuth.getCurrentUser().getEmail()) && ds.child("article").getValue().equals(key))
-                        {
-                            try
-                            {
-                                Picasso.get().load(R.drawable.like).placeholder(R.drawable.liked).into(like);
-                            }
-                            catch (Exception e)
-                            {
+                            reference.child("Likes").child(key).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot)
+                                {
+                                    int count=0;
+                                    int flag=0;
+                                    for(DataSnapshot ds:snapshot.getChildren())
+                                    {
+                                        count=count+1;
+                                        if(ds.child("email").getValue().toString().equals(firebaseAuth.getCurrentUser().getEmail()) && ds.child("article").getValue().equals(key))
+                                        {
+                                            flag=1;
+                                            try
+                                            {
+                                                Picasso.get().load(R.drawable.img_1).placeholder(R.drawable.img_2).into(like);
+                                            }
+                                            catch (Exception e)
+                                            {
 
-                            }
+                                            }
+                                        }
+                                    }
+                                    if(flag==1)
+                                    {
+                                        if(count >1)
+                                            lcount.setText("You and "+Integer.toString(count-1)+" other");
+                                        else if(count==1)
+                                            lcount.setText("You");
+                                    }
+                                    else
+                                    {
+                                        if(count >1)
+                                            lcount.setText(Integer.toString(count)+" likes");
+                                        else if(count==1)
+                                            lcount.setText(Integer.toString(count)+" like");
+
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                            break;
                         }
+
                     }
-                    lcount.setText(Integer.toString(count)+"Like");
+
                 }
 
                 @Override
@@ -187,7 +219,7 @@ public class ArticlesActivity extends AppCompatActivity {
             like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    reference.child("Likes").addListenerForSingleValueEvent(new ValueEventListener() {
+                    reference.child("Likes").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             int flag=1;
@@ -197,7 +229,7 @@ public class ArticlesActivity extends AppCompatActivity {
                                 {
                                     try
                                     {
-                                        Picasso.get().load(R.drawable.liked).placeholder(R.drawable.like).into(like);
+                                        Picasso.get().load(R.drawable.img_2).placeholder(R.drawable.img_1).into(like);
 
                                     }
                                     catch (Exception e)
@@ -205,27 +237,23 @@ public class ArticlesActivity extends AppCompatActivity {
 
                                     }
                                     ds.getRef().removeValue();
-                                    //DatabaseReference mPostReference = FirebaseDatabase.getInstance().getReference("Likes").child(ds.child("key").getValue().toString());
-                                    //mPostReference.removeValue();
                                     flag=0;
                                     break;
                                 }
                             }
-
                             if(flag==1)
                             {
-                                String k = reference.child("Likes").push().getKey();
+                                String k = reference.child("Likes").child(key).push().getKey();
                                 ModelLike mc = new ModelLike(firebaseAuth.getCurrentUser().getEmail().toString(), key, name, k);
-                                reference.child("Likes").child(k).setValue(mc);
+                                reference.child("Likes").child(key).child(k).setValue(mc);
                                 try
                                 {
-                                    Picasso.get().load(R.drawable.like).placeholder(R.drawable.liked).into(like);
+                                    Picasso.get().load(R.drawable.img_1).placeholder(R.drawable.img_2).into(like);
                                 }
                                 catch (Exception e)
                                 {
 
                                 }
-                                return;
                             }
 
                         }
@@ -269,7 +297,6 @@ public class ArticlesActivity extends AppCompatActivity {
             });
 
 
-            System.out.println("************************************"+name);
             send.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -279,11 +306,12 @@ public class ArticlesActivity extends AppCompatActivity {
                     com.clearFocus();
                     if (cmnt.equals("")) {
                         Toast.makeText(ArticlesActivity.this, "Empty", Toast.LENGTH_SHORT).show();
-                    } else {
+                    }
+                    else {
                         reference = FirebaseDatabase.getInstance().getReference();
-                        String k = reference.child("Comments").push().getKey();
+                        String k = reference.child("Comments").child(key).push().getKey();
                         ModelComment mc = new ModelComment(firebaseAuth.getCurrentUser().getEmail().toString(), key, cmnt, name, k);
-                        reference.child("Comments").child(k).setValue(mc);
+                        reference.child("Comments").child(key).child(k).setValue(mc);
                     }
                 }
             });
@@ -291,18 +319,35 @@ public class ArticlesActivity extends AppCompatActivity {
             reference.child("Comments").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    list.clear();
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        ModelComment mc = ds.getValue(ModelComment.class);
-                        if (mc.getArticle().equals(key)) {
-                            list.add(mc);
+                    for(DataSnapshot ds: snapshot.getChildren())
+                    {
+                        if(ds.getKey().equals(key))
+                        {
+                            reference.child("Comments").child(key).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    list.clear();
+                                    for (DataSnapshot ds : snapshot.getChildren())
+                                    {
+                                        ModelComment mc = ds.getValue(ModelComment.class);
+                                        list.add(mc);
+                                    }
+                                    //adapter
+                                    ArticlesAdapter aa = new ArticlesAdapter(ArticlesActivity.this, list);
+                                    //set adapter to recycler view
+
+                                    rv.setAdapter(aa);
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                            break;
                         }
                     }
-                    //adapter
-                    ArticlesAdapter aa = new ArticlesAdapter(ArticlesActivity.this, list);
-                    //set adapter to recycler view
-                    rv.setAdapter(aa);
-
                 }
 
                 @Override

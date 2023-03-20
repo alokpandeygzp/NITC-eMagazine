@@ -26,6 +26,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyHold
     Context context;
     List<ModelComment> list;
     String key;
+    String articlekey;
     //constructor
     public ArticlesAdapter(Context context, List<ModelComment> list) {
         this.context = context;
@@ -51,13 +52,16 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyHold
         key = list.get(position).getKey();
         holder.name.setText(name);
         holder.comment.setText(des);
+        articlekey=list.get(position).getArticle();
         holder.ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
                 int pos=holder.getAdapterPosition();
                 String em = list.get(pos).getEmail();
-                if (em .equals(user.getEmail())) {
+
+                if (em.equals(user.getEmail()))
+                {
                     key=list.get(pos).getKey();
                     commentDialog();
                 }
@@ -87,7 +91,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyHold
                    editComment("Comment");
 
                 } else if (i == 1) {
-                    DatabaseReference mPostReference = FirebaseDatabase.getInstance().getReference("Comments").child(key);
+                    DatabaseReference mPostReference = FirebaseDatabase.getInstance().getReference("Comments").child(articlekey).child(key);
                     mPostReference.removeValue();
                 }
             }
@@ -97,7 +101,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyHold
     }
     private void editComment(String k)
     {
-        DatabaseReference mPostReference = FirebaseDatabase.getInstance().getReference("Comments").child(key);
+        DatabaseReference mPostReference = FirebaseDatabase.getInstance().getReference("Comments").child(articlekey).child(key);
         //custom dialog
         AlertDialog.Builder builder=new AlertDialog.Builder(context);
         builder.setTitle("Update "+k);
