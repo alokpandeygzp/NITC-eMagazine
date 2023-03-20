@@ -31,7 +31,7 @@ public class RejectListAdapter extends RecyclerView.Adapter<RejectListAdapter.My
     ArrayList<UserArticles> list;
     AlertDialog dialog;
     TextView dialogDesc,dialogTitle,dialogCategory;
-    Button close;
+    Button delete,repost;
     String dialogDescStr;
 
     public RejectListAdapter(Context context, ArrayList<UserArticles> list) {
@@ -71,7 +71,8 @@ public class RejectListAdapter extends RecyclerView.Adapter<RejectListAdapter.My
                 dialogDesc = loginView.findViewById(R.id.textViewReason);
                 dialogTitle = loginView.findViewById(R.id.textViewTitle);
                 dialogCategory = loginView.findViewById(R.id.textViewCategory);
-                close = loginView.findViewById(R.id.buttonDialogSubmit);
+                delete = loginView.findViewById(R.id.buttonDialogDelete);
+                repost = loginView.findViewById(R.id.buttonDialogRepost);
 
                 dialogAddRev.setView(loginView);
                 dialog = dialogAddRev.create();
@@ -105,14 +106,24 @@ public class RejectListAdapter extends RecyclerView.Adapter<RejectListAdapter.My
 
 
 
-                close.setOnClickListener(new View.OnClickListener() {
+                delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.dismiss();
+                        DatabaseReference ref=FirebaseDatabase.getInstance().getReference("Articles");
+                        ref.child(articles.getKey()).removeValue();
+                        Intent i = new Intent(context,RejectList.class);
+                        context.startActivity(i);
                     }
                 });
 
-
+                repost.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context,RejectedArticleRepost.class);
+                        i.putExtra("key",articles.getKey());
+                        context.startActivity(i);
+                    }
+                });
             }
         });
     }
