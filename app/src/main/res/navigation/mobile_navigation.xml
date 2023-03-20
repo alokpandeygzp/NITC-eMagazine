@@ -17,11 +17,5 @@
         android:label="@string/menu_postArticles"
         tools:layout="@layout/fragment_post_articles" />
 
-    <fragment
-        android:id="@+id/nav_myArticles"
-        android:name="com.example.nitcemag.ui.myArticles.MyArticles"
-        android:label="@string/menu_myArticles"
-        tools:layout="@layout/fragment_myarticles" />
-
 
 </navigation>

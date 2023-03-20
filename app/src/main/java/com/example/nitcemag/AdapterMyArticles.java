@@ -1,4 +1,4 @@
-package com.example.nitcemag.ui.myArticles;
+package com.example.nitcemag;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,14 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nitcemag.ArticlesActivity;
-import com.example.nitcemag.R;
 import com.example.nitcemag.ui.postArticles.UserArticles;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class AdapterMyArticles extends RecyclerView.Adapter<MyHolder> {
+public class AdapterMyArticles extends RecyclerView.Adapter<AdapterMyArticles.MyHolder> {
 
     Context context;
     List<UserArticles> userArticles;
@@ -67,24 +65,18 @@ public class AdapterMyArticles extends RecyclerView.Adapter<MyHolder> {
         return userArticles.size();
     }
 
+    public static class MyHolder  extends RecyclerView.ViewHolder{
+        ImageView imageView;
+        TextView textView,author;
 
 
-
-
-}
- class MyHolder  extends RecyclerView.ViewHolder{
-    ImageView imageView;
-    TextView textView,author;
-
-
-    public MyHolder(@NonNull View itemView) {
-        super(itemView);
-        this.imageView = itemView.findViewById(R.id.avatarIv);
-        this.textView = itemView.findViewById(R.id.nameTv);
-        this.author=itemView.findViewById(R.id.author);
-        // itemView.setOnClickListener(this);
+        public MyHolder(@NonNull View itemView) {
+            super(itemView);
+            this.imageView = itemView.findViewById(R.id.avatarIv);
+            this.textView = itemView.findViewById(R.id.nameTv);
+            this.author=itemView.findViewById(R.id.author);
+            // itemView.setOnClickListener(this);
+        }
     }
-
-
 }
 

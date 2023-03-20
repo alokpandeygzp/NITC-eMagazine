@@ -1,37 +1,21 @@
-package com.example.nitcemag.ui.myArticles;
-
-import androidx.core.view.MenuItemCompat;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
+package com.example.nitcemag;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
-import com.example.nitcemag.R;
-import com.example.nitcemag.ui.home.Adapters.AdapterSports;
-import com.example.nitcemag.ui.home.Models.ModelSports;
 import com.example.nitcemag.ui.postArticles.UserArticles;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,21 +27,27 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyArticles extends Fragment {
+public class MyArticles extends AppCompatActivity {
 
-    private MyArticlesViewModel mViewModel;
     RecyclerView recyclerView;
     AdapterMyArticles adapterMyArticles;
     FirebaseUser user;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     List<UserArticles> myArticleList;
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstancesState) {
-        View view = inflater.inflate(R.layout.fragment_myarticles, container, false);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.activity_my_articles);
 
-        recyclerView = view.findViewById(R.id.myArticles_recycler_view);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));
+
+
+        recyclerView = findViewById(R.id.myArticles_recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(MyArticles.this));
         myArticleList = new ArrayList<>();
 
         user = auth.getCurrentUser();
@@ -75,7 +65,7 @@ public class MyArticles extends Fragment {
                         if(userArticles1.getEditor()==1)
                             myArticleList.add(userArticles1);
                     }
-                    adapterMyArticles = new AdapterMyArticles(getActivity(), myArticleList);
+                    adapterMyArticles = new AdapterMyArticles(MyArticles.this, myArticleList);
                     recyclerView.setAdapter(adapterMyArticles);
                 }
             }
@@ -85,8 +75,6 @@ public class MyArticles extends Fragment {
 
             }
         });
-
-        return view;
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -126,16 +114,6 @@ public class MyArticles extends Fragment {
                 return false;
             }
         });
-
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-
-    public void onCreate(Bundle savedInstanceState)
-    {
-        setHasOptionsMenu(true);
-        super.onCreate(savedInstanceState);
     }
     private void searchUsers(String query)
     {
@@ -158,7 +136,7 @@ public class MyArticles extends Fragment {
 
 
                     //adapter
-                    adapterMyArticles= new AdapterMyArticles(getActivity(),myArticleList);
+                    adapterMyArticles= new AdapterMyArticles(MyArticles.this,myArticleList);
                     //refresh adapter
                     adapterMyArticles.notifyDataSetChanged();
                     //set adapter to recycler view
@@ -173,5 +151,3 @@ public class MyArticles extends Fragment {
         });
     }
 }
-
-

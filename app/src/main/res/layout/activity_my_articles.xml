@@ -5,11 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".MyArticles">
 
-<androidx.recyclerview.widget.RecyclerView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/myArticles_recycler_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/myArticles_recycler_view"
 
-    />
+        />
 
 </RelativeLayout>

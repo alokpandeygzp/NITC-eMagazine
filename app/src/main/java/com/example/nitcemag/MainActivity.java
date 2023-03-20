@@ -114,17 +114,25 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        menu.findItem(R.id.nav_reviewerDashboard).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.findItem(R.id.nav_myArticles).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem item) {
-                Intent i=new Intent(MainActivity.this,ReviewerArticlesList.class);
+                Intent i=new Intent(MainActivity.this,MyArticles.class);
                 startActivity(i);
                 drawer.closeDrawers();
                 return false;
             }
         });
 
+//        menu.findItem(R.id.nav_postArticles).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(@NonNull MenuItem item) {
+//                Intent i=new Intent(MainActivity.this,PostArticles.class);
+//                startActivity(i);
+//                drawer.closeDrawers();
+//                return false;
+//            }
+//        });
 
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
