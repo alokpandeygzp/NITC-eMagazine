@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
@@ -43,7 +42,6 @@ public class MyArticles extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));
-
 
         recyclerView = findViewById(R.id.myArticles_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -77,8 +75,10 @@ public class MyArticles extends AppCompatActivity {
         });
     }
 
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.search, menu);
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search, menu);
 
         //search View
         MenuItem item = menu.findItem(R.id.search);
@@ -114,6 +114,7 @@ public class MyArticles extends AppCompatActivity {
                 return false;
             }
         });
+        return false;
     }
     private void searchUsers(String query)
     {
@@ -129,7 +130,7 @@ public class MyArticles extends AppCompatActivity {
                     UserArticles modelUser =ds.getValue(UserArticles.class);
                     //get all searched users except currently signed in user
                     if((modelUser.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                            modelUser.getAuthor().toLowerCase().contains(query.toLowerCase()) )&& modelUser.getEditor()==1)
+                            modelUser.getAuthor().toLowerCase().contains(query.toLowerCase()) )&& modelUser.getEditor()==1 && modelUser.getEmail().equals(auth.getCurrentUser().getEmail()))
                     {
                         myArticleList.add(modelUser);
                     }

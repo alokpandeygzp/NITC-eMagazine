@@ -83,7 +83,7 @@ public class AcademicsFragment extends Fragment {
                 {
                     ModelSports modelSports =ds.getValue(ModelSports.class);
                     //
-                    if(modelSports.getCategory().equals("Academic")  && modelSports.getEditor()==1)
+                    if(modelSports.getCategory().equals("Study")  && modelSports.getEditor()==1)
                     {
                         sportsList.add(modelSports);
                     }
@@ -164,7 +164,7 @@ public class AcademicsFragment extends Fragment {
                     ModelSports modelUser =ds.getValue(ModelSports.class);
                     //get all searched users except currently signed in user
                     if((modelUser.getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                            modelUser.getAuthor().toLowerCase().contains(query.toLowerCase())) && modelUser.getEditor()==1 && modelUser.getCategory().equals("Academic"))
+                            modelUser.getAuthor().toLowerCase().contains(query.toLowerCase())) && modelUser.getEditor()==1 && modelUser.getCategory().equals("Study"))
                     {
                         sportsList.add(modelUser);
                     }

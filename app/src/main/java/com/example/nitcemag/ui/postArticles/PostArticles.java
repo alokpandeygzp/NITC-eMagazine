@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -66,6 +67,7 @@ public class PostArticles extends AppCompatActivity {
     String image;
     EditText titles;
     EditText name;
+    TextView em;
     EditText article_descp;
     private  static  final int CAMERA_REQUEST_CODE=100;
     private  static  final int STORAGE_REQUEST_CODE=200;
@@ -86,7 +88,7 @@ public class PostArticles extends AppCompatActivity {
 
         key=reference.child("Articles").push().getKey();
         Spinner category=findViewById(R.id.category);
-        String[] cat={"Sports","Academic","Events","Notice"};
+        String[] cat={"Sports","Study","Events","Notice"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(PostArticles.this, android.R.layout.simple_spinner_item, cat);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         category.setAdapter(adapter);
@@ -96,7 +98,8 @@ public class PostArticles extends AppCompatActivity {
         titles = findViewById(R.id.textTitle);
         name= findViewById(R.id.textName);
         article_descp= findViewById(R.id.text_descp);
-
+        em=findViewById(R.id.textEmail);
+        em.setText(auth.getCurrentUser().getEmail());
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -244,7 +247,6 @@ public class PostArticles extends AppCompatActivity {
         name.setText("");
         article_descp.setText("");
         titles.requestFocus();
-
     }
 
     private boolean checkStoragePermission()
