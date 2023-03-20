@@ -96,7 +96,7 @@ public class EditorAction extends AppCompatActivity {
                                 Toast.makeText(EditorAction.this, "Article Rejected for Publish", Toast.LENGTH_SHORT).show();
 
 
-                                Intent i = new Intent(EditorAction.this, ReviewerArticlesList.class);
+                                Intent i = new Intent(EditorAction.this, EditorArticlesList.class);
                                 finish();
 //                                overridePendingTransition(0, 0);
                                 startActivity(i);
