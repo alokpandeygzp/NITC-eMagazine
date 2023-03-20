@@ -30,6 +30,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -49,7 +52,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 
-public class PostArticles extends Fragment {
+public class PostArticles extends AppCompatActivity {
 
    // FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -70,7 +73,88 @@ public class PostArticles extends Fragment {
     private  static  final int IMAGE_PICK_GALLERY_CODE=300;
     String cameraPermission[];
     String storagePermission[];
-    @SuppressLint("MissingInflatedId")
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.fragment_post_articles);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));
+        storageReference = FirebaseStorage.getInstance().getReference();
+        cameraPermission=new String[]{android.Manifest.permission.CAMERA,android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        storagePermission=new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        key=reference.child("Articles").push().getKey();
+        Spinner category=findViewById(R.id.category);
+        String[] cat={"Sports","Academic","Events","Notice"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(PostArticles.this, android.R.layout.simple_spinner_item, cat);
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        category.setAdapter(adapter);
+
+        final String[] article_cat = new String[1];
+
+        titles = findViewById(R.id.textTitle);
+        name= findViewById(R.id.textName);
+        article_descp= findViewById(R.id.text_descp);
+
+        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String value=adapterView.getItemAtPosition(i).toString();
+                article_cat[0] =value;
+                // Toast.makeText(view.getContext(), value, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+
+        });
+
+
+
+        Button imagebtn=findViewById(R.id.img_btn);
+
+        imagebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view2) {
+                //  imagebtn.setOnClickListener(view -> mGetContent.launch("image/*"));
+                image="";
+                showImagePicDialog();
+            }
+        });
+
+        Button submit=findViewById(R.id.submit_btn);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String author=name.getText().toString();
+                String title= titles.getText().toString();
+                String description=article_descp.getText().toString();
+                String category=article_cat[0];
+                String email=auth.getCurrentUser().getEmail();
+                // Toast.makeText(view.getContext(), email[1], Toast.LENGTH_SHORT).show();
+                if(author.isEmpty() || title.isEmpty()  || description.isEmpty() || category.isEmpty())
+                {
+                    Toast.makeText(view.getContext(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(view.getContext(), "Your Article send successfully to Publish", Toast.LENGTH_SHORT).show();
+                    article_by_userFirebase(view,author,email,title,description,category,image,key);
+                }
+                // Toast.makeText(view.getContext(), "Your Article send successfully to Publish", Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
+    }
+
+
+        @SuppressLint("MissingInflatedId")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -84,7 +168,8 @@ public class PostArticles extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_articles, container, false);
         category= view.findViewById(R.id.category);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, cat);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, cat);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         category.setAdapter(adapter);
 
@@ -164,7 +249,7 @@ public class PostArticles extends Fragment {
 
     private boolean checkStoragePermission()
     {
-        boolean result= ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        boolean result= ContextCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == (PackageManager.PERMISSION_GRANTED);
         return result;
     }
@@ -175,10 +260,10 @@ public class PostArticles extends Fragment {
 
     private boolean checkCameraPermission()
     {
-        boolean result= ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.CAMERA)
+        boolean result= ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA)
                 == (PackageManager.PERMISSION_GRANTED);
 
-        boolean result1= ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        boolean result1= ContextCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == (PackageManager.PERMISSION_GRANTED);
         return result && result1;
     }
@@ -192,7 +277,7 @@ public class PostArticles extends Fragment {
 
         String options[]={"Camera", "Gallery"};
         //alert
-        AlertDialog.Builder builder=new AlertDialog.Builder((getContext()));
+        AlertDialog.Builder builder=new AlertDialog.Builder((this));
         //set builder
         builder.setTitle("Pick Image from");
         //set items to dialog
@@ -205,12 +290,12 @@ public class PostArticles extends Fragment {
 //                    //camera
                     if(!checkCameraPermission())
                     {
-                        Toast.makeText(getContext(), "checking camera", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PostArticles.this, "checking camera", Toast.LENGTH_SHORT).show();
                         requestCameraPermission();
                     }
                     else
                     {
-                        Toast.makeText(getContext(), "checking camera", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PostArticles.this, "checking camera", Toast.LENGTH_SHORT).show();
                         pickFromCamera();
                     }
                 }
@@ -246,7 +331,7 @@ public class PostArticles extends Fragment {
                         pickFromCamera();
                     } else {
                         //permissions denied
-                        Toast.makeText(getContext(), "Please Enable Camera and Storage Permission", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Please Enable Camera and Storage Permission", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -259,7 +344,7 @@ public class PostArticles extends Fragment {
                         pickFromGallery();
                     } else {
                         //permissions denied
-                        Toast.makeText(getContext(), "Please Enable Storage Permission", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Please Enable Storage Permission", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -304,19 +389,19 @@ public class PostArticles extends Fragment {
                 {
                     //image uploaded
                     //add or update url in user's database
-                    Toast.makeText(getContext(), "Image Uploaded", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostArticles.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
                     image=downloadUri.toString();
                 }
                 else
                 {
                     //image error
-                    Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostArticles.this, "Error", Toast.LENGTH_SHORT).show();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PostArticles.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -334,7 +419,7 @@ public class PostArticles extends Fragment {
         values.put(MediaStore.Images.Media.TITLE, "Temp Pic");
         values.put(MediaStore.Images.Media.DESCRIPTION, "Temp DEscription");
         //put image uri
-        image_uri=getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+        image_uri=PostArticles.this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
         //intent to start camera
         Intent cameraIntent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);

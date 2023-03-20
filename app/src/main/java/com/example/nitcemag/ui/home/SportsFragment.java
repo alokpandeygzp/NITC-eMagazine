@@ -52,13 +52,11 @@ public class SportsFragment extends Fragment {
     List<ModelSports> sportsList;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_sports, container, false);
-        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
         firebaseAuth =FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("PostedArticles");

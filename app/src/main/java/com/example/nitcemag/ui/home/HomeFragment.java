@@ -1,5 +1,6 @@
 package com.example.nitcemag.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.nitcemag.ArticlesActivity;
+import com.example.nitcemag.MainActivity;
 import com.example.nitcemag.R;
 import com.example.nitcemag.ui.home.Adapters.AdapterSports;
 import com.example.nitcemag.ui.home.HomeViewModel;
@@ -54,6 +57,7 @@ public class HomeFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Study"));
         tabLayout.addTab(tabLayout.newTab().setText("Events"));
         tabLayout.addTab(tabLayout.newTab().setText("Notice"));
+
         viewPager.setAdapter(new FragmentPagerAdapter(getParentFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
             public Fragment getItem(int position) {
@@ -112,6 +116,7 @@ public class HomeFragment extends Fragment {
         });
         return view;
     }
+
 
 
 

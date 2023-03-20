@@ -78,7 +78,7 @@ public class MyArticles extends AppCompatActivity {
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //nuinflater.inflate(R.menu.search, menu);
+        inflater.inflate(R.menu.search, menu);
 
         //search View
         MenuItem item = menu.findItem(R.id.search);

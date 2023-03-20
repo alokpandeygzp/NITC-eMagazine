@@ -2,6 +2,8 @@ package com.example.nitcemag;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.example.nitcemag.ui.postArticles.PostArticles;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -80,6 +82,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem item) {
                 Intent i=new Intent(MainActivity.this,Signup.class);
+                startActivity(i);
+                drawer.closeDrawers();
+                return false;
+            }
+        });
+
+        menu.findItem(R.id.nav_myArticles).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+                Intent i=new Intent(MainActivity.this, MyArticles.class);
+                startActivity(i);
+                drawer.closeDrawers();
+                return false;
+            }
+        });
+
+        menu.findItem(R.id.nav_postArticles).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+                Intent i=new Intent(MainActivity.this, PostArticles.class);
                 startActivity(i);
                 drawer.closeDrawers();
                 return false;

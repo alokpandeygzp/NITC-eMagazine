@@ -21,9 +21,9 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MyArticles"
@@ -38,18 +38,24 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/res" />
+                android:resource="@xml/res"/>
         </provider>
+
 
         <activity
             android:name=".EditorAction"
             android:exported="false"
-            android:label="Editor&apos;s Dashboard"
-            android:parentActivityName=".EditorArticlesList" />
+            android:label="Editor's Dashboard"
+            android:parentActivityName=".EditorArticlesList"/>
         <activity
             android:name=".EditorDashboard"
             android:exported="false"
             android:label="Editor&apos;s Dashboard"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ui.postArticles.PostArticles"
+            android:exported="false"
+            android:label="Post Articles"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MyProfile"
@@ -79,7 +85,7 @@
         <activity
             android:name=".ReviewerAction"
             android:exported="false"
-            android:label="Reviewer&apos;s Dashboard"
+            android:label="Reviewer's Dashboard"
             android:parentActivityName=".ReviewerArticlesList" />
         <activity
             android:name=".RejectList"
@@ -89,7 +95,7 @@
         <activity
             android:name=".EditorArticlesList"
             android:exported="false"
-            android:label="Editor&apos;s Dashboard"
+            android:label="Editor's Dashboard"
             android:parentActivityName=".EditorDashboard" />
         <activity
             android:name=".ReviewerArticlesList"
