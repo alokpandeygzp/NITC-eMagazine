@@ -124,6 +124,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        menu.findItem(R.id.nav_reviewerDashboard).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+                Intent i=new Intent(MainActivity.this,ReviewerArticlesList.class);
+                startActivity(i);
+                drawer.closeDrawers();
+                return false;
+            }
+        });
+
 //        menu.findItem(R.id.nav_postArticles).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 //            @Override
 //            public boolean onMenuItemClick(@NonNull MenuItem item) {
