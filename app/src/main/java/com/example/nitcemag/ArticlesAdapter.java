@@ -15,10 +15,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nitcemag.ui.postArticles.UserArticles;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -53,12 +57,43 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyHold
         holder.name.setText(name);
         holder.comment.setText(des);
         articlekey=list.get(position).getArticle();
+
+        holder.ll.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view)
+            {
+                int pos=holder.getAdapterPosition();
+                DatabaseReference ref= FirebaseDatabase.getInstance().getReference();
+                ref.child("Editor").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot ds: snapshot.getChildren())
+                        {
+                            if(ds.getKey().equals(user.getUid()))
+                            {
+                                key=list.get(pos).getKey();
+                                deleteDialog();
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                return true;
+            }
+        });
+
         holder.ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
                 int pos=holder.getAdapterPosition();
                 String em = list.get(pos).getEmail();
+
 
                 if (em.equals(user.getEmail()))
                 {
@@ -142,6 +177,32 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyHold
         });
         builder.create().show();
     }
+
+    private void deleteDialog() {
+
+        //alert
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        DatabaseReference mPostReference = FirebaseDatabase.getInstance().getReference();
+        builder.setTitle("Delete");
+        //set builder
+        builder.setMessage("Do you want to Delete this Comment?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mPostReference.child("PostedArticles").child("Comments").child(articlekey).child(key).removeValue();
+            }
+
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        //create and show dialog
+        builder.create().show();
+    }
+
+
     public class MyHolder extends RecyclerView.ViewHolder {
         TextView comment;
         TextView name;
