@@ -307,6 +307,7 @@ public class PostArticles extends AppCompatActivity {
                     if(!checkStoragePermission())
                     {
                         requestStoragePermission();
+                        Toast.makeText(PostArticles.this, "storage permission", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
