@@ -118,7 +118,7 @@ public class Signin extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(Signin.this, "Incorrect Password Entered.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Signin.this, "Incorrect Email or Password Entered.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

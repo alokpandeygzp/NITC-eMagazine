@@ -92,7 +92,8 @@ public class EditorAction extends AppCompatActivity {
                         rejectBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ref.child(ds.getKey()).child("reviewer").setValue(-1);
+                                ref.child(ds.getKey()).child("editor").setValue(-1);
+                                ref.child(ds.getKey()).child("reviewer").setValue(0);
                                 Toast.makeText(EditorAction.this, "Article Rejected for Publish", Toast.LENGTH_SHORT).show();
 
 
