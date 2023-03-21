@@ -11,7 +11,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ReviewerAction" >
+    tools:context=".ReviewerAction"
+    android:padding="20dp">
     <ImageView
         android:id="@+id/image"
         android:layout_marginTop="20dp"
@@ -27,9 +28,11 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/image">
     <TextView
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Title:"
+
         android:textSize="25sp"
         android:textStyle="bold"
         />
@@ -78,6 +81,7 @@
     <com.google.android.material.textfield.TextInputEditText
         android:layout_centerHorizontal="true"
         android:textSize="21sp"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/author"
@@ -89,19 +93,27 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/l3"
         android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true">
-    <Button
+        android:layout_centerHorizontal="true"
+        >
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonAcceptReview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-       android:text="Accept" />
-
-    <Button
+        android:textColor="#fff"
+        android:background="@drawable/roundedgradientbutton"
+        android:text="Accept" />
+    <TextView
+        android:layout_width="5dp"
+        android:layout_height="1dp"/>
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonRejectReview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:textColor="#fff"
+        android:background="@drawable/roundedgradientbutton"
+
         android:text="Reject" />
     </LinearLayout>
 </RelativeLayout>

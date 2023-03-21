@@ -75,7 +75,7 @@ public class ArticlesActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     List<ModelComment> list= new ArrayList<>();
     DatabaseReference reference=FirebaseDatabase.getInstance().getReference();
-    String name;
+    String name,key;
     LinearLayout ll;
     Bitmap bitmap;
     ModelSports ms;
@@ -95,7 +95,7 @@ public class ArticlesActivity extends AppCompatActivity {
 
 
          Intent intent= getIntent();
-         String key=intent.getStringExtra("key");
+          key=intent.getStringExtra("key");
          tt= findViewById(R.id.title);
          img=findViewById(R.id.image);
          desc=findViewById(R.id.description);
@@ -362,6 +362,43 @@ public class ArticlesActivity extends AppCompatActivity {
     int convertwidth, convertheight;
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        FirebaseUser user= firebaseAuth.getCurrentUser();
+        if(user!=null)
+        {
+            reference.child("Editor").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot ds:snapshot.getChildren())
+                    {
+                        if(ds.getKey().equals(user.getUid().toString()))
+                        {
+                            getMenuInflater().inflate(R.menu.edit, menu);
+                            MenuItem i= menu.findItem(R.id.edit);
+                            i.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                                    Intent intent= new Intent(ArticlesActivity.this,EditorActionEdit.class);
+                                    intent.putExtra("key",key);
+                                    startActivity(intent);
+                                    finish();
+                                    return true;
+                                }
+                            });
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
+        }
+
+
+
         getMenuInflater().inflate(R.menu.download, menu);
         MenuItem item= menu.findItem(R.id.download);
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

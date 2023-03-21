@@ -51,6 +51,12 @@
             android:label="Editor&apos;s Dashboard"
             android:parentActivityName=".EditorArticlesList" />
         <activity
+            android:name=".EditorActionEdit"
+            android:exported="false"
+            android:label="Editor&apos;s Dashboard"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
             android:name=".EditorDashboard"
             android:exported="false"
             android:label="Editor&apos;s Dashboard"

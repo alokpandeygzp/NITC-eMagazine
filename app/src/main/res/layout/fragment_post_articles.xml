@@ -13,8 +13,11 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textTitle"
+        android:background="@drawable/rounded_edit_text"
+        android:padding="10dp"
+        android:textColorHint="#0277BD"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
         android:hint="Title"
@@ -27,8 +30,11 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textName"
+        android:background="@drawable/rounded_edit_text"
+        android:padding="10dp"
+        android:textColorHint="#0277BD"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
         android:hint="Name"
@@ -37,18 +43,20 @@
 
     <TextView
         android:id="@+id/textEmail"
+        android:padding="10dp"
+        android:textColor="#0277BD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="17dp"
         android:hint="Email"
-        android:textSize="20dp"
+        android:textSize="22dp"
         android:minHeight="48dp" />
 
     <Spinner
         android:id="@+id/category"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:contentDescription="Category"
@@ -57,13 +65,15 @@
         tools:layout_editor_absoluteX="27dp"
         tools:layout_editor_absoluteY="169dp"
         android:layout_gravity="center"
-
         />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/text_descp"
+        android:background="@drawable/rounded_edit_text"
+        android:padding="10dp"
+        android:textColorHint="#0277BD"
         android:layout_width="match_parent"
-        android:layout_height="95dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
         android:gravity="top"
         android:hint="Description"
@@ -80,13 +90,14 @@
         app:layout_constraintVertical_bias="0.527"
         tools:layout_editor_absoluteX="27dp" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/img_btn"
         android:layout_width="250dp"
         android:layout_height="66dp"
-        android:backgroundTint="@color/black"
+        android:background="@drawable/roundedgradientbutton"
         android:text="Upload Image"
         android:textStyle="bold"
+        android:textColor="#fff"
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -94,13 +105,14 @@
         tools:layout_editor_absoluteY="365dp"
         android:layout_gravity="center"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/submit_btn"
         android:layout_width="250dp"
         android:layout_height="66dp"
-        android:backgroundTint="@color/black"
         android:layout_marginTop="15dp"
         android:text="Submit"
+        android:textColor="#fff"
+        android:background="@drawable/roundedgradientbutton"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
