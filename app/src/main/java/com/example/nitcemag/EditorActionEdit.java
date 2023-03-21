@@ -83,7 +83,7 @@ public class EditorActionEdit extends AppCompatActivity {
                                 abc.setTitle(tt.getText().toString().trim());
                                 abc.setEditor(1);
 
-                                DatabaseReference db=FirebaseDatabase.getInstance().getReference("PostedArticles");
+                                DatabaseReference db=FirebaseDatabase.getInstance().getReference("PostedArticles").child("Articles");
                                 db.child(abc.getKey()).setValue(abc);
                                 Toast.makeText(EditorActionEdit.this, "Article Edited", Toast.LENGTH_SHORT).show();
 

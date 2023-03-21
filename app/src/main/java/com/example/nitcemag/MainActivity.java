@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
 
             NavigationView navigationView = findViewById(R.id.nav_view);
             Menu menu = navigationView.getMenu();
-
+            Toast.makeText(this, "Logged Out Successfully", Toast.LENGTH_SHORT).show();
             //To refresh the Action menu
             invalidateOptionsMenu();
 
