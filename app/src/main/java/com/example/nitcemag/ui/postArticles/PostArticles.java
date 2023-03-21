@@ -243,10 +243,9 @@ public class PostArticles extends AppCompatActivity {
     {
         UserArticles userarticles= new UserArticles(author,email,title,description,category,img,key);
         reference.child("Articles").child(key).setValue(userarticles);
-        titles.setText("");
-        name.setText("");
-        article_descp.setText("");
-        titles.requestFocus();
+        Intent intent = new Intent(PostArticles.this, PostArticles.class);
+        finish();
+        startActivity(intent);
     }
 
     private boolean checkStoragePermission()
