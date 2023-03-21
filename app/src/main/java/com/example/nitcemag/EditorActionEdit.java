@@ -32,7 +32,7 @@ public class EditorActionEdit extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setContentView(R.layout.activity_reviewer_action);
+        setContentView(R.layout.editor_action_edit);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));

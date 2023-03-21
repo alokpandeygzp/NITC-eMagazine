@@ -53,7 +53,7 @@
         <activity
             android:name=".EditorActionEdit"
             android:exported="false"
-            android:label="Editor&apos;s Dashboard"
+            android:label="Edit Article"
             android:parentActivityName=".MainActivity" />
 
         <activity

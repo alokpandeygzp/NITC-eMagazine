@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".EditorActionEdit"
+    >
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ReviewerAction"
+        android:padding="20dp">
+        <ImageView
+            android:id="@+id/image"
+            android:layout_marginTop="20dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/l1"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/image">
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title:"
+
+                android:textSize="25sp"
+                android:textStyle="bold"
+                />
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title"
+                android:textSize="22sp"
+                android:text="Title"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/l2"
+            android:layout_below="@id/l1"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description:"
+                android:textSize="23sp"
+                android:textStyle="bold"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_centerHorizontal="true"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/description"
+                android:text="Description"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/l3"
+            android:layout_below="@+id/l2"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Author:"
+                android:textSize="23sp"
+                android:textStyle="bold"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_centerHorizontal="true"
+                android:textSize="21sp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/author"
+                android:text="Author"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/l3"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            >
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonAcceptReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:textColor="#fff"
+                android:background="@drawable/roundedgradientbutton"
+                android:text="Submit" />
+            <TextView
+                android:layout_width="5dp"
+                android:layout_height="1dp"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonRejectReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:textColor="#fff"
+                android:background="@drawable/roundedgradientbutton"
+
+                android:text="Cancel" />
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>
