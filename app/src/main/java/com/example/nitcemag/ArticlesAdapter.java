@@ -91,7 +91,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyHold
                    editComment("Comment");
 
                 } else if (i == 1) {
-                    DatabaseReference mPostReference = FirebaseDatabase.getInstance().getReference("Comments").child(articlekey).child(key);
+                    DatabaseReference mPostReference = FirebaseDatabase.getInstance().getReference("PostedArticles").child("Comments").child(articlekey).child(key);
                     mPostReference.removeValue();
                 }
             }
@@ -101,7 +101,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyHold
     }
     private void editComment(String k)
     {
-        DatabaseReference mPostReference = FirebaseDatabase.getInstance().getReference("Comments").child(articlekey).child(key);
+        DatabaseReference mPostReference = FirebaseDatabase.getInstance().getReference("PostedArticles").child("Comments").child(articlekey).child(key);
         //custom dialog
         AlertDialog.Builder builder=new AlertDialog.Builder(context);
         builder.setTitle("Update "+k);

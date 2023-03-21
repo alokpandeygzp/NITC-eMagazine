@@ -153,14 +153,14 @@ public class ArticlesActivity extends AppCompatActivity {
         }
         else {
             // Name needed for commenting on the article after Signin only
-            reference.child("Likes").addValueEventListener(new ValueEventListener() {
+            reference.child("PostedArticles").child("Likes").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot ds:snapshot.getChildren())
                     {
                         if(ds.getKey().equals(key))
                         {
-                            reference.child("Likes").child(key).addValueEventListener(new ValueEventListener() {
+                            reference.child("PostedArticles").child("Likes").child(key).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot)
                                 {
@@ -220,7 +220,7 @@ public class ArticlesActivity extends AppCompatActivity {
             like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    reference.child("Likes").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                    reference.child("PostedArticles").child("Likes").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             int flag=1;
@@ -244,9 +244,9 @@ public class ArticlesActivity extends AppCompatActivity {
                             }
                             if(flag==1)
                             {
-                                String k = reference.child("Likes").child(key).push().getKey();
+                                String k = reference.child("PostedArticles").child("Likes").child(key).push().getKey();
                                 ModelLike mc = new ModelLike(firebaseAuth.getCurrentUser().getEmail().toString(), key, name, k);
-                                reference.child("Likes").child(key).child(k).setValue(mc);
+                                reference.child("PostedArticles").child("Likes").child(key).child(k).setValue(mc);
                                 try
                                 {
                                     Picasso.get().load(R.drawable.img_1).placeholder(R.drawable.img_2).into(like);
@@ -310,21 +310,21 @@ public class ArticlesActivity extends AppCompatActivity {
                     }
                     else {
                         reference = FirebaseDatabase.getInstance().getReference();
-                        String k = reference.child("Comments").child(key).push().getKey();
+                        String k = reference.child("PostedArticles").child("Comments").child(key).push().getKey();
                         ModelComment mc = new ModelComment(firebaseAuth.getCurrentUser().getEmail().toString(), key, cmnt, name, k);
-                        reference.child("Comments").child(key).child(k).setValue(mc);
+                        reference.child("PostedArticles").child("Comments").child(key).child(k).setValue(mc);
                     }
                 }
             });
 
-            reference.child("Comments").addValueEventListener(new ValueEventListener() {
+            reference.child("PostedArticles").child("Comments").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot ds: snapshot.getChildren())
                     {
                         if(ds.getKey().equals(key))
                         {
-                            reference.child("Comments").child(key).addValueEventListener(new ValueEventListener() {
+                            reference.child("PostedArticles").child("Comments").child(key).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     list.clear();

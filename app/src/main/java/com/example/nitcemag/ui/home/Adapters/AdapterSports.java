@@ -135,7 +135,7 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                    reference.child("PostedArticles").addValueEventListener(new ValueEventListener() {
+                reference.child("PostedArticles").child("Articles").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for(DataSnapshot ds: snapshot.getChildren())
