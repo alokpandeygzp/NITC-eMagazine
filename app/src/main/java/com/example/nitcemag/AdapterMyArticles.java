@@ -45,7 +45,7 @@ public class AdapterMyArticles extends RecyclerView.Adapter<AdapterMyArticles.My
         holder.author.setText(userArticles.get(position).getAuthor());
         try
         {
-            Picasso.get().load(image).placeholder(R.drawable.newspaper).resize(450, 500).into(holder.imageView);
+            Picasso.get().load(image).placeholder(R.drawable.newspaper).into(holder.imageView);
         }
         catch (Exception e)
         {

@@ -42,7 +42,7 @@ public class ReviewerArticlesListAdapter extends RecyclerView.Adapter<ReviewerAr
         String image=list.get(position).getImage();
         try
         {
-            Picasso.get().load(image).placeholder(R.drawable.newspaper).resize(450, 500).into(holder.avatarIv);
+            Picasso.get().load(image).placeholder(R.drawable.newspaper).into(holder.avatarIv);
         }
         catch (Exception e)
         {
