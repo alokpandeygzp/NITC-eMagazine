@@ -71,7 +71,7 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
         holder.author.setText(sportsList.get(position).getAuthor());
         try
         {
-            Picasso.get().load(image).placeholder(R.drawable.newspaper).into(holder.mavatarIv);
+            Picasso.get().load(image).placeholder(R.drawable.newspaper).resize(450, 500).into(holder.mavatarIv);
         }
         catch (Exception e)
         {

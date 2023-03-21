@@ -52,7 +52,7 @@ public class RejectListAdapter extends RecyclerView.Adapter<RejectListAdapter.My
         holder.title.setText(articles.getTitle());
         holder.author.setText(articles.getAuthor());
         try{
-            Picasso.get().load(articles.getImage()).into(holder.img);
+            Picasso.get().load(articles.getImage()).resize(450, 500).into(holder.img);
         }
         catch (Exception e)
         {
