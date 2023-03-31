@@ -17,28 +17,40 @@
         android:layout_height="wrap_content"
         android:id="@+id/lLayout"
         android:orientation="vertical"
-        android:layout_centerHorizontal="true"
-        >
+        android:layout_centerHorizontal="true">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title"
+            android:layout_centerHorizontal="true"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:text="Title"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
+            <ImageView
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/star"
+                android:src="@drawable/unstar"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     <ImageView
         android:id="@+id/image"
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
         android:layout_width="300dp"
         android:layout_height="300dp"
+        android:layout_below="@+id/title"
         android:layout_centerHorizontal="true"/>
 
-    <TextView
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:layout_below="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/title"
-        android:layout_centerHorizontal="true"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:layout_marginTop="25dp"
-        android:text="Title"/>
+
     <TextView
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/title"
@@ -50,7 +62,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/description"
         android:text="Description"/>
-    <TextView
+
+        <TextView
         android:layout_centerHorizontal="true"
         android:textSize="25sp"
         android:layout_marginTop="25dp"
@@ -60,6 +73,7 @@
         android:layout_below="@+id/description"
         android:id="@+id/author"
         android:text="Author"/>
+
     </LinearLayout>
 
     <LinearLayout

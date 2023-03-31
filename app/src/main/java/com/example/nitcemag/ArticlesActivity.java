@@ -39,6 +39,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nitcemag.ui.ModelFav;
 import com.example.nitcemag.ui.ModelLike;
 import com.example.nitcemag.ui.home.Models.ModelSports;
 import com.google.android.material.textfield.TextInputEditText;
@@ -75,12 +76,12 @@ public class ArticlesActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     List<ModelComment> list= new ArrayList<>();
     DatabaseReference reference=FirebaseDatabase.getInstance().getReference();
-    String name,key;
+    String name,key,email;
     LinearLayout ll;
     Bitmap bitmap;
     ModelSports ms;
-    TextView tt, desc, auth,lcount;
-    ImageView img,send,like;
+    TextView tt, desc, author,lcount,auth1;
+    ImageView img,send,like,star;
     TextInputEditText com;
     RecyclerView rv;
 
@@ -95,20 +96,22 @@ public class ArticlesActivity extends AppCompatActivity {
 
 
          Intent intent= getIntent();
-          key=intent.getStringExtra("key");
+         key=intent.getStringExtra("key");
          tt= findViewById(R.id.title);
          img=findViewById(R.id.image);
          desc=findViewById(R.id.description);
-         auth=findViewById(R.id.author);
+         author=findViewById(R.id.author);
          send=findViewById(R.id.imgbutton);
          com=findViewById(R.id.comment);
          rv=findViewById(R.id.comments_recyclerView);
          like=findViewById(R.id.like);
          lcount=findViewById(R.id.lcount);
+         star=findViewById(R.id.star);
          ll=findViewById(R.id.lLayout);
          rv.setHasFixedSize(true);
          rv.setLayoutManager(new LinearLayoutManager(ArticlesActivity.this));
          firebaseAuth=FirebaseAuth.getInstance();
+
 
 
         //get all
@@ -124,8 +127,9 @@ public class ArticlesActivity extends AppCompatActivity {
                         ms=modelSports;
                         tt.setText(modelSports.getTitle());
                         desc.setText(modelSports.getDescription());
-                        auth.setText(modelSports.getAuthor());
+                        author.setText(modelSports.getAuthor());
                         String image=modelSports.getImage();
+                        email=modelSports.getEmail();
                         try
                         {
                             Picasso.get().load(image).placeholder(R.drawable.newspaper).into(img);
@@ -142,6 +146,8 @@ public class ArticlesActivity extends AppCompatActivity {
             }
         });
 
+
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         if(user==null ) {
@@ -150,8 +156,112 @@ public class ArticlesActivity extends AppCompatActivity {
             rv.setVisibility(View.GONE);
             like.setVisibility(View.GONE);
             lcount.setVisibility(View.GONE);
+            star.setVisibility(View.GONE);
         }
         else {
+            author.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent= new Intent(ArticlesActivity.this,UserProfile.class);
+                    intent.putExtra("email",email);
+                    startActivity(intent);
+                }
+            });
+
+            reference.child("PostedArticles").child("Favourites").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot ds:snapshot.getChildren())
+                    {
+                        if(ds.getKey().equals(key))
+                        {
+                            reference.child("PostedArticles").child("Favourites").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot)
+                                {
+                                    for(DataSnapshot ds:snapshot.getChildren())
+                                    {
+                                        if(ds.child("article").getValue().equals(key))
+                                        {
+                                            try
+                                            {
+                                                Picasso.get().load(R.drawable.star).placeholder(R.drawable.unstar).into(star);
+                                            }
+                                            catch (Exception e)
+                                            {
+
+                                            }
+                                        }
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                            break;
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
+            star.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    reference.child("PostedArticles").child("Favourites").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            int flag=1;
+                            for(DataSnapshot ds:snapshot.getChildren())
+                            {
+                                if(ds.child("article").getValue().equals(key))
+                                {
+                                    try
+                                    {
+                                        Picasso.get().load(R.drawable.unstar).placeholder(R.drawable.star).into(star);
+
+                                    }
+                                    catch (Exception e)
+                                    {
+
+                                    }
+                                    ds.getRef().removeValue();
+                                    flag=0;
+                                    break;
+                                }
+                            }
+                            if(flag==1)
+                            {
+                                String k = reference.child("PostedArticles").child("Favourites").child(user.getUid()).push().getKey();
+                                ModelFav mc = new ModelFav( key);
+                                reference.child("PostedArticles").child("Favourites").child(user.getUid()).child(key).setValue(mc);
+                                try
+                                {
+                                    Picasso.get().load(R.drawable.star).placeholder(R.drawable.unstar).into(star);
+                                }
+                                catch (Exception e)
+                                {
+
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            });
             // Name needed for commenting on the article after Signin only
             reference.child("PostedArticles").child("Likes").addValueEventListener(new ValueEventListener() {
                 @Override
