@@ -47,25 +47,25 @@ public class AdapterMyArticles extends RecyclerView.Adapter<AdapterMyArticles.My
 
         if(userArticles.get(position).getEditor()==1)
         {
-            holder.status.setText("Posted");
+            holder.status.setText("Posted Articles");
             holder.status.setTextColor(Color.GREEN);
             holder.status.setBackgroundColor(R.drawable.rounded_button);
         }
         else if(userArticles.get(position).getReviewer()==1)
         {
-            holder.status.setText("Reviewed");
+            holder.status.setText("Reviewed Articles");
             holder.status.setTextColor(Color.YELLOW);
             holder.status.setBackgroundColor(R.drawable.rounded_button);
         }
         else if(userArticles.get(position).getEditor()==-1 || userArticles.get(position).getReviewer()==-1)
         {
-            holder.status.setText("Rejected");
+            holder.status.setText("Rejected Articles");
             holder.status.setTextColor(Color.RED);
             holder.status.setBackgroundColor(R.drawable.rounded_button);
         }
         else if(userArticles.get(position).getReviewer()==0)
         {
-            holder.status.setText("Pending");
+            holder.status.setText("Pending Articles");
             holder.status.setTextColor(Color.WHITE);
             holder.status.setBackgroundColor(R.drawable.rounded_button);
         }
