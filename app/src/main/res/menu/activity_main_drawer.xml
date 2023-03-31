@@ -12,6 +12,10 @@
             android:id="@+id/nav_myArticles"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/my_articles" />
+        <item
+            android:id="@+id/nav_myFavourites"
+            android:icon="@drawable/baseline_star_24"
+            android:title="Favourites" />
     </group>
 
     <item android:title="@string/authentication">

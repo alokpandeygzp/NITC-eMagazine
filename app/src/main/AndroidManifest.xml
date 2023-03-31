@@ -26,6 +26,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".MyFavourites"
+            android:exported="false"
+            android:label="My Favourites"
+            android:parentActivityName=".MainActivity"/>
+        <activity
             android:name=".UserProfile"
             android:exported="false" />
         <activity

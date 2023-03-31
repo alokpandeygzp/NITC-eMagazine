@@ -8,14 +8,11 @@
     tools:context=".MyProfile"
     >
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".MyProfile"
     android:orientation="vertical"
-    android:padding="26dp"
+    android:padding="5dp"
     android:gravity="center_horizontal"
     >
 
@@ -60,11 +57,12 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/users_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/users_recyclerView"
-        app:layout_constraintTop_toBottomOf="@id/email"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/email" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
