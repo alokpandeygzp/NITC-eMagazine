@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nitcemag.ui.ModelFav;
 import com.example.nitcemag.ui.home.Adapters.AdapterSports;
 import com.example.nitcemag.ui.home.Models.ModelSports;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +38,9 @@ ImageView img;
 String email;
 RecyclerView recyclerView;
 AdapterSports adapterSports;
+FirebaseAuth auth=FirebaseAuth.getInstance();
+FirebaseUser user=auth.getCurrentUser();
+Button button;
 List<ModelSports> sportsList;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -51,7 +57,7 @@ List<ModelSports> sportsList;
         Intent intent = getIntent();
         email = intent.getStringExtra("email");
         em.setText(email);
-
+        button=findViewById((R.id.button));
         recyclerView=findViewById(R.id.users_recyclerView);
         //set it's properties
         recyclerView.setHasFixedSize(true);
@@ -106,6 +112,64 @@ List<ModelSports> sportsList;
             }
         });
 
+        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Followed");
+        reference.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds: snapshot.getChildren())
+                {
+                    if(ds.child("email").getValue().equals(email))
+                    {
+                        button.setBackgroundColor(Color.parseColor("#ffffff"));
+                        button.setTextColor(Color.parseColor("#48b4e0"));
+                        button.setText("Following");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        int flag=1;
+                        for(DataSnapshot ds: snapshot.getChildren())
+                        {
+                            if(ds.child("email").getValue().equals(email))
+                            {
+                                button.setBackgroundColor(Color.parseColor("#48b4e0"));
+                                button.setTextColor(Color.parseColor("#ffffff"));
+                                button.setText("Follow");
+                                ds.getRef().removeValue();
+                                flag=0;
+                                break;
+                            }
+                        }
+                        if(flag==1)
+                        {
+                            String k = reference.child(user.getUid()).push().getKey();
+                            ModelFollow mc = new ModelFollow(email,k);
+                            reference.child(user.getUid()).child(k).setValue(mc);
+                            button.setBackgroundColor(Color.parseColor("#ffffff"));
+                            button.setTextColor(Color.parseColor("#48b4e0"));
+                            button.setText("Following");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
         getAllArticles();
     }
 

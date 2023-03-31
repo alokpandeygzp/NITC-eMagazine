@@ -5,14 +5,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MyProfile"
+    tools:context=".UserProfile"
     >
 <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".MyProfile"
     android:orientation="vertical"
-    android:padding="5dp"
+    android:padding="26dp"
     android:gravity="center_horizontal"
     >
 
@@ -55,14 +58,32 @@
         app:layout_constraintTop_toBottomOf="@+id/username"
         tools:ignore="MissingConstraints" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button"
+        android:layout_width="150dp"
+        android:layout_height="56dp"
+        android:background="#48b4e0"
+        android:text="Follow"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="365dp"
+        android:layout_gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/email"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/users_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email" />
+        app:layout_constraintTop_toBottomOf="@id/button"
+        android:layout_marginTop="15dp"
+        android:id="@+id/users_recyclerView"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
