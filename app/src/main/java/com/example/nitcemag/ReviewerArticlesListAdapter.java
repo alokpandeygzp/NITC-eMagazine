@@ -40,6 +40,7 @@ public class ReviewerArticlesListAdapter extends RecyclerView.Adapter<ReviewerAr
         holder.title.setText(articles.getTitle());
         holder.author.setText(articles.getAuthor());
         String image=list.get(position).getImage();
+        holder.dummy.setVisibility(View.GONE);
         try
         {
             Picasso.get().load(image).placeholder(R.drawable.newspaper).into(holder.avatarIv);
@@ -68,11 +69,14 @@ public class ReviewerArticlesListAdapter extends RecyclerView.Adapter<ReviewerAr
 
         TextView title,author;
         ImageView avatarIv;
+        TextView dummy;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title=itemView.findViewById(R.id.nameTv);
             avatarIv=itemView.findViewById(R.id.avatarIv);
             author=itemView.findViewById(R.id.author);
+            dummy=itemView.findViewById(R.id.status);
 
         }
     }

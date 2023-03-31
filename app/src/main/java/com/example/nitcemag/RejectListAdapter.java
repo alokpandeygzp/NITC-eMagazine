@@ -51,6 +51,7 @@ public class RejectListAdapter extends RecyclerView.Adapter<RejectListAdapter.My
         UserArticles articles=list.get(position);
         holder.title.setText(articles.getTitle());
         holder.author.setText(articles.getAuthor());
+        holder.dummy.setVisibility(View.GONE);
         try{
             Picasso.get().load(articles.getImage()).into(holder.img);
         }
@@ -135,13 +136,14 @@ public class RejectListAdapter extends RecyclerView.Adapter<RejectListAdapter.My
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView title,author;
+        TextView title,author,dummy;
         ImageView img;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             author=itemView.findViewById(R.id.author);
             title=itemView.findViewById(R.id.nameTv);
             img=itemView.findViewById(R.id.avatarIv);
+            dummy=itemView.findViewById(R.id.status);
         }
     }
 }

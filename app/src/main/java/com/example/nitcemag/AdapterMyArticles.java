@@ -2,6 +2,7 @@ package com.example.nitcemag;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,31 @@ public class AdapterMyArticles extends RecyclerView.Adapter<AdapterMyArticles.My
         String key=userArticles.get(position).getKey();
         String image=userArticles.get(position).getImage();
         holder.author.setText(userArticles.get(position).getAuthor());
+
+        if(userArticles.get(position).getEditor()==1)
+        {
+            holder.status.setText("Posted");
+            holder.status.setTextColor(Color.GREEN);
+            holder.status.setBackgroundColor(R.drawable.rounded_button);
+        }
+        else if(userArticles.get(position).getReviewer()==1)
+        {
+            holder.status.setText("Reviewed");
+            holder.status.setTextColor(Color.YELLOW);
+            holder.status.setBackgroundColor(R.drawable.rounded_button);
+        }
+        else if(userArticles.get(position).getEditor()==-1 || userArticles.get(position).getReviewer()==-1)
+        {
+            holder.status.setText("Rejected");
+            holder.status.setTextColor(Color.RED);
+            holder.status.setBackgroundColor(R.drawable.rounded_button);
+        }
+        else if(userArticles.get(position).getReviewer()==0)
+        {
+            holder.status.setText("Pending");
+            holder.status.setTextColor(Color.WHITE);
+            holder.status.setBackgroundColor(R.drawable.rounded_button);
+        }
         try
         {
             Picasso.get().load(image).placeholder(R.drawable.newspaper).into(holder.imageView);
@@ -67,7 +93,7 @@ public class AdapterMyArticles extends RecyclerView.Adapter<AdapterMyArticles.My
 
     public static class MyHolder  extends RecyclerView.ViewHolder{
         ImageView imageView;
-        TextView textView,author;
+        TextView textView,author,status;
 
 
         public MyHolder(@NonNull View itemView) {
@@ -75,6 +101,7 @@ public class AdapterMyArticles extends RecyclerView.Adapter<AdapterMyArticles.My
             this.imageView = itemView.findViewById(R.id.avatarIv);
             this.textView = itemView.findViewById(R.id.nameTv);
             this.author=itemView.findViewById(R.id.author);
+            this.status= itemView.findViewById(R.id.status);
             // itemView.setOnClickListener(this);
         }
     }

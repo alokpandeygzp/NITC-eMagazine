@@ -40,6 +40,7 @@
                 android:id="@+id/editTextSignUpName"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:digits="qwertzuiopasdfghjklyxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM "
                 android:layout_marginTop="20dp"
                 android:background="@drawable/custom_edittext"
                 android:drawableLeft="@drawable/baseline_identity_24"

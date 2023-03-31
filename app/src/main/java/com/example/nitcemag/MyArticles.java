@@ -60,7 +60,7 @@ public class MyArticles extends AppCompatActivity {
                     UserArticles userArticles1 = snapshot1.getValue(UserArticles.class);
                     if (userArticles1.getEmail().equals(curr_user)) {
                         // String article_name=userArticles1.getArticle_title().toString();
-                        if(userArticles1.getEditor()==1)
+//                        if(userArticles1.getEditor()==1)
                             myArticleList.add(userArticles1);
                     }
                     adapterMyArticles = new AdapterMyArticles(MyArticles.this, myArticleList);

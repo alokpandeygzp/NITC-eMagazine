@@ -39,6 +39,7 @@ public class EditorArticlesListAdapter extends RecyclerView.Adapter<EditorArticl
         UserArticles articles=list.get(position);
         holder.title.setText(articles.getTitle());
         holder.author.setText(articles.getAuthor());
+        holder.dummy.setVisibility(View.GONE);
         try{
             Picasso.get().load(articles.getImage()).into(holder.img);
         }
@@ -66,11 +67,13 @@ public class EditorArticlesListAdapter extends RecyclerView.Adapter<EditorArticl
 
         TextView title,author;
         ImageView img;
+        TextView dummy;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             author=itemView.findViewById(R.id.author);
             title=itemView.findViewById(R.id.nameTv);
             img=itemView.findViewById(R.id.avatarIv);
+            dummy=itemView.findViewById(R.id.status);
         }
     }
 }

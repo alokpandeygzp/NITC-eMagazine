@@ -68,6 +68,7 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
         key=sportsList.get(position).getKey();
         //set data
         holder.mNameTv.setText(title);
+        holder.dummy.setVisibility(View.GONE);
         holder.author.setText(sportsList.get(position).getAuthor());
         try
         {
@@ -178,7 +179,7 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
     public class MyHolder extends RecyclerView.ViewHolder{
 
         ImageView mavatarIv;
-        TextView mNameTv,author;
+        TextView mNameTv,author,dummy;
 
         public MyHolder(@NonNull View itemView) {
 
@@ -188,6 +189,7 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
             mavatarIv=itemView.findViewById(R.id.avatarIv);
             mNameTv=itemView.findViewById(R.id.nameTv);
             author=itemView.findViewById(R.id.author);
+            dummy=itemView.findViewById(R.id.status);
         }
     }
 }
