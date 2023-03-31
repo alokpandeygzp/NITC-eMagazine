@@ -162,9 +162,19 @@ public class ArticlesActivity extends AppCompatActivity {
             author.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent= new Intent(ArticlesActivity.this,UserProfile.class);
-                    intent.putExtra("email",email);
-                    startActivity(intent);
+                    if(user.getEmail().equals(email))
+                    {
+                        Intent intent= new Intent(ArticlesActivity.this,MyProfile.class);
+                        intent.putExtra("email",email);
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                        Intent intent= new Intent(ArticlesActivity.this,UserProfile.class);
+                        intent.putExtra("email",email);
+                        startActivity(intent);
+                    }
+
                 }
             });
 

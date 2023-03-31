@@ -65,7 +65,7 @@ public class MyFavourites extends AppCompatActivity {
                 {
                     akey.add(ds.getKey());
                 }
-                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Articles");
+                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("PostedArticles").child("Articles");
                 reference1.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot1) {
@@ -144,33 +144,7 @@ public class MyFavourites extends AppCompatActivity {
     {
         //get path of database named "users" containing users info
 
-        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Articles");
-        reference1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot1) {
-                for(DataSnapshot ds:snapshot1.getChildren())
-                {
-                    ModelSports userArticles1 = ds.getValue(ModelSports.class);
-                    for(int i=0;i<akey.size();i++)
-                    {
-                        if(akey.get(i).equals(ds.getKey()))
-                        {
-                            myArticleList.add(userArticles1);
-                            break;
-                        }
-                    }
-                }
-                adapterMyArticles = new AdapterSports(MyFavourites.this, myArticleList);
-                recyclerView.setAdapter(adapterMyArticles);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Articles");
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("PostedArticles").child("Articles");
         //get all
 
         ref.addValueEventListener(new ValueEventListener() {
