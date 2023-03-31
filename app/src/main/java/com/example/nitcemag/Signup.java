@@ -120,6 +120,9 @@ public class Signup extends AppCompatActivity {
                     reference.child("UserType").child(auth.getCurrentUser().getUid()).child("role").setValue("Student");
                     reference.child("UserType").child(auth.getCurrentUser().getUid()).child("email").setValue(email.getText().toString());
                     reference.child("Student").child(auth.getCurrentUser().getUid()).setValue(user);
+                    Intent intent = new Intent(Signup.this,Signin.class);
+                    finish();
+                    startActivity(intent);
                 }
                 else
                 {

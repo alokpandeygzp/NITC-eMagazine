@@ -1,14 +1,14 @@
 package com.example.nitcemag.ui.home.Models;
 
 public class ModelSports {
-    String title, image, description, category, author, date, key;
+    String title, image, description, category, author, date, key,email;
     int editor;
 
     public ModelSports() {
 
     }
 
-    public ModelSports(String title, String image, String description, String category, String author, String date, String key, int editor) {
+    public ModelSports(String title, String image, String description, String category, String author, String date, String key, int editor, String email) {
         this.title = title;
         this.image = image;
         this.description = description;
@@ -17,6 +17,15 @@ public class ModelSports {
         this.date = date;
         this.key=key;
         this.editor=editor;
+        this.email=email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getEditor() {

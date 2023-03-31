@@ -26,9 +26,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".UserProfile"
+            android:exported="false" />
+        <activity
             android:name=".RejectedArticleRepost"
             android:exported="false"
-            android:parentActivityName=".RejectList"/>
+            android:parentActivityName=".RejectList" />
         <activity
             android:name=".MyArticles"
             android:exported="false"
@@ -55,7 +58,6 @@
             android:exported="false"
             android:label="Edit Article"
             android:parentActivityName=".MainActivity" />
-
         <activity
             android:name=".EditorDashboard"
             android:exported="false"

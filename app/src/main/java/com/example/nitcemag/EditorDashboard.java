@@ -70,7 +70,7 @@ public class EditorDashboard extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         userEmailId = emailDialog.getText().toString();
-                        reference.child("UserType").addValueEventListener(new ValueEventListener() {
+                        reference.child("UserType").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 System.out.println("2");

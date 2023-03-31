@@ -282,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
         ref.child(roles).child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 String name = snapshot.child("name").getValue().toString();
                 String email= snapshot.child("email").getValue().toString();
                 String img=""+snapshot.child("photo").getValue();
