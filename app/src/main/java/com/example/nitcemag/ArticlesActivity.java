@@ -168,42 +168,21 @@ public class ArticlesActivity extends AppCompatActivity {
                 }
             });
 
-            reference.child("PostedArticles").child("Favourites").addValueEventListener(new ValueEventListener() {
+            reference.child("PostedArticles").child("Favourites").child(user.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for(DataSnapshot ds:snapshot.getChildren())
-                    {
-                        if(ds.getKey().equals(key))
-                        {
-                            reference.child("PostedArticles").child("Favourites").child(user.getUid()).addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot)
-                                {
-                                    for(DataSnapshot ds:snapshot.getChildren())
-                                    {
-                                        if(ds.child("article").getValue().equals(key))
-                                        {
-                                            try
-                                            {
-                                                Picasso.get().load(R.drawable.star).placeholder(R.drawable.unstar).into(star);
-                                            }
-                                            catch (Exception e)
-                                            {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (ds.getKey().equals(key)) {
+                            try
+                            {
+                                Picasso.get().load(R.drawable.star).placeholder(R.drawable.unstar).into(star);
+                            }
+                            catch (Exception e)
+                            {
 
-                                            }
-                                        }
-                                    }
-                                }
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-                            break;
+                            }
                         }
-
                     }
-
                 }
 
                 @Override
