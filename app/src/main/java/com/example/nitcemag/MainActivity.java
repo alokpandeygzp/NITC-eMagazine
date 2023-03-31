@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_myArticles,R.id.nav_myFavourites,
+                R.id.nav_home, R.id.nav_myArticles,R.id.nav_myFavourites,R.id.nav_followed,
                 R.id.nav_postArticles,R.id.nav_signin, R.id.nav_signup, R.id.nav_notifications)
                 .setOpenableLayout(drawer)
                 .build();
@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         menu.findItem(R.id.nav_reviewerDashboard).setVisible(false);
         menu.findItem(R.id.nav_myFavourites).setVisible(false);
+        menu.findItem(R.id.nav_followed).setVisible(false);
         menu.findItem(R.id.nav_editorDashboard).setVisible(false);
         menu.findItem(R.id.nav_myArticles).setVisible(false);
         menu.findItem(R.id.nav_postArticles).setVisible(false);
@@ -83,6 +84,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem item) {
                 Intent i=new Intent(MainActivity.this,Signup.class);
+                startActivity(i);
+                drawer.closeDrawers();
+                return false;
+            }
+        });
+
+        menu.findItem(R.id.nav_followed).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+                Intent i=new Intent(MainActivity.this,FollowedArticles.class);
                 startActivity(i);
                 drawer.closeDrawers();
                 return false;
@@ -176,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
             menu.findItem(R.id.nav_myArticles).setVisible(true);
             menu.findItem(R.id.nav_myFavourites).setVisible(true);
             menu.findItem(R.id.nav_postArticles).setVisible(true);
+            menu.findItem(R.id.nav_followed).setVisible(true);
             menu.findItem(R.id.nav_notifications).setVisible(true);
 
             menu.getItem(1).setVisible(true);
@@ -230,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
             menu.findItem(R.id.nav_postArticles).setVisible(false);
             menu.findItem(R.id.nav_notifications).setVisible(false);
             menu.findItem(R.id.nav_myFavourites).setVisible(false);
+            menu.findItem(R.id.nav_followed).setVisible(false);
 
             menu.findItem(R.id.nav_reviewerDashboard).setVisible(false);
             menu.findItem(R.id.nav_editorDashboard).setVisible(false);
