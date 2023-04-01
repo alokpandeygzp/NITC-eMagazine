@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +16,9 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Patterns;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -38,6 +41,9 @@ public class Signin extends AppCompatActivity {
     TextView signUp, forgotPassword;
     FirebaseUser user;
     FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    Animation scaleUp, scaleDown;
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +53,42 @@ public class Signin extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));
 
+        scaleUp= android.view.animation.AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        scaleDown= android.view.animation.AnimationUtils.loadAnimation(this, R.anim.scale_down);
+
         username = findViewById(R.id.editTextEmail);
         password = findViewById(R.id.editTextPassword);
         signin = findViewById(R.id.loginButton);
         signUp = findViewById(R.id.signupText);
         forgotPassword = findViewById(R.id.forgotTextView);
+
+
+        signin.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_DOWN)
+                    signin.startAnimation(scaleUp);
+                else if(event.getAction()==MotionEvent.ACTION_UP)
+                    signin.startAnimation(scaleDown);
+
+                return false;
+            }
+        });
+
+
+        signUp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_DOWN)
+                    signUp.startAnimation(scaleUp);
+                else if(event.getAction()==MotionEvent.ACTION_UP)
+                    signUp.startAnimation(scaleDown);
+
+                return false;
+            }
+        });
+
 
         signin.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -15,7 +15,7 @@
     android:layout_height="wrap_content"
     tools:context=".MyProfile"
     android:orientation="vertical"
-    android:padding="26dp"
+    android:padding="5dp"
     android:gravity="center_horizontal"
     >
 

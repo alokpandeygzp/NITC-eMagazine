@@ -11,15 +11,16 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.nitcemag.ui.ModelFav;
 import com.example.nitcemag.ui.home.Adapters.AdapterSports;
 import com.example.nitcemag.ui.home.Models.ModelSports;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,14 +43,19 @@ FirebaseAuth auth=FirebaseAuth.getInstance();
 FirebaseUser user=auth.getCurrentUser();
 Button button;
 List<ModelSports> sportsList;
+Animation scaleUp, scaleDown;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));
 
+
+        scaleUp= android.view.animation.AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        scaleDown= android.view.animation.AnimationUtils.loadAnimation(this, R.anim.scale_down);
 
         name=findViewById(R.id.username);
         em=findViewById(R.id.email);
@@ -64,6 +70,21 @@ List<ModelSports> sportsList;
         recyclerView.setLayoutManager(new LinearLayoutManager(UserProfile.this));
         //init user list
         sportsList=new ArrayList<>();
+
+
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_DOWN)
+                    button.startAnimation(scaleUp);
+                else if(event.getAction()==MotionEvent.ACTION_UP)
+                    button.startAnimation(scaleDown);
+
+                return false;
+            }
+        });
+
+
 
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference("UserType");
         ref.addValueEventListener(new ValueEventListener() {

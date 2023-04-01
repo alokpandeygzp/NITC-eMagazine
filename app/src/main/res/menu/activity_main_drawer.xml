@@ -39,8 +39,8 @@
                 android:title="@string/post_articles" />
             <item
                 android:id="@+id/nav_notifications"
-                android:icon="@drawable/baseline_message_24"
-                android:title="Notifications" />
+                android:icon="@drawable/baseline_delete_24"
+                android:title="Rejected Articles" />
             <item
                 android:id="@+id/nav_followed"
                 android:icon="@drawable/baseline_verified_24"

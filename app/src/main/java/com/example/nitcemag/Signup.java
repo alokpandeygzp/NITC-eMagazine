@@ -5,12 +5,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,7 +38,9 @@ public class Signup extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference reference = database.getReference();
+    Animation scaleUp, scaleDown;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +57,37 @@ public class Signup extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));
 
+
+        scaleUp= android.view.animation.AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        scaleDown= android.view.animation.AnimationUtils.loadAnimation(this, R.anim.scale_down);
+
+
+
+        signInBtn.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_DOWN)
+                    signInBtn.startAnimation(scaleUp);
+                else if(event.getAction()==MotionEvent.ACTION_UP)
+                    signInBtn.startAnimation(scaleDown);
+
+                return false;
+            }
+        });
+
+
+        signUpBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_DOWN)
+                    signUpBtn.startAnimation(scaleUp);
+                else if(event.getAction()==MotionEvent.ACTION_UP)
+                    signUpBtn.startAnimation(scaleDown);
+
+                return false;
+            }
+        });
 
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
