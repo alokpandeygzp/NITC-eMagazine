@@ -25,6 +25,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -71,6 +72,7 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ArticlesActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
@@ -84,7 +86,7 @@ public class ArticlesActivity extends AppCompatActivity {
     ImageView img,send,like,star;
     TextInputEditText com;
     RecyclerView rv;
-
+    TextToSpeech t1;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +99,15 @@ public class ArticlesActivity extends AppCompatActivity {
 
          Intent intent= getIntent();
          key=intent.getStringExtra("key");
+         t1= new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+             @Override
+             public void onInit(int i) {
+                if(i!=TextToSpeech.ERROR)
+                {
+                    t1.setLanguage(Locale.ENGLISH);
+                }
+             }
+         });
          tt= findViewById(R.id.title);
          img=findViewById(R.id.image);
          desc=findViewById(R.id.description);
@@ -496,7 +507,17 @@ public class ArticlesActivity extends AppCompatActivity {
 
         }
 
+        getMenuInflater().inflate(R.menu.speech, menu);
+        MenuItem sitem= menu.findItem(R.id.speech);
+        sitem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+               String text = desc.getText().toString();
+               t1.speak(text,TextToSpeech.QUEUE_FLUSH, null);
 
+                return false;
+            }
+        });
 
         getMenuInflater().inflate(R.menu.download, menu);
         MenuItem item= menu.findItem(R.id.download);
