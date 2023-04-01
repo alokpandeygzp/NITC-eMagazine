@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +31,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -55,6 +58,10 @@ public class MyProfile extends AppCompatActivity {
     //path where image of user profile and cover will be stored
     String storagePath="Users_Profile_Cover_Imgs/";
     Uri image_uri;
+
+    AlertDialog dialog;
+    EditText currPass, newPass;
+    Button submit;
 
       //permission constants
     private  static  final int CAMERA_REQUEST_CODE=100;
@@ -154,73 +161,60 @@ public class MyProfile extends AppCompatActivity {
 
     private void showRecoverPasswordDialog()
     {
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        builder.setTitle("Recover Password");
-        //set layout linear
-        LinearLayout linearLayout=new LinearLayout(this);
-        //views to set in dialog
-        EditText emailet=new EditText(this);
-        emailet.setHint("Email");
-        emailet.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        AlertDialog.Builder dialogAddRev = new AlertDialog.Builder(MyProfile.this);
+        View loginView = getLayoutInflater().inflate(R.layout.dialog_change_password,null);
 
-        emailet.setMinEms(16);
+        currPass=loginView.findViewById(R.id.editTextCurrPass);
+        newPass=loginView.findViewById(R.id.editTextNewPass);
+        submit=loginView.findViewById(R.id.buttonDialogSubmit);
 
-        linearLayout.addView(emailet);
-        linearLayout.setPadding(10,10,10,10);
 
-        builder.setView(linearLayout);
+        dialogAddRev.setView(loginView);
+        dialog = dialogAddRev.create();
+        dialog.show();
 
-        //buttons
-        builder.setPositiveButton("Recover", new DialogInterface.OnClickListener() {
+
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String em= emailet.getText().toString().trim();
-                if(em.equals(user.getEmail()))
-                {
-                    beginRecovery(em);
-                }
-                else
-                {
-                    Toast.makeText(MyProfile.this, "Wrong Email", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+            public void onClick(View v) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        //buttons
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+                String currUserEmail = user.getEmail();
+                String currPassword=currPass.getText().toString();
+                String newPassword=newPass.getText().toString();
 
-            }
-        });
+//                System.out.println("765**************"+currPassword+"*******************");
+//                System.out.println(newPassword+"987*********************************");
 
-        //show dialog
-        builder.create().show();
-    }
 
-    private void beginRecovery(String em)
-    {
-        auth.sendPasswordResetEmail(em).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful())
-                {
-                    Toast.makeText(MyProfile.this, "Email Sent", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(MyProfile.this, "Failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-                //get and show proper error
-                Toast.makeText(MyProfile.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                AuthCredential credential = EmailAuthProvider.getCredential(currUserEmail, currPassword);
+                user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(MyProfile.this, "Password Updated", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    } else {
+                                        Toast.makeText(MyProfile.this, "Error password not updated", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    }
+                                }
+                            });
+                        } else {
+                            Toast.makeText(MyProfile.this, "Error. Authentication Failed", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    }
+                });
             }
         });
     }
+
+
 
 
     private boolean checkStoragePermission()
