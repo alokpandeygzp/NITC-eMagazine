@@ -26,6 +26,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
+import com.example.nitcemag.ui.home.Models.ModelSports;
+import com.example.nitcemag.ui.postArticles.UserArticles;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,7 +47,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MyProfile extends AppCompatActivity {
 
@@ -62,6 +66,7 @@ public class MyProfile extends AppCompatActivity {
     AlertDialog dialog;
     EditText currPass, newPass;
     Button submit;
+    TextView followingCount,articleCount;
 
       //permission constants
     private  static  final int CAMERA_REQUEST_CODE=100;
@@ -72,6 +77,9 @@ public class MyProfile extends AppCompatActivity {
     //Arrays of permission to be requested
     String cameraPermission[];
     String storagePermission[];
+
+
+    final ArrayList<String> akey= new ArrayList<>();
 
     DatabaseReference databaseReference;
     @SuppressLint("MissingInflatedId")
@@ -91,7 +99,8 @@ public class MyProfile extends AppCompatActivity {
         img=findViewById(R.id.image);
         fab=findViewById(R.id.fab);
         String uid=auth.getUid();
-
+        followingCount=findViewById(R.id.followingCount);
+        articleCount=findViewById(R.id.ArticleCount);
 
 
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference();
@@ -100,8 +109,56 @@ public class MyProfile extends AppCompatActivity {
         storagePermission=new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
 
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Followed").child(user.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                myArticleList.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    akey.add(ds.child("email").getValue().toString());
+                    followingCount.setText(""+akey.size());
+                }
+            }
 
-        ref.child("UserType").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        String curr_user = user.getEmail();
+        List<UserArticles> myArticleList = new ArrayList<>();
+
+        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("Articles");
+        reference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                myArticleList.clear();
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    UserArticles userArticles1 = snapshot1.getValue(UserArticles.class);
+                    if (userArticles1.getEmail().equals(curr_user)) {
+                        if(userArticles1.getEditor()==1)
+                            myArticleList.add(userArticles1);
+                    }
+                    articleCount.setText(""+myArticleList.size());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+            ref.child("UserType").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String roles=snapshot.child("role").getValue().toString();
