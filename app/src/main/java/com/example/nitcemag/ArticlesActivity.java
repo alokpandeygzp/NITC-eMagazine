@@ -26,6 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -108,6 +109,7 @@ public class ArticlesActivity extends AppCompatActivity {
                 }
              }
          });
+
          tt= findViewById(R.id.title);
          img=findViewById(R.id.image);
          desc=findViewById(R.id.description);
@@ -469,6 +471,14 @@ public class ArticlesActivity extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        t1.stop();
+        finish();
+    }
+
     int convertwidth, convertheight;
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -515,7 +525,7 @@ public class ArticlesActivity extends AppCompatActivity {
                String text = desc.getText().toString();
                t1.speak(text,TextToSpeech.QUEUE_FLUSH, null);
 
-                return false;
+               return false;
             }
         });
 
@@ -557,7 +567,7 @@ public class ArticlesActivity extends AppCompatActivity {
 
     private  void openPdf()
     {
-        File file = new File(Environment.getExternalStorageDirectory()+"/Download",ms.getTitle()+".pdf");
+        File file = new File(Environment.getExternalStorageDirectory()+"/Download",ms.getTitle().trim()+".pdf");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (file.exists()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
