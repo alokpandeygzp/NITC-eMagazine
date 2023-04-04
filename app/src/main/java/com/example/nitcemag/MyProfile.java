@@ -25,7 +25,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nitcemag.ui.home.Adapters.AdapterSports;
 import com.example.nitcemag.ui.home.Models.ModelSports;
 import com.example.nitcemag.ui.postArticles.UserArticles;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -57,16 +60,18 @@ public class MyProfile extends AppCompatActivity {
     ImageView img;
     FirebaseUser user;
     FirebaseAuth auth = FirebaseAuth.getInstance();
-    FloatingActionButton fab;
+    Button fab;
     StorageReference storageReference;
     //path where image of user profile and cover will be stored
     String storagePath="Users_Profile_Cover_Imgs/";
     Uri image_uri;
+    RecyclerView recyclerView;
+    AdapterSports adapterSports;
 
     AlertDialog dialog;
     EditText currPass, newPass;
     Button submit;
-    TextView followingCount,articleCount;
+    TextView followingCount,articleCount,followerCount;
 
       //permission constants
     private  static  final int CAMERA_REQUEST_CODE=100;
@@ -77,7 +82,7 @@ public class MyProfile extends AppCompatActivity {
     //Arrays of permission to be requested
     String cameraPermission[];
     String storagePermission[];
-
+    List<ModelSports> sportsList;
 
     final ArrayList<String> akey= new ArrayList<>();
 
@@ -101,6 +106,17 @@ public class MyProfile extends AppCompatActivity {
         String uid=auth.getUid();
         followingCount=findViewById(R.id.followingCount);
         articleCount=findViewById(R.id.ArticleCount);
+        followerCount=findViewById(R.id.followerCount);
+
+
+        recyclerView=findViewById(R.id.users_recyclerView);
+        //set it's properties
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MyProfile.this));
+        //init user list
+        sportsList=new ArrayList<>();
+
+
 
 
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference();
@@ -125,6 +141,36 @@ public class MyProfile extends AppCompatActivity {
 
             }
         });
+        akey.clear();
+        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Followed");
+        ref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int counting=0;
+                for (DataSnapshot ds : snapshot.getChildren()) {
+
+                    for(DataSnapshot dsChild : ds.getChildren())
+                    {
+                        if(dsChild.child("email").getValue().equals(user.getEmail())) {
+                            counting++;
+                            akey.add(dsChild.child("email").getValue().toString());
+                            followerCount.setText("" +counting);
+                            System.out.println("Final:-"+dsChild.child("email").getValue());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+
 
         String curr_user = user.getEmail();
         List<UserArticles> myArticleList = new ArrayList<>();
@@ -214,6 +260,8 @@ public class MyProfile extends AppCompatActivity {
                 showEditProfileDialog();
             }
         });
+
+        getAllArticles();
     }
 
     private void showRecoverPasswordDialog()
@@ -585,7 +633,40 @@ public class MyProfile extends AppCompatActivity {
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
         startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA_CODE);
     }
+    private void getAllArticles()
+    {
+        //get current user
+        FirebaseUser fUser= FirebaseAuth.getInstance().getCurrentUser();
+        //get path of database named "users" containing users info
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Articles");
 
+        //get all
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sportsList.clear();
+                for(DataSnapshot ds:snapshot.getChildren())
+                {
+                    ModelSports modelSports =ds.getValue(ModelSports.class);
+                    //
+                    if(modelSports.getEmail().equals(fUser.getEmail()) && modelSports.getEditor()==1)
+                    {
+                        sportsList.add(modelSports);
+                    }
+
+                    //adapter
+                    adapterSports = new AdapterSports(MyProfile.this,sportsList);
+                    //set adapter to recycler view
+                    recyclerView.setAdapter(adapterSports);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 
 }

@@ -37,7 +37,9 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".UserProfile"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Profile"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".RejectedArticleRepost"
             android:exported="false"
