@@ -67,7 +67,7 @@ public class MyProfile extends AppCompatActivity {
     Uri image_uri;
     RecyclerView recyclerView;
     AdapterSports adapterSports;
-
+    LinearLayout following, followers;
     AlertDialog dialog;
     EditText currPass, newPass;
     Button submit;
@@ -108,6 +108,8 @@ public class MyProfile extends AppCompatActivity {
         articleCount=findViewById(R.id.ArticleCount);
         followerCount=findViewById(R.id.followerCount);
 
+        following=findViewById(R.id.following);
+        followers=findViewById(R.id.followers);
 
         recyclerView=findViewById(R.id.users_recyclerView);
         //set it's properties
@@ -116,9 +118,22 @@ public class MyProfile extends AppCompatActivity {
         //init user list
         sportsList=new ArrayList<>();
 
-
-
-
+        followers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(MyProfile.this,FollowersActivity.class);
+                intent.putExtra("uid",user.getUid());
+                startActivity(intent);
+            }
+        });
+        following.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(MyProfile.this,FollowingActivity.class);
+                intent.putExtra("uid",user.getUid());
+                startActivity(intent);
+            }
+        });
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference();
         storageReference = FirebaseStorage.getInstance().getReference();
         cameraPermission=new String[]{android.Manifest.permission.CAMERA,android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -129,6 +144,7 @@ public class MyProfile extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                akey.clear();
 //                myArticleList.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     akey.add(ds.child("email").getValue().toString());

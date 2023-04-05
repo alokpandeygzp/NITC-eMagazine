@@ -26,10 +26,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".FollowersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FollowingActivity"
+            android:exported="false" />
+        <activity
             android:name=".FollowedArticles"
             android:exported="false"
             android:label="Followed Articles"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MyFavourites"
             android:exported="false"
