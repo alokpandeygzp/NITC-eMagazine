@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.nitcemag.ui.home.Adapters.AdapterSports;
 import com.example.nitcemag.ui.home.Models.ModelSports;
 
+import com.example.nitcemag.ui.postArticles.UserArticles;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,8 +42,10 @@ RecyclerView recyclerView;
 AdapterSports adapterSports;
 FirebaseAuth auth=FirebaseAuth.getInstance();
 FirebaseUser user=auth.getCurrentUser();
+TextView followingCount,articleCount,followerCount;
 Button button;
 List<ModelSports> sportsList;
+final ArrayList<String> akey= new ArrayList<>();
 Animation scaleUp, scaleDown;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -70,6 +73,99 @@ Animation scaleUp, scaleDown;
         recyclerView.setLayoutManager(new LinearLayoutManager(UserProfile.this));
         //init user list
         sportsList=new ArrayList<>();
+        followingCount=findViewById(R.id.followingCount);
+        articleCount=findViewById(R.id.ArticleCount);
+        followerCount=findViewById(R.id.followerCount);
+
+
+        DatabaseReference ref0= FirebaseDatabase.getInstance().getReference("UserType");
+        ref0.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds: snapshot.getChildren())
+                {
+                   if(ds.child("email").getValue().equals(email))
+                   {
+                       String emailUid =ds.getKey();
+
+
+
+                       DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Followed").child(emailUid);
+                       reference1.addValueEventListener(new ValueEventListener() {
+                           @Override
+                           public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                myArticleList.clear();
+                               for (DataSnapshot ds : snapshot.getChildren()) {
+                                   akey.add(ds.child("email").getValue().toString());
+                                   followingCount.setText(""+akey.size());
+                               }
+                           }
+
+                           @Override
+                           public void onCancelled(@NonNull DatabaseError error) {
+
+                           }
+                       });
+
+                       akey.clear();
+                       DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Followed");
+                       ref2.addValueEventListener(new ValueEventListener() {
+                           @Override
+                           public void onDataChange(@NonNull DataSnapshot snapshot) {
+                               int counting=0;
+                               for (DataSnapshot ds : snapshot.getChildren()) {
+
+                                   for(DataSnapshot dsChild : ds.getChildren())
+                                   {
+                                       if(dsChild.child("email").getValue().equals(email)) {
+                                           counting++;
+                                           akey.add(dsChild.child("email").getValue().toString());
+                                           followerCount.setText("" +counting);
+                                           System.out.println("Final:-"+dsChild.child("email").getValue());
+                                       }
+                                   }
+                               }
+                           }
+
+                           @Override
+                           public void onCancelled(@NonNull DatabaseError error) {
+
+                           }
+                       });
+                       List<UserArticles> myArticleList = new ArrayList<>();
+
+                       DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("Articles");
+                       reference2.addValueEventListener(new ValueEventListener() {
+                           @Override
+                           public void onDataChange(@NonNull DataSnapshot snapshot) {
+                               myArticleList.clear();
+                               for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                   UserArticles userArticles1 = snapshot1.getValue(UserArticles.class);
+                                   if (userArticles1.getEmail().equals(email)) {
+                                       if(userArticles1.getEditor()==1)
+                                           myArticleList.add(userArticles1);
+                                   }
+                                   articleCount.setText(""+myArticleList.size());
+                               }
+                           }
+
+                           @Override
+                           public void onCancelled(@NonNull DatabaseError error) {
+
+                           }
+                       });
+
+
+
+                   }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
         button.setOnTouchListener(new View.OnTouchListener() {
