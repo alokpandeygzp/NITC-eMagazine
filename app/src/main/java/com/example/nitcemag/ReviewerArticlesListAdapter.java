@@ -55,7 +55,6 @@ public class ReviewerArticlesListAdapter extends RecyclerView.Adapter<ReviewerAr
                 Intent intent = new Intent(context, ReviewerAction.class);
                 intent.putExtra("key",articles.getKey());
                 context.startActivity(intent);
-                ((Activity)context).finish();
             }
         });
     }

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.nitcemag.ui.postArticles.UserArticles;
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +25,13 @@ public class EditorArticlesList extends AppCompatActivity {
     DatabaseReference database;
     EditorArticlesListAdapter editorArticlesListAdapter;
     ArrayList<UserArticles> list;
-
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +41,6 @@ public class EditorArticlesList extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));
-
-
 
         recyclerView=findViewById(R.id.articlesList);
         database= FirebaseDatabase.getInstance().getReference("Articles");
@@ -48,6 +54,7 @@ public class EditorArticlesList extends AppCompatActivity {
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
                 for(DataSnapshot dataSnapshot:snapshot.getChildren())
                 {
                     System.out.println(dataSnapshot);
@@ -67,5 +74,15 @@ public class EditorArticlesList extends AppCompatActivity {
 
             }
         });
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

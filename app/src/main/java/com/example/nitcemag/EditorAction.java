@@ -2,6 +2,7 @@ package com.example.nitcemag;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -81,11 +82,8 @@ public class EditorAction extends AppCompatActivity {
                                 DatabaseReference db=FirebaseDatabase.getInstance().getReference("PostedArticles").child("Articles");
                                 db.child(abc.getKey()).setValue(abc);
                                 Toast.makeText(EditorAction.this, "Article Accepted for Publish", Toast.LENGTH_SHORT).show();
-
-                                Intent i = new Intent(EditorAction.this, EditorArticlesList.class);
                                 finish();
 //                                overridePendingTransition(0, 0);
-                                startActivity(i);
 //                                overridePendingTransition(0, 0);
                             }
                         });
@@ -97,11 +95,9 @@ public class EditorAction extends AppCompatActivity {
                                 Toast.makeText(EditorAction.this, "Article Rejected for Publish", Toast.LENGTH_SHORT).show();
 
 
-                                Intent i = new Intent(EditorAction.this, EditorArticlesList.class);
                                 finish();
 //                                overridePendingTransition(0, 0);
-                                startActivity(i);
-//                                overridePendingTransition(0, 0);
+                               //   overridePendingTransition(0, 0);
                             }
                         });
 
@@ -115,6 +111,15 @@ public class EditorAction extends AppCompatActivity {
             }
         });
 
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

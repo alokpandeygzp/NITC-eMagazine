@@ -53,7 +53,6 @@ public class EditorArticlesListAdapter extends RecyclerView.Adapter<EditorArticl
                 Intent intent = new Intent(context, EditorAction.class);
                 intent.putExtra("key",articles.getKey());
                 context.startActivity(intent);
-                ((Activity)context).finish();
             }
         });
     }

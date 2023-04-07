@@ -2,6 +2,7 @@ package com.example.nitcemag;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,9 +83,7 @@ public class ReviewerAction extends AppCompatActivity {
                                 ref.child(ds.getKey()).child("reviewer").setValue(1);
                                 Toast.makeText(ReviewerAction.this, "Article Accepted for Publish", Toast.LENGTH_SHORT).show();
 
-                                Intent i = new Intent(ReviewerAction.this, ReviewerArticlesList.class);
                                 finish();
-                                startActivity(i);
                             }
                         });
                         rejectBtn.setOnClickListener(new View.OnClickListener() {
@@ -112,8 +111,6 @@ public class ReviewerAction extends AppCompatActivity {
 
                                         dialogDesc = descDialog.getText().toString();
                                         ref.child(ds.getKey()).child("rejectreason").setValue(dialogDesc);
-                                        Intent i = new Intent(ReviewerAction.this, ReviewerArticlesList.class);
-                                        startActivity(i);
                                         finish();
                                     }
                                 });
@@ -130,5 +127,15 @@ public class ReviewerAction extends AppCompatActivity {
             }
         });
 
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

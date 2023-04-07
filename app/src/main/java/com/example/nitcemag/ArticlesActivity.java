@@ -525,7 +525,7 @@ public class ArticlesActivity extends AppCompatActivity {
                String text = desc.getText().toString();
                t1.speak(text,TextToSpeech.QUEUE_FLUSH, null);
 
-               return false;
+               return true;
             }
         });
 
@@ -565,6 +565,15 @@ public class ArticlesActivity extends AppCompatActivity {
         return true;
     }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
     private  void openPdf()
     {
         File file = new File(Environment.getExternalStorageDirectory()+"/Download",ms.getTitle().trim()+".pdf");

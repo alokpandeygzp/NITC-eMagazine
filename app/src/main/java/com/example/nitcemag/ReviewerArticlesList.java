@@ -1,6 +1,7 @@
 package com.example.nitcemag;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -71,4 +72,14 @@ public class ReviewerArticlesList extends AppCompatActivity {
 
 
     }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

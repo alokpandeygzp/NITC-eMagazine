@@ -27,10 +27,14 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".FollowersActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Followers"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".FollowingActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Following"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".FollowedArticles"
             android:exported="false"
@@ -125,7 +129,7 @@
             android:name=".EditorArticlesList"
             android:exported="false"
             android:label="Editor&apos;s Dashboard"
-            android:parentActivityName=".EditorDashboard" />
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ReviewerArticlesList"
             android:exported="false"

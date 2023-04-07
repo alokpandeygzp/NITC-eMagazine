@@ -129,7 +129,6 @@ public class EditorDashboard extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(EditorDashboard.this, EditorArticlesList.class);
                 startActivity(intent);
-                finish();
             }
         });
 
