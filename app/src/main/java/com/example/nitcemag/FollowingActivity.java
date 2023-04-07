@@ -27,6 +27,14 @@ public class FollowingActivity extends AppCompatActivity {
 
     ArrayList<String> akey=new ArrayList<>();
     ArrayList<UserDetails> userDetails=new ArrayList<>();
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+    }
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +80,7 @@ public class FollowingActivity extends AppCompatActivity {
                         if(akey.get(i).equals(ds.child("email").getValue().toString()))
                         {
                             String role=ds.child("role").getValue().toString();
+
                             DatabaseReference ref1= FirebaseDatabase.getInstance().getReference(role);
                             ref1.addValueEventListener(new ValueEventListener() {
                                 @Override

@@ -39,6 +39,14 @@ public class MyFavourites extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     List<ModelSports> myArticleList;
     ArrayList<String> akey= new ArrayList<>();
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +61,6 @@ public class MyFavourites extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(MyFavourites.this));
         myArticleList = new ArrayList<>();
-
         user = auth.getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("PostedArticles").child("Favourites").child(user.getUid());
         reference.addValueEventListener(new ValueEventListener() {

@@ -61,7 +61,6 @@ public class AdapterSports extends RecyclerView.Adapter<AdapterSports.MyHolder> 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         //get data
-
         String category =sportsList.get(position).getCategory();
         String image=sportsList.get(position).getImage();
         String title=sportsList.get(position).getTitle();

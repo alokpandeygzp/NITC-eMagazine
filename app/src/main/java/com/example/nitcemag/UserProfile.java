@@ -95,6 +95,7 @@ Animation scaleUp, scaleDown;
                            @Override
                            public void onDataChange(@NonNull DataSnapshot snapshot) {
 //                myArticleList.clear();
+                               akey.clear();
                                for (DataSnapshot ds : snapshot.getChildren()) {
                                    akey.add(ds.child("email").getValue().toString());
                                    followingCount.setText(""+akey.size());
@@ -107,24 +108,23 @@ Animation scaleUp, scaleDown;
                            }
                        });
 
-                       akey.clear();
                        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("Followed");
                        ref2.addValueEventListener(new ValueEventListener() {
                            @Override
                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                               akey.clear();
                                int counting=0;
                                for (DataSnapshot ds : snapshot.getChildren()) {
-
                                    for(DataSnapshot dsChild : ds.getChildren())
                                    {
                                        if(dsChild.child("email").getValue().equals(email)) {
                                            counting++;
                                            akey.add(dsChild.child("email").getValue().toString());
-                                           followerCount.setText("" +counting);
-                                           System.out.println("Final:-"+dsChild.child("email").getValue());
+
                                        }
                                    }
                                }
+                               followerCount.setText("" +counting);
                            }
 
                            @Override

@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.nitcemag.ui.home.Adapters.AdapterSports;
 import com.example.nitcemag.ui.home.Models.ModelSports;
@@ -35,14 +36,24 @@ public class FollowedArticles extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     List<ModelSports> myArticleList;
     ArrayList<String> akey= new ArrayList<>();
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_followed_articles);
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.side_nav_bar));
+
         recyclerView = findViewById(R.id.myArticles_recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(FollowedArticles.this));
@@ -77,6 +88,7 @@ public class FollowedArticles extends AppCompatActivity {
                         }
                         adapterMyArticles = new AdapterSports(FollowedArticles.this, myArticleList);
                         recyclerView.setAdapter(adapterMyArticles);
+
                     }
 
                     @Override
