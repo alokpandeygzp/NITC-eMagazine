@@ -2,6 +2,7 @@ package com.example.nitcemag;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfile extends AppCompatActivity {
-TextView name,em;
+TextView name,em,dialogUnfollowName;
 ImageView img;
 String email;
 RecyclerView recyclerView;
@@ -44,7 +45,8 @@ AdapterSports adapterSports;
 FirebaseAuth auth=FirebaseAuth.getInstance();
 FirebaseUser user=auth.getCurrentUser();
 TextView followingCount,articleCount,followerCount;
-Button button;
+Button button,positiveBtn,negativeBtn;
+AlertDialog dialog;
 List<ModelSports> sportsList;
 final ArrayList<String> akey= new ArrayList<>();
 Animation scaleUp, scaleDown;
@@ -262,10 +264,34 @@ Animation scaleUp, scaleDown;
                         {
                             if(ds.child("email").getValue().equals(email))
                             {
-                                button.setBackgroundColor(Color.parseColor("#48b4e0"));
-                                button.setTextColor(Color.parseColor("#ffffff"));
-                                button.setText("Follow");
-                                ds.getRef().removeValue();
+                                AlertDialog.Builder dialogAddRev = new AlertDialog.Builder(UserProfile.this);
+                                View loginView = getLayoutInflater().inflate(R.layout.dialog_unfollow,null);
+
+                                negativeBtn = loginView.findViewById(R.id.buttonNegative);
+                                positiveBtn = loginView.findViewById(R.id.buttonPositive);
+                                dialogUnfollowName = loginView.findViewById(R.id.textViewName);
+
+                                dialogAddRev.setView(loginView);
+                                dialog = dialogAddRev.create();
+                                dialog.show();
+
+                                dialogUnfollowName.setText(ds.child("email").getValue().toString());
+                                positiveBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        button.setBackgroundColor(Color.parseColor("#48b4e0"));
+                                        button.setTextColor(Color.parseColor("#ffffff"));
+                                        button.setText("Follow");
+                                        ds.getRef().removeValue();
+                                        dialog.dismiss();
+                                    }
+                                });
+                                negativeBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog.dismiss();
+                                    }
+                                });
                                 flag=0;
                                 break;
                             }
