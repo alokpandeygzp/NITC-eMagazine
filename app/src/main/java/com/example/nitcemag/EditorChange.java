@@ -28,8 +28,10 @@ public class EditorChange extends AppCompatActivity {
 
     EditText email;
     Button submitBtn;
-    String userEmailId;
+    String userEmailId,role,id,name,photo;
     TextView demo;
+    UserDetails newEditor;
+    UserDetails oldEditor;
     FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference reference = database.getReference();
@@ -57,50 +59,105 @@ public class EditorChange extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 userEmailId = email.getText().toString();
+                if(userEmailId.equals(user.getEmail()))
+                {
+                    Toast.makeText(EditorChange.this, "Already Editor", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
                 reference.child("UserType").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        for(DataSnapshot ds:snapshot.getChildren()){
-
+                        int flag=1;
+                        for(DataSnapshot ds:snapshot.getChildren())
+                        {
                             if(ds.child("email").getValue().toString().equals(userEmailId))
                             {
-                                String role = ds.child("role").getValue().toString();
-                                if (role.equals("Student"))
-                                {
-                                    String role1 = "student "+ds.getKey();
-                                    demo.setText(role1);
-                                    break;
-                                }
-                                else if(role.equals("Reviewer"))
-                                {
-                                    String role1 = "Reviewer "+ds.getKey();
-                                    demo.setText(role1);
-                                    break;
-                                }
-                                else
-                                {
-                                    demo.setText(role);
-                                    break;
-                                }
-                            }
-                            else {
-                                if(!userEmailId.equalsIgnoreCase("dummy"))
-                                    demo.setText("1234");
+                                flag=0;
+                                role = ds.child("role").getValue().toString();
+                                id=ds.getKey();
+                                DatabaseReference reference1 = database.getReference();
+                                reference1.child("UserType").child(id).child("role").setValue("Editor");
+
+                               // changing role to editor
+                                reference.child(role).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot)
+                                    {
+                                        for(DataSnapshot ds: snapshot.getChildren())
+                                        {
+                                            if(ds.getKey().equals(id))
+                                            {
+                                                newEditor=ds.getValue(UserDetails.class);
+                                                reference1.child("Editor").child(id).setValue(newEditor);
+                                                ds.getRef().removeValue();
+                                            }
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
+                                // changing editor to student
+                                reference.child("Editor").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for(DataSnapshot ds: snapshot.getChildren())
+                                        {
+                                            if(ds.getKey().equals(user.getUid()))
+                                            {
+
+                                                oldEditor=ds.getValue(UserDetails.class);
+                                                reference1.child("Student").child(user.getUid()).setValue(oldEditor);
+                                                reference1.child("UserType").child(user.getUid()).child("role").setValue("Student");
+                                                ds.getRef().removeValue();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                                Toast.makeText(EditorChange.this, "Editor added successfully", Toast.LENGTH_SHORT).show();
+                                demo.setText("");
+
+                                FirebaseAuth auth=FirebaseAuth.getInstance();
+                                auth.signOut();
+
+                                Intent i= new Intent(EditorChange.this, MainActivity.class);
+                                startActivity(i);
+                                finishAffinity();
+                                Toast.makeText(EditorChange.this, "You are signed out", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        setRole();
+                        if(flag==1)
+                        {
+                            Toast.makeText(EditorChange.this, "Invalid Email", Toast.LENGTH_SHORT).show();
+                        }
+                        //setRole();
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        error.getDetails();
+                    public void onCancelled(@NonNull DatabaseError error)
+                    {
+                      //  error.getDetails();
                     }
                 });
-            }
-        });
-    }
 
+
+                }
+            }
+
+        });
+
+
+    }
 
     void setRole()
     {
