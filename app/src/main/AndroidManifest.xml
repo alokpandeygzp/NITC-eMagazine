@@ -26,6 +26,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".EditorChange"
+            android:exported="false"
+            android:label="Leave as Editor"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".FollowersActivity"
             android:exported="false"
             android:label="Followers"
@@ -34,7 +39,7 @@
             android:name=".FollowingActivity"
             android:exported="false"
             android:label="Following"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".FollowedArticles"
             android:exported="false"

@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_myArticles,R.id.nav_myFavourites,R.id.nav_followed,
-                R.id.nav_postArticles,R.id.nav_signin, R.id.nav_signup, R.id.nav_notifications)
+                R.id.nav_postArticles,R.id.nav_signin, R.id.nav_signup, R.id.nav_notifications,R.id.nav_editorChange)
                 .setOpenableLayout(drawer)
                 .build();
 
@@ -74,10 +74,11 @@ public class MainActivity extends AppCompatActivity {
         menu.findItem(R.id.nav_myFavourites).setVisible(false);
         menu.findItem(R.id.nav_followed).setVisible(false);
         menu.findItem(R.id.nav_editorDashboard).setVisible(false);
+        menu.findItem(R.id.nav_editorChange).setVisible(false);
         menu.findItem(R.id.nav_myArticles).setVisible(false);
         menu.findItem(R.id.nav_postArticles).setVisible(false);
         menu.findItem(R.id.nav_notifications).setVisible(false);
-        
+
 
         setUtility();
         menu.findItem(R.id.nav_signup).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -168,6 +169,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        menu.findItem(R.id.nav_editorChange).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+                Intent i=new Intent(MainActivity.this,EditorChange.class);
+                startActivity(i);
+                drawer.closeDrawers();
+                return false;
+            }
+        });
+
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
@@ -184,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
         {
             menu.findItem(R.id.nav_signup).setVisible(false);
             menu.findItem(R.id.nav_signin).setVisible(false);
+
             menu.findItem(R.id.nav_myArticles).setVisible(true);
             menu.findItem(R.id.nav_myFavourites).setVisible(true);
             menu.findItem(R.id.nav_postArticles).setVisible(true);
@@ -246,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
 
             menu.findItem(R.id.nav_reviewerDashboard).setVisible(false);
             menu.findItem(R.id.nav_editorDashboard).setVisible(false);
+            menu.findItem(R.id.nav_editorChange).setVisible(false);
 
 
             View headerView = navigationView.getHeaderView(0);
@@ -279,64 +292,68 @@ public class MainActivity extends AppCompatActivity {
 
     public void callingDatabase(String roles)
     {
-        System.out.println(roles);
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
+        try {
+            System.out.println(roles);
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            FirebaseUser user = auth.getCurrentUser();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference();
-        ref.child(roles).child(user.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference();
+            ref.child(roles).child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if(roles.equals("Editor")) {
-                    menu.findItem(R.id.nav_editorDashboard).setVisible(true);
-                }
-                else if(roles.equals("Reviewer")){
-                    menu.findItem(R.id.nav_reviewerDashboard).setVisible(true);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                error.getDetails();
-            }
-        });
-
-
-
-        ref.child(roles).child(user.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                String name = snapshot.child("name").getValue().toString();
-                String email= snapshot.child("email").getValue().toString();
-                String img=""+snapshot.child("photo").getValue();
-
-
-                View headerView = navigationView.getHeaderView(0);
-                TextView textViewName = (TextView) headerView.findViewById(R.id.editTextViewName);
-                ImageView image=(ImageView)headerView.findViewById(R.id.imageView);
-                textViewName.setText(name);
-                TextView textViewEmail = (TextView) headerView.findViewById(R.id.editTextViewEmail);
-                textViewEmail.setText(email);
-                if(!img.equals("")) {
-                    try {
-                        //if image is recieved
-                        Picasso.get().load(img).into(image);
-                    } catch (Exception e) {
-                        //exception getting image
-                        Picasso.get().load(R.drawable.ic_default_img).into(image);
+                    if (roles.equals("Editor")) {
+                        menu.findItem(R.id.nav_editorDashboard).setVisible(true);
+                        menu.findItem(R.id.nav_editorChange).setVisible(true);
+                    } else if (roles.equals("Reviewer")) {
+                        menu.findItem(R.id.nav_reviewerDashboard).setVisible(true);
                     }
                 }
 
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    error.getDetails();
+                }
+            });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                error.getDetails();
-            }
-        });
+
+            ref.child(roles).child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    String name = snapshot.child("name").getValue().toString();
+                    String email = snapshot.child("email").getValue().toString();
+                    String img = "" + snapshot.child("photo").getValue();
+
+
+                    View headerView = navigationView.getHeaderView(0);
+                    TextView textViewName = (TextView) headerView.findViewById(R.id.editTextViewName);
+                    ImageView image = (ImageView) headerView.findViewById(R.id.imageView);
+                    textViewName.setText(name);
+                    TextView textViewEmail = (TextView) headerView.findViewById(R.id.editTextViewEmail);
+                    textViewEmail.setText(email);
+                    if (!img.equals("")) {
+                        try {
+                            //if image is recieved
+                            Picasso.get().load(img).into(image);
+                        } catch (Exception e) {
+                            //exception getting image
+                            Picasso.get().load(R.drawable.ic_default_img).into(image);
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    error.getDetails();
+                }
+            });
+        }catch (Exception e)
+        {
+            System.out.println(e);
+        }
     }
 
 
